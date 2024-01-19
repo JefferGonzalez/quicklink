@@ -1,12 +1,15 @@
-import Layout from '@/components/Layout'
-import Landing from '@/pages/Landing'
+import Root from '@/Root'
+import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+
+const router = createBrowserRouter([
+  {
+    path: '*',
+    Component: Root
+  }
+])
 
 function App(): JSX.Element {
-  return (
-    <Layout>
-      <Landing />
-    </Layout>
-  )
+  return <RouterProvider router={router} />
 }
 
 export default App
