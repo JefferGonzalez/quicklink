@@ -1,7 +1,11 @@
-export default function Link() {
+interface LinkProps {
+  className: string
+}
+
+export default function Link({ className }: LinkProps): JSX.Element {
   return (
     <svg
-      className='size-24'
+      className={className}
       width='512'
       height='512'
       viewBox='0 0 512 512'
