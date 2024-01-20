@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import LinkIcon from '@/icons/Link'
 import RocketIcon from '@/icons/Rocket'
 import StarIcon from '@/icons/Star'
+import { Link } from 'react-router-dom'
 
 export default function Landing(): JSX.Element {
   return (
@@ -19,11 +20,13 @@ export default function Landing(): JSX.Element {
         </span>
 
         <div className='flex gap-2 mt-6'>
-          <Button title='Getting Started' className='flex gap-1'>
-            <RocketIcon />
-            <span className='sr-only'>Getting Started</span>
-            Getting Started
-          </Button>
+          <Link to='/getting-started' title='Getting Started'>
+            <Button className='flex gap-1'>
+              <RocketIcon />
+              <span className='sr-only'>Getting Started</span>
+              Getting Started
+            </Button>
+          </Link>
           <Button title='Star on GitHub' className='flex gap-1'>
             <StarIcon />
             <span className='sr-only'>Star on GitHub</span>
