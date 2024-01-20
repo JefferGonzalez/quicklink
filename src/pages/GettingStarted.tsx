@@ -1,6 +1,7 @@
 import Layout from '@/components/Layout'
 import SlugForm from '@/components/SlugForm'
 import { Button } from '@/components/ui/button'
+import { Link } from 'react-router-dom'
 
 export default function GettingStarted(): JSX.Element {
   return (
@@ -20,7 +21,12 @@ export default function GettingStarted(): JSX.Element {
           of our features!
         </p>
 
-        <Button>Sign in for free</Button>
+        <Link to='/auth' className='text-sm' title='Sign in for free'>
+          <Button>
+            <span className='sr-only'>Sign in for free</span>
+            Sign in for free
+          </Button>
+        </Link>
       </section>
     </Layout>
   )
