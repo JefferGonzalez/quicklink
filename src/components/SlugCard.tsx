@@ -4,9 +4,8 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
-import CopyIcon from '@/icons/Copy'
-import SettingsIcon from '@/icons/Settings'
 import { UrlSlug } from '@/schemas/UrlSlug'
+import { CopyIcon, SettingsIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 const ALLOW_COPY = !!window.navigator.clipboard

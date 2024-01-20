@@ -1,6 +1,5 @@
 import { Alert } from '@/components/ui/alert'
-import AlertIcon from '@/icons/Alert'
-import CheckIcon from '@/icons/Check'
+import { AlertTriangleIcon, CheckIcon } from 'lucide-react'
 
 interface AlertIconProps {
   type: 'destructive' | 'success'
@@ -15,7 +14,7 @@ export default function AlertWithIcon({ type, text }: AlertIconProps) {
   return (
     <Alert variant={variant} className={variant === 'default' ? className : ''}>
       <span className='flex gap-2'>
-        {type === 'destructive' ? <AlertIcon /> : <CheckIcon />}
+        {type === 'destructive' ? <AlertTriangleIcon /> : <CheckIcon />}
         {text}
       </span>
     </Alert>

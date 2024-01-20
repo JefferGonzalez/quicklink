@@ -10,11 +10,10 @@ import {
   FormLabel
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import RocketIcon from '@/icons/Rocket'
-import ShuffleIcon from '@/icons/Shuffle'
 import { UrlSlugSchema, type UrlSlug } from '@/schemas/UrlSlug'
 import { RandomSlug } from '@/utils/slug'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { RocketIcon, ShuffleIcon } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 interface SlugFormProps {

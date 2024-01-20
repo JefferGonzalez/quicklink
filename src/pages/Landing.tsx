@@ -1,8 +1,7 @@
 import Layout from '@/components/Layout'
 import { Button } from '@/components/ui/button'
 import LinkIcon from '@/icons/Link'
-import RocketIcon from '@/icons/Rocket'
-import StarIcon from '@/icons/Star'
+import { RocketIcon, StarIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 export default function Landing(): JSX.Element {
