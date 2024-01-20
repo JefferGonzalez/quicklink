@@ -1,5 +1,6 @@
 import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
+import { Toaster } from 'sonner'
 import { Fragment, PropsWithChildren } from 'react'
 
 interface LayoutProps extends PropsWithChildren {}
@@ -12,6 +13,8 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
         {children}
       </main>
       <Footer />
+
+      <Toaster theme='dark' duration={2500} />
     </Fragment>
   )
 }
