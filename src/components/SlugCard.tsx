@@ -14,18 +14,6 @@ interface SlugCardProps {
   info: UrlSlug
 }
 
-function SettingsButton(): JSX.Element {
-  return (
-    <button
-      className='text-neutral-400 hover:text-neutral-300'
-      title='Settings'
-    >
-      <span className='sr-only'>Settings</span>
-      <SettingsIcon />
-    </button>
-  )
-}
-
 export default function SlugCard({
   info: { slug, url, description = 'No description' }
 }: SlugCardProps) {
@@ -58,7 +46,10 @@ export default function SlugCard({
         </div>
 
         <DropdownMenu
-          button={<SettingsButton />}
+          button={{
+            text: 'Settings',
+            icon: <SettingsIcon />
+          }}
           className='bg-black border-neutral-950 text-neutral-100'
         >
           {ALLOW_COPY && (

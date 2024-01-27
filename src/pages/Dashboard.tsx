@@ -2,32 +2,35 @@ import Layout from '@/components/Layout'
 import SlugCard from '@/components/SlugCard'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { AuthContext } from '@/context/AuthContext'
 import { UrlSlug } from '@/schemas/UrlSlug'
+import { getSlugs } from '@/services/Slugs'
 import { PlusSquareIcon } from 'lucide-react'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const LINKS: UrlSlug[] = [
-  {
-    slug: 'test',
-    url: 'https://google.com',
-    description: 'test'
-  },
-  {
-    slug: 'test2',
-    url: 'https://google.com'
-  },
-  {
-    slug: 'test3',
-    url: 'https://google.com',
-    description: 'test3'
-  },
-  {
-    slug: 'test4',
-    url: 'https://google.com'
-  }
-]
+export default function Dashboard(): JSX.Element {
+  const { logout, isAuthenticated } = useContext(AuthContext)
 
-export default function Dashboard() {
+  const [slugs, setSlugs] = useState<UrlSlug[]>([])
+
+  useEffect(() => {
+    const loadSlugs = async () => {
+      const response = await getSlugs()
+
+      if (!response.ok) {
+        if (response.status === 401) logout()
+        return
+      }
+
+      const { data } = await response.json()
+
+      setSlugs(data)
+    }
+
+    isAuthenticated && loadSlugs()
+  }, [isAuthenticated])
+
   return (
     <Layout>
       <header className='flex justify-between items-center'>
@@ -43,7 +46,7 @@ export default function Dashboard() {
       <Separator className='my-4' />
 
       <section className='grid sm:grid-cols-1 md:grid-cols-2 gap-2'>
-        {LINKS.map((link) => (
+        {slugs.map((link) => (
           <SlugCard key={link.slug} info={link} />
         ))}
       </section>
