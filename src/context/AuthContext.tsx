@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 interface AuthContextProps {
   isAuthenticated: boolean
   isSessionLoading: boolean
-  token?: string
   user?: User
   setIsSessionLoading: (value: boolean) => void
   logout: () => void
@@ -15,7 +14,6 @@ interface AuthContextProps {
 export const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   isSessionLoading: false,
-  token: undefined,
   user: undefined,
   setIsSessionLoading: () => {},
   logout: () => {}
@@ -29,14 +27,11 @@ export default function AuthProvider({
   const navigate = useNavigate()
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isSessionLoading, setIsSessionLoading] = useState(true)
-
-  const [token, setToken] = useState<string | undefined>()
+  const [isSessionLoading, setIsSessionLoading] = useState(false)
   const [user, setUser] = useState<User | undefined>()
 
   useEffect(() => {
     const loadSession = async () => {
-      setIsSessionLoading(true)
       const response = await getUser()
 
       if (!response.ok) {
@@ -47,28 +42,42 @@ export default function AuthProvider({
 
       const { data }: { data: User } = await response.json()
 
+      window.localStorage.setItem('session', JSON.stringify(data))
+
       setUser(data)
-      setToken(token)
       setIsAuthenticated(true)
       setIsSessionLoading(false)
     }
-    loadSession()
+
+    setIsSessionLoading(true)
+
+    const session = window.localStorage.getItem('session')
+
+    if (session) {
+      const user = JSON.parse(session)
+
+      setUser(user)
+      setIsAuthenticated(true)
+      setIsSessionLoading(false)
+    } else {
+      loadSession()
+    }
   }, [])
 
   const logout = async () => {
-    await signOut()
+    isAuthenticated && (await signOut())
+
+    window.localStorage.removeItem('session')
 
     setIsAuthenticated(false)
-    setToken(undefined)
     setUser(undefined)
 
-    navigate('/')
+    isAuthenticated && navigate('/')
   }
 
   return (
     <AuthContext.Provider
       value={{
-        token,
         user,
         isSessionLoading,
         isAuthenticated,

@@ -7,9 +7,15 @@ import GitHubIcon from '@/icons/GitHub'
 import GoogleIcon from '@/icons/Google'
 import { LoaderIcon } from 'lucide-react'
 import { useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 
 export default function Auth(): JSX.Element {
-  const { isSessionLoading, setIsSessionLoading } = useContext(AuthContext)
+  const { isAuthenticated, isSessionLoading, setIsSessionLoading } =
+    useContext(AuthContext)
+
+  if (isAuthenticated) {
+    return <Navigate to='/dashboard' />
+  }
 
   const handleClick = (type: 'github' | 'google') => {
     if (type === 'github') setIsSessionLoading(true)
@@ -27,7 +33,7 @@ export default function Auth(): JSX.Element {
           onClick={() => handleClick('github')}
         >
           {isSessionLoading ? (
-            <LoaderIcon className='animate-spin' />
+            <LoaderIcon className='transition-all duration-300 animate-spin' />
           ) : (
             <GitHubIcon />
           )}

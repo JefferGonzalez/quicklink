@@ -6,6 +6,7 @@ import NotFound from '@/pages/NotFound'
 import CreateSlug from '@/pages/features/create/Slug'
 import { Route, Routes } from 'react-router-dom'
 import AuthProvider from './context/AuthContext'
+import ProtectedRoute from './components/ProtectedRoute'
 
 export default function Root() {
   return (
@@ -14,8 +15,10 @@ export default function Root() {
         <Route path='/' element={<Landing />} />
         <Route path='/getting-started' element={<GettingStarted />} />
         <Route path='/auth' element={<Auth />} />
-        <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/dashboard/create' element={<CreateSlug />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='/dashboard/create' element={<CreateSlug />} />
+        </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>
     </AuthProvider>
