@@ -7,7 +7,9 @@ import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Landing(): JSX.Element {
-  const { isAuthenticated } = useContext(AuthContext)
+  const {
+    auth: { isAuthenticated }
+  } = useContext(AuthContext)
 
   const to = isAuthenticated ? '/dashboard' : '/getting-started'
 

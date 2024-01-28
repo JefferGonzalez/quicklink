@@ -11,8 +11,9 @@ import { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 export default function NavBar(): JSX.Element {
-  const { isAuthenticated, isSessionLoading, user, logout } =
-    useContext(AuthContext)
+  const { auth, logout } = useContext(AuthContext)
+
+  const { isAuthenticated, isSessionLoading, user } = auth
 
   const { pathname } = useLocation()
 

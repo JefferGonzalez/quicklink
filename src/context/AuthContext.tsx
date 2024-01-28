@@ -1,21 +1,23 @@
+import useAuth from '@/hooks/useAuth'
 import { getUser, signOut } from '@/services/User'
 import { User } from '@/types'
-import { PropsWithChildren, createContext, useEffect, useState } from 'react'
+import { PropsWithChildren, createContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface AuthContextProps {
-  isAuthenticated: boolean
-  isSessionLoading: boolean
-  user?: User
-  setIsSessionLoading: (value: boolean) => void
+  auth: ReturnType<typeof useAuth>
   logout: () => void
 }
 
 export const AuthContext = createContext<AuthContextProps>({
-  isAuthenticated: false,
-  isSessionLoading: false,
-  user: undefined,
-  setIsSessionLoading: () => {},
+  auth: {
+    user: undefined,
+    isSessionLoading: false,
+    isAuthenticated: false,
+    setSession: () => {},
+    destroySession: () => {},
+    setIsSessionLoading: () => {}
+  },
   logout: () => {}
 })
 
@@ -26,9 +28,10 @@ export default function AuthProvider({
 }: AuthProviderProps): JSX.Element {
   const navigate = useNavigate()
 
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isSessionLoading, setIsSessionLoading] = useState(false)
-  const [user, setUser] = useState<User | undefined>()
+  const auth = useAuth()
+
+  const { setSession, destroySession, isAuthenticated, setIsSessionLoading } =
+    auth
 
   useEffect(() => {
     const loadSession = async () => {
@@ -44,8 +47,7 @@ export default function AuthProvider({
 
       window.localStorage.setItem('session', JSON.stringify(data))
 
-      setUser(data)
-      setIsAuthenticated(true)
+      setSession(data)
       setIsSessionLoading(false)
     }
 
@@ -56,8 +58,7 @@ export default function AuthProvider({
     if (session) {
       const user = JSON.parse(session)
 
-      setUser(user)
-      setIsAuthenticated(true)
+      setSession(user)
       setIsSessionLoading(false)
     } else {
       loadSession()
@@ -69,8 +70,7 @@ export default function AuthProvider({
 
     window.localStorage.removeItem('session')
 
-    setIsAuthenticated(false)
-    setUser(undefined)
+    destroySession()
 
     isAuthenticated && navigate('/')
   }
@@ -78,10 +78,7 @@ export default function AuthProvider({
   return (
     <AuthContext.Provider
       value={{
-        user,
-        isSessionLoading,
-        isAuthenticated,
-        setIsSessionLoading,
+        auth,
         logout
       }}
     >

@@ -10,8 +10,9 @@ import { useContext } from 'react'
 import { Navigate } from 'react-router-dom'
 
 export default function Auth(): JSX.Element {
-  const { isAuthenticated, isSessionLoading, setIsSessionLoading } =
-    useContext(AuthContext)
+  const { auth } = useContext(AuthContext)
+
+  const { isAuthenticated, isSessionLoading, setIsSessionLoading } = auth
 
   if (isAuthenticated) {
     return <Navigate to='/dashboard' />

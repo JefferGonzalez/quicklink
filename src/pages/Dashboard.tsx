@@ -10,7 +10,10 @@ import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Dashboard(): JSX.Element {
-  const { logout, isAuthenticated } = useContext(AuthContext)
+  const {
+    logout,
+    auth: { isAuthenticated }
+  } = useContext(AuthContext)
 
   const [slugs, setSlugs] = useState<UrlSlug[]>([])
 
