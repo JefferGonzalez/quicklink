@@ -4,8 +4,8 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AuthContext } from '@/context/AuthContext'
-import { UrlSlug } from '@/schemas/UrlSlug'
 import { getSlugs } from '@/services/Slugs'
+import { Slug } from '@/types'
 import { PlusSquareIcon } from 'lucide-react'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -16,7 +16,7 @@ export default function Dashboard(): JSX.Element {
     auth: { isAuthenticated }
   } = useContext(AuthContext)
 
-  const [slugs, setSlugs] = useState<UrlSlug[]>([])
+  const [slugs, setSlugs] = useState<Slug[]>([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Dashboard(): JSX.Element {
         )}
 
         {!loading &&
-          slugs.map((link) => <SlugCard key={link.slug} info={link} />)}
+          slugs.map((link) => <SlugCard key={link.id} info={link} />)}
       </section>
     </Layout>
   )

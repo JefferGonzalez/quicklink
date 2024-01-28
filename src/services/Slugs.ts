@@ -17,3 +17,10 @@ export const createSlug = (slug: UrlSlug) => {
     credentials: 'include'
   })
 }
+
+export const deleteSlug = (id: string) => {
+  return fetch(`${API_URL}/api/slugs/${id}`, {
+    method: 'DELETE',
+    credentials: 'include'
+  })
+}

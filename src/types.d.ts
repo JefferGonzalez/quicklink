@@ -1,4 +1,9 @@
 import { type UrlSlug } from '@/schemas/UrlSlug'
+
+export interface Slug extends UrlSlug {
+  id: string
+}
+
 export interface User {
   name: string
   username: string
@@ -11,6 +16,6 @@ interface Errors {
 }
 
 export interface Response {
-  data?: UrlSlug
+  data?: Slug
   errors: Errors[]
 }

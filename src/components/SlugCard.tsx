@@ -4,24 +4,45 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
-import { UrlSlug } from '@/schemas/UrlSlug'
-import { CopyIcon, SettingsIcon } from 'lucide-react'
+import { AuthContext } from '@/context/AuthContext'
+import { deleteSlug } from '@/services/Slugs'
+import { Slug } from '@/types'
+import { CopyIcon, SettingsIcon, TrashIcon } from 'lucide-react'
+import { useContext } from 'react'
 import { toast } from 'sonner'
 
 const ALLOW_COPY = !!window.navigator.clipboard
 
 interface SlugCardProps {
-  info: UrlSlug
+  info: Slug
 }
 
 export default function SlugCard({
-  info: { slug, url, description = 'No description' }
+  info: { id, slug, url, description = 'No description' }
 }: SlugCardProps) {
+  const { logout } = useContext(AuthContext)
+
   const handleCopy = (slug: string) => {
     const link = `${APP_URL}/${slug}`
     window.navigator.clipboard.writeText(link)
 
     toast('👻 Copied to clipboard')
+  }
+
+  const handleDelete = async (id: string) => {
+    const response = await deleteSlug(id)
+
+    if (!response.ok) {
+      const statusCode = response.status
+
+      if (statusCode === 401) logout()
+      if (statusCode === 404) {
+        toast('🙃 Slug not found, please refresh the page')
+      }
+      return
+    }
+
+    window.location.reload()
   }
 
   return (
@@ -55,6 +76,7 @@ export default function SlugCard({
           {ALLOW_COPY && (
             <DropdownMenuItem
               className='focus:bg-neutral-950 focus:text-neutral-100'
+              title='Copy'
               onClick={() => handleCopy(slug)}
             >
               <CopyIcon />
@@ -64,6 +86,18 @@ export default function SlugCard({
               </DropdownMenuLabel>
             </DropdownMenuItem>
           )}
+
+          <DropdownMenuItem
+            className='focus:bg-neutral-950 focus:text-neutral-100'
+            title='Delete'
+            onClick={() => handleDelete(id)}
+          >
+            <TrashIcon />
+            <DropdownMenuLabel>
+              <span className='sr-only'>Delete</span>
+              Delete
+            </DropdownMenuLabel>
+          </DropdownMenuItem>
         </DropdownMenu>
       </header>
 
