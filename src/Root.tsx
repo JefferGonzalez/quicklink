@@ -4,9 +4,10 @@ import GettingStarted from '@/pages/GettingStarted'
 import Landing from '@/pages/Landing'
 import NotFound from '@/pages/NotFound'
 import CreateSlug from '@/pages/features/create/Slug'
+import EditSlug from '@/pages/features/update/Slug'
 import { Route, Routes } from 'react-router-dom'
-import AuthProvider from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import AuthProvider from './context/AuthContext'
 
 export default function Root() {
   return (
@@ -18,6 +19,7 @@ export default function Root() {
         <Route element={<ProtectedRoute />}>
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/dashboard/create' element={<CreateSlug />} />
+          <Route path='/dashboard/edit/:id' element={<EditSlug />} />
         </Route>
         <Route path='*' element={<NotFound />} />
       </Routes>

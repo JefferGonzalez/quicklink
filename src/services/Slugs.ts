@@ -7,9 +7,26 @@ export const getSlugs = () => {
   })
 }
 
+export const getSlug = (id: string) => {
+  return fetch(`${API_URL}/api/slugs/${id}`, {
+    credentials: 'include'
+  })
+}
+
 export const createSlug = (slug: UrlSlug) => {
   return fetch(`${API_URL}/api/slugs`, {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(slug),
+    credentials: 'include'
+  })
+}
+
+export const updateSlug = (slugId: string, slug: UrlSlug) => {
+  return fetch(`${API_URL}/api/slugs/${slugId}`, {
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
     },

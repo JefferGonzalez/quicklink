@@ -5,18 +5,20 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { AuthContext } from '@/context/AuthContext'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
-import { createSlug } from '@/services/Slugs'
-import { Response } from '@/types'
+import { getSlug, updateSlug } from '@/services/Slugs'
+import { Response, Slug } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
 import { UndoDotIcon } from 'lucide-react'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export default function Slug(): JSX.Element {
   const { logout } = useContext(AuthContext)
+  const { id = '' } = useParams()
+  const [info, setInfo] = useState<Slug>()
   const [loading, setLoading] = useState(false)
 
   const form = useForm<UrlSlug>({
@@ -25,6 +27,11 @@ export default function Slug(): JSX.Element {
       description: '',
       slug: '',
       url: ''
+    },
+    values: {
+      description: info?.description,
+      slug: info?.slug ?? '',
+      url: info?.url ?? ''
     }
   })
 
@@ -38,7 +45,7 @@ export default function Slug(): JSX.Element {
       setLoading(false)
       return
     }
-    const response = await createSlug(values)
+    const response = await updateSlug(id, values)
 
     const { errors }: Response = await response.json()
 
@@ -65,8 +72,6 @@ export default function Slug(): JSX.Element {
       return
     }
 
-    form.reset()
-
     setLoading(false)
 
     confetti({
@@ -75,7 +80,7 @@ export default function Slug(): JSX.Element {
       origin: { y: 0.6 }
     })
 
-    toast('🎉 Slug created successfully!', {
+    toast('🎉 Slug updated successfully!', {
       action: {
         label: 'Open slug',
         onClick: () => {
@@ -85,10 +90,33 @@ export default function Slug(): JSX.Element {
     })
   }
 
+  useEffect(() => {
+    const loadSlug = async () => {
+      const response = await getSlug(id)
+
+      if (!response.ok) {
+        const statusCode = response.status
+
+        if (statusCode === 404 || statusCode === 400) {
+          window.location.href = '/dashboard'
+        }
+      }
+
+      const { data }: Response = await response.json()
+
+      setInfo(data)
+    }
+
+    loadSlug()
+  }, [id])
+
   return (
     <Layout>
       <header className='flex justify-between items-center'>
-        <h2 className='text-4xl font-extrabold mt-2'>Create a new slug</h2>
+        <h2 className='text-4xl font-extrabold mt-2'>
+          Edit slug{' '}
+          {info?.slug && <span className='text-neutral-500'>/{info.slug}</span>}
+        </h2>
         <Link to='/dashboard'>
           <Button className='flex gap-2' title='Back to dashboard'>
             <span className='sr-only'>Back to dashboard</span>
@@ -105,6 +133,7 @@ export default function Slug(): JSX.Element {
           handleSubmit={handleSubmit}
           loading={loading}
           withAccount
+          isEdit
         />
       </section>
     </Layout>

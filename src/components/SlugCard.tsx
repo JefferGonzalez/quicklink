@@ -5,7 +5,8 @@ import {
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
 import { Slug } from '@/types'
-import { CopyIcon, SettingsIcon, TrashIcon } from 'lucide-react'
+import { CopyIcon, PencilLineIcon, SettingsIcon, TrashIcon } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const ALLOW_COPY = !!window.navigator.clipboard
@@ -67,6 +68,19 @@ export default function SlugCard({
               </DropdownMenuLabel>
             </DropdownMenuItem>
           )}
+
+          <DropdownMenuItem
+            className='focus:bg-neutral-950 focus:text-neutral-100'
+            asChild
+          >
+            <Link to={`/dashboard/edit/${id}`} title='Edit' className='flex'>
+              <PencilLineIcon />
+              <DropdownMenuLabel>
+                <span className='sr-only'>Edit</span>
+                Edit
+              </DropdownMenuLabel>
+            </Link>
+          </DropdownMenuItem>
 
           <DropdownMenuItem
             className='focus:bg-neutral-950 focus:text-neutral-100'
