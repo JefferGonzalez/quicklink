@@ -17,9 +17,10 @@ import { Response } from '@/types'
 import { RandomSlug } from '@/utils/slug'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
-import { RocketIcon, ShuffleIcon } from 'lucide-react'
-import { useContext } from 'react'
+import { LoaderIcon, RocketIcon, ShuffleIcon } from 'lucide-react'
+import { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 
 interface SlugFormProps {
   withAccount?: boolean
@@ -27,6 +28,8 @@ interface SlugFormProps {
 
 export default function SlugForm({ withAccount = false }: SlugFormProps) {
   const { logout } = useContext(AuthContext)
+
+  const [loading, setLoading] = useState(false)
 
   const form = useForm<UrlSlug>({
     resolver: zodResolver(UrlSlugSchema),
@@ -38,11 +41,13 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
   })
 
   const handleSubmit = async (values: UrlSlug) => {
+    setLoading(true)
     if (values.url === values.slug) {
       form.setError('slug', {
         type: 'pattern',
         message: 'The slug cannot be the same as the URL.'
       })
+      setLoading(false)
       return
     }
     const response = await createSlug(values)
@@ -68,15 +73,27 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
           message: errors.at(0)?.message || 'The slug is already taken.'
         })
       }
+      setLoading(false)
       return
     }
 
     form.reset()
 
+    setLoading(false)
+
     confetti({
       particleCount: 200,
       spread: 70,
       origin: { y: 0.6 }
+    })
+
+    toast('🎉 Slug created successfully!', {
+      action: {
+        label: 'Open slug',
+        onClick: () => {
+          window.open(`${APP_URL}/${values.slug}`, '_blank')
+        }
+      }
     })
   }
 
@@ -98,6 +115,7 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
                 <Input
                   placeholder='https://'
                   className='bg-neutral-900 border-neutral-950'
+                  disabled={loading}
                   {...field}
                 />
               </FormControl>
@@ -122,6 +140,7 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
                 <div className='flex space-x-2'>
                   <Input
                     className='bg-neutral-900 border-neutral-950'
+                    disabled={loading}
                     {...field}
                   />
                   <Button
@@ -129,6 +148,7 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
                     title='Generate a random slug'
                     className='flex gap-2'
                     onClick={handleRandomSlug}
+                    disabled={loading}
                   >
                     <span className='sr-only'>Generate a random slug</span>
                     <ShuffleIcon />
@@ -160,6 +180,7 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
                 <FormControl>
                   <Input
                     className='bg-neutral-900 border-neutral-950'
+                    disabled={loading}
                     {...field}
                   />
                 </FormControl>
@@ -168,9 +189,18 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
           />
         )}
 
-        <Button type='submit' className='flex gap-2' title='Create a short URL'>
+        <Button
+          type='submit'
+          className='flex gap-2'
+          title='Create a short URL'
+          disabled={loading}
+        >
+          {loading ? (
+            <LoaderIcon className='transition-all duration-300 animate-spin' />
+          ) : (
+            <RocketIcon />
+          )}
           <span className='sr-only'>Create a short URL</span>
-          <RocketIcon />
           Create a short URL
         </Button>
       </form>
