@@ -30,11 +30,11 @@ export default function Dashboard(): JSX.Element {
         return
       }
 
-      const { data } = await response.json()
+      const { data }: { data: Slug[] } = await response.json()
 
       setSlugs(data)
 
-      setTimeout(() => setLoading(false), 1000)
+      setTimeout(() => setLoading(false), 500)
     }
 
     isAuthenticated && loadSlugs()
@@ -69,7 +69,11 @@ export default function Dashboard(): JSX.Element {
         )}
 
         {!loading &&
-          slugs.map((link) => <SlugCard key={link.id} info={link} />)}
+          slugs
+            .sort(({ created_at: a }, { created_at: b }) => {
+              return Date.parse(b) - Date.parse(a)
+            })
+            .map((link) => <SlugCard key={link.id} info={link} />)}
       </section>
     </Layout>
   )

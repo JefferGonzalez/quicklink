@@ -2,6 +2,7 @@ import { type UrlSlug } from '@/schemas/UrlSlug'
 
 export interface Slug extends UrlSlug {
   id: string
+  created_at: string
 }
 
 export interface User {
