@@ -10,10 +10,15 @@ import {
   FormLabel
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { AuthContext } from '@/context/AuthContext'
 import { UrlSlugSchema, type UrlSlug } from '@/schemas/UrlSlug'
+import { createSlug } from '@/services/Slugs'
+import { Response } from '@/types'
 import { RandomSlug } from '@/utils/slug'
 import { zodResolver } from '@hookform/resolvers/zod'
+import confetti from 'canvas-confetti'
 import { RocketIcon, ShuffleIcon } from 'lucide-react'
+import { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface SlugFormProps {
@@ -21,6 +26,8 @@ interface SlugFormProps {
 }
 
 export default function SlugForm({ withAccount = false }: SlugFormProps) {
+  const { logout } = useContext(AuthContext)
+
   const form = useForm<UrlSlug>({
     resolver: zodResolver(UrlSlugSchema),
     defaultValues: {
@@ -30,7 +37,7 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
     }
   })
 
-  const handleSubmit = (values: UrlSlug) => {
+  const handleSubmit = async (values: UrlSlug) => {
     if (values.url === values.slug) {
       form.setError('slug', {
         type: 'pattern',
@@ -38,7 +45,39 @@ export default function SlugForm({ withAccount = false }: SlugFormProps) {
       })
       return
     }
-    console.log(values)
+    const response = await createSlug(values)
+
+    const { errors }: Response = await response.json()
+
+    if (!response.ok) {
+      const statusCode = response.status
+      if (statusCode === 401) logout()
+      if (statusCode === 400) {
+        for (const { message, path } of errors) {
+          const name = path?.at(0) ?? 'root'
+
+          form.setError(name, {
+            type: 'pattern',
+            message
+          })
+        }
+      }
+      if (statusCode === 409) {
+        form.setError('slug', {
+          type: 'pattern',
+          message: errors.at(0)?.message || 'The slug is already taken.'
+        })
+      }
+      return
+    }
+
+    form.reset()
+
+    confetti({
+      particleCount: 200,
+      spread: 70,
+      origin: { y: 0.6 }
+    })
   }
 
   const handleRandomSlug = () => {
