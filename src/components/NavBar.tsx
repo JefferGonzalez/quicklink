@@ -45,9 +45,10 @@ export default function NavBar(): JSX.Element {
         <DropdownMenu
           button={{
             text: user?.username ?? 'Loading...',
-            title: `Profile of ${user?.username ?? 'Loading...'}`
+            title: `Profile of ${user?.username ?? 'Loading...'}`,
+            className: 'text-neutral-100 hover:text-neutral-300'
           }}
-          className='bg-black border-neutral-950 text-neutral-100'
+          className='bg-black border-neutral-700 text-neutral-100'
         >
           <DropdownMenuItem
             className='focus:bg-neutral-950 focus:text-neutral-100'

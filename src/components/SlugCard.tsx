@@ -67,7 +67,9 @@ export default function SlugCard({
         </DropdownMenu>
       </header>
 
-      <p className='text-neutral-400 text-sm text-pretty mb-2'>{url}</p>
+      <p className='text-neutral-400 text-sm text-pretty break-all mb-2'>
+        {url}
+      </p>
 
       <p className='text-pretty'>{description}</p>
     </article>

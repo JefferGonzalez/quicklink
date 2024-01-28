@@ -32,6 +32,7 @@ export default function Auth(): JSX.Element {
           className='flex gap-2 my-1'
           title='Sign in with GitHub'
           onClick={() => handleClick('github')}
+          disabled={isSessionLoading}
         >
           {isSessionLoading ? (
             <LoaderIcon className='transition-all duration-300 animate-spin' />
@@ -46,6 +47,7 @@ export default function Auth(): JSX.Element {
           className='flex gap-2 my-1'
           title='Sign in with Google'
           onClick={() => handleClick('google')}
+          disabled={isSessionLoading}
         >
           <GoogleIcon className='size-6' />
           <span className='sr-only'>Sign in with Google</span>
