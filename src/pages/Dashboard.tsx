@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AuthContext } from '@/context/AuthContext'
-import { getSlugs } from '@/services/Slugs'
+import { deleteSlug, getSlugs } from '@/services/Slugs'
 import { Slug } from '@/types'
 import { PlusSquareIcon } from 'lucide-react'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { toast } from 'sonner'
 
 export default function Dashboard(): JSX.Element {
   const {
@@ -18,6 +19,24 @@ export default function Dashboard(): JSX.Element {
 
   const [slugs, setSlugs] = useState<Slug[]>([])
   const [loading, setLoading] = useState(false)
+
+  const handleDelete = async (id: string) => {
+    setLoading(true)
+    const response = await deleteSlug(id)
+
+    if (!response.ok) {
+      const statusCode = response.status
+
+      if (statusCode === 401) logout()
+      if (statusCode === 404) {
+        toast('🙃 Slug not found, please refresh the page')
+      }
+      setLoading(false)
+      return
+    }
+
+    window.location.reload()
+  }
 
   useEffect(() => {
     const loadSlugs = async () => {
@@ -73,7 +92,9 @@ export default function Dashboard(): JSX.Element {
             .sort(({ created_at: a }, { created_at: b }) => {
               return Date.parse(b) - Date.parse(a)
             })
-            .map((link) => <SlugCard key={link.id} info={link} />)}
+            .map((link) => (
+              <SlugCard key={link.id} info={link} handleDelete={handleDelete} />
+            ))}
       </section>
     </Layout>
   )
