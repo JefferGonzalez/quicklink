@@ -6,7 +6,12 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { AuthContext } from '@/context/AuthContext'
 import LinkIcon from '@/icons/Link'
-import { LoaderIcon, LogOutIcon } from 'lucide-react'
+import {
+  LayoutDashboardIcon,
+  LoaderIcon,
+  LogOutIcon,
+  PlusSquareIcon
+} from 'lucide-react'
 import { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -52,6 +57,38 @@ export default function NavBar(): JSX.Element {
         >
           <DropdownMenuItem
             className='focus:bg-neutral-950 focus:text-neutral-100'
+            asChild
+          >
+            <Link
+              to='/dashboard'
+              className='flex items-center gap-2'
+              title='Dashboard'
+            >
+              <LayoutDashboardIcon />
+              <DropdownMenuLabel>
+                <span className='sr-only'>Dashboard</span>
+                Dashboard
+              </DropdownMenuLabel>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className='focus:bg-neutral-950 focus:text-neutral-100'
+            asChild
+          >
+            <Link
+              to='/dashboard/create'
+              className='flex items-center gap-2'
+              title=' Create a new slug'
+            >
+              <PlusSquareIcon />
+              <DropdownMenuLabel>
+                <span className='sr-only'> Create a new slug</span>
+                Create a new slug
+              </DropdownMenuLabel>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className='focus:bg-neutral-950 focus:text-neutral-100 flex items-center gap-2'
             onClick={logout}
           >
             <LogOutIcon />

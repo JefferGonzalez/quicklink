@@ -38,7 +38,9 @@ export default function DropdownMenu({
           {icon ?? text}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className={className}>{items}</DropdownMenuContent>
+      <DropdownMenuContent align='end' className={className}>
+        {items}
+      </DropdownMenuContent>
     </Dropdown>
   )
 }
