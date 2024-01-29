@@ -30,8 +30,13 @@ export default function AuthProvider({
 
   const auth = useAuth()
 
-  const { setSession, destroySession, isAuthenticated, setIsSessionLoading } =
-    auth
+  const {
+    setSession,
+    destroySession,
+    isAuthenticated,
+    setIsSessionLoading,
+    user
+  } = auth
 
   useEffect(() => {
     const loadSession = async () => {
@@ -64,6 +69,24 @@ export default function AuthProvider({
       loadSession()
     }
   }, [])
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'session') {
+        const { newValue } = e
+
+        if (newValue === null && isAuthenticated) {
+          window.localStorage.setItem('session', JSON.stringify(user))
+        }
+      }
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [isAuthenticated, user])
 
   const logout = async () => {
     isAuthenticated && (await signOut())
