@@ -1,3 +1,5 @@
+import ProtectedRoute from '@/components/ProtectedRoute'
+import AuthProvider from '@/context/AuthContext'
 import Auth from '@/pages/Auth'
 import Dashboard from '@/pages/Dashboard'
 import GettingStarted from '@/pages/GettingStarted'
@@ -6,8 +8,6 @@ import NotFound from '@/pages/NotFound'
 import CreateSlug from '@/pages/features/create/Slug'
 import EditSlug from '@/pages/features/update/Slug'
 import { Route, Routes } from 'react-router-dom'
-import ProtectedRoute from './components/ProtectedRoute'
-import AuthProvider from './context/AuthContext'
 
 export default function Root() {
   return (

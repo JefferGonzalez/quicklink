@@ -84,7 +84,7 @@ export default function Slug(): JSX.Element {
       action: {
         label: 'Open slug',
         onClick: () => {
-          window.open(`${APP_URL}/${values.slug}`, '_blank')
+          window.open(`${APP_URL}/s/${values.slug}`, '_blank')
         }
       }
     })

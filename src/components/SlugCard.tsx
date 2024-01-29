@@ -21,7 +21,7 @@ export default function SlugCard({
   handleDelete
 }: SlugCardProps) {
   const handleCopy = (slug: string) => {
-    const link = `${APP_URL}/${slug}`
+    const link = `${APP_URL}/s/${slug}`
     window.navigator.clipboard.writeText(link)
 
     toast('👻 Copied to clipboard')
@@ -32,13 +32,13 @@ export default function SlugCard({
       <header className='flex justify-between items-center'>
         <div className='flex items-center gap-2'>
           <a
-            href={`${APP_URL}/${slug}`}
+            href={`${APP_URL}/s/${slug}`}
             className='text-2xl'
             target='_blank'
             rel='noopener noreferrer'
             title='Open in new tab'
           >
-            {`/${slug}`}
+            {`/s/${slug}`}
           </a>
           {ALLOW_COPY && (
             <button onClick={() => handleCopy(slug)} title='Copy to clipboard'>

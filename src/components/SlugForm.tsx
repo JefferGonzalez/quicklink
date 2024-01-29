@@ -93,7 +93,7 @@ export default function SlugForm({
                   </div>
                 </FormControl>
                 <FormDescription className='text-neutral-400'>
-                  {`${APP_URL}/<slug>/`}
+                  {`${APP_URL}/s/<slug>/`}
                 </FormDescription>
 
                 {fieldState.invalid && (
