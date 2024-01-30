@@ -6,6 +6,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { AuthContext } from '@/context/AuthContext'
 import { deleteSlug, getSlugs } from '@/services/Slugs'
 import { Slug } from '@/types'
+import { showToastError } from '@/utils/errors'
 import { PlusSquareIcon } from 'lucide-react'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -22,38 +23,50 @@ export default function Dashboard(): JSX.Element {
 
   const handleDelete = async (id: string) => {
     setLoading(true)
-    const response = await deleteSlug(id)
+    try {
+      const response = await deleteSlug(id)
 
-    if (!response.ok) {
-      const statusCode = response.status
+      if (!response.ok) {
+        const statusCode = response.status
 
-      if (statusCode === 401) logout()
-      if (statusCode === 404) {
-        toast('🙃 Slug not found, please refresh the page')
+        if (statusCode === 401) logout()
+        if (statusCode === 404) {
+          toast('🙃 Slug not found, please refresh the page')
+        }
+        setLoading(false)
+        return
       }
-      setLoading(false)
-      return
-    }
 
-    window.location.reload()
+      window.location.reload()
+    } catch (error) {
+      setLoading(false)
+
+      showToastError()
+    }
   }
 
   useEffect(() => {
     const loadSlugs = async () => {
       setLoading(true)
-      const response = await getSlugs()
+      try {
+        const response = await getSlugs()
 
-      if (!response.ok) {
-        if (response.status === 401) logout()
+        if (!response.ok) {
+          if (response.status === 401) logout()
+          setLoading(false)
+          return
+        }
+
+        const { data }: { data: Slug[] } = await response.json()
+
+        setSlugs(data)
+
+        setTimeout(() => setLoading(false), 500)
+      } catch (error) {
         setLoading(false)
-        return
+
+        showToastError()
       }
-
-      const { data }: { data: Slug[] } = await response.json()
-
-      setSlugs(data)
-
-      setTimeout(() => setLoading(false), 500)
     }
 
     isAuthenticated && loadSlugs()

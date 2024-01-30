@@ -7,6 +7,7 @@ import { AuthContext } from '@/context/AuthContext'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
 import { getSlug, updateSlug } from '@/services/Slugs'
 import { Response, Slug } from '@/types'
+import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
 import { UndoDotIcon } from 'lucide-react'
@@ -45,66 +46,77 @@ export default function Slug(): JSX.Element {
       setLoading(false)
       return
     }
-    const response = await updateSlug(id, values)
 
-    const { errors }: Response = await response.json()
+    try {
+      const response = await updateSlug(id, values)
 
-    if (!response.ok) {
-      const statusCode = response.status
-      if (statusCode === 401) logout()
-      if (statusCode === 400) {
-        for (const { message, path } of errors) {
-          const name = path?.at(0) ?? 'root'
+      const { errors }: Response = await response.json()
 
-          form.setError(name, {
+      if (!response.ok) {
+        const statusCode = response.status
+        if (statusCode === 401) logout()
+        if (statusCode === 400) {
+          for (const { message, path } of errors) {
+            const name = path?.at(0) ?? 'root'
+
+            form.setError(name, {
+              type: 'pattern',
+              message
+            })
+          }
+        }
+        if (statusCode === 409) {
+          form.setError('slug', {
             type: 'pattern',
-            message
+            message: errors.at(0)?.message || 'The slug is already taken.'
           })
         }
+        setLoading(false)
+        return
       }
-      if (statusCode === 409) {
-        form.setError('slug', {
-          type: 'pattern',
-          message: errors.at(0)?.message || 'The slug is already taken.'
-        })
-      }
+
       setLoading(false)
-      return
-    }
 
-    setLoading(false)
+      confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 }
+      })
 
-    confetti({
-      particleCount: 200,
-      spread: 70,
-      origin: { y: 0.6 }
-    })
-
-    toast('🎉 Slug updated successfully!', {
-      action: {
-        label: 'Open slug',
-        onClick: () => {
-          window.open(`${APP_URL}/s/${values.slug}`, '_blank')
+      toast('🎉 Slug updated successfully!', {
+        action: {
+          label: 'Open slug',
+          onClick: () => {
+            window.open(`${APP_URL}/s/${values.slug}`, '_blank')
+          }
         }
-      }
-    })
+      })
+    } catch (error) {
+      setLoading(false)
+
+      showToastError()
+    }
   }
 
   useEffect(() => {
     const loadSlug = async () => {
-      const response = await getSlug(id)
+      try {
+        const response = await getSlug(id)
 
-      if (!response.ok) {
-        const statusCode = response.status
+        if (!response.ok) {
+          const statusCode = response.status
 
-        if (statusCode === 404 || statusCode === 400) {
-          window.location.href = '/dashboard'
+          if (statusCode === 404 || statusCode === 400) {
+            window.location.href = '/dashboard'
+          }
         }
+
+        const { data }: Response = await response.json()
+
+        setInfo(data)
+      } catch (error) {
+        showToastError()
       }
-
-      const { data }: Response = await response.json()
-
-      setInfo(data)
     }
 
     loadSlug()

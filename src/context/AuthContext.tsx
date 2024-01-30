@@ -1,6 +1,7 @@
 import useAuth from '@/hooks/useAuth'
 import { getUser, signOut } from '@/services/User'
 import { User } from '@/types'
+import { showToastError } from '@/utils/errors'
 import { PropsWithChildren, createContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -40,20 +41,24 @@ export default function AuthProvider({
 
   useEffect(() => {
     const loadSession = async () => {
-      const response = await getUser()
+      try {
+        const response = await getUser()
 
-      if (!response.ok) {
-        if (response.status === 401) logout()
+        if (!response.ok) {
+          if (response.status === 401) logout()
+          setIsSessionLoading(false)
+          return
+        }
+
+        const { data }: { data: User } = await response.json()
+
+        window.localStorage.setItem('session', JSON.stringify(data))
+
+        setSession(data)
         setIsSessionLoading(false)
-        return
+      } catch (error) {
+        setIsSessionLoading(false)
       }
-
-      const { data }: { data: User } = await response.json()
-
-      window.localStorage.setItem('session', JSON.stringify(data))
-
-      setSession(data)
-      setIsSessionLoading(false)
     }
 
     setIsSessionLoading(true)
@@ -89,13 +94,17 @@ export default function AuthProvider({
   }, [isAuthenticated, user])
 
   const logout = async () => {
-    isAuthenticated && (await signOut())
+    try {
+      isAuthenticated && (await signOut())
 
-    window.localStorage.removeItem('session')
+      window.localStorage.removeItem('session')
 
-    destroySession()
+      destroySession()
 
-    isAuthenticated && navigate('/')
+      isAuthenticated && navigate('/')
+    } catch (error) {
+      showToastError()
+    }
   }
 
   return (

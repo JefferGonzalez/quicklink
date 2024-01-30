@@ -7,6 +7,7 @@ import { AuthContext } from '@/context/AuthContext'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
 import { createSlug } from '@/services/Slugs'
 import { Response } from '@/types'
+import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
 import { UndoDotIcon } from 'lucide-react'
@@ -38,51 +39,58 @@ export default function Slug(): JSX.Element {
       setLoading(false)
       return
     }
-    const response = await createSlug(values)
 
-    const { errors }: Response = await response.json()
+    try {
+      const response = await createSlug(values)
 
-    if (!response.ok) {
-      const statusCode = response.status
-      if (statusCode === 401) logout()
-      if (statusCode === 400) {
-        for (const { message, path } of errors) {
-          const name = path?.at(0) ?? 'root'
+      const { errors }: Response = await response.json()
 
-          form.setError(name, {
+      if (!response.ok) {
+        const statusCode = response.status
+        if (statusCode === 401) logout()
+        if (statusCode === 400) {
+          for (const { message, path } of errors) {
+            const name = path?.at(0) ?? 'root'
+
+            form.setError(name, {
+              type: 'pattern',
+              message
+            })
+          }
+        }
+        if (statusCode === 409) {
+          form.setError('slug', {
             type: 'pattern',
-            message
+            message: errors.at(0)?.message || 'The slug is already taken.'
           })
         }
+        setLoading(false)
+        return
       }
-      if (statusCode === 409) {
-        form.setError('slug', {
-          type: 'pattern',
-          message: errors.at(0)?.message || 'The slug is already taken.'
-        })
-      }
+
+      form.reset()
+
       setLoading(false)
-      return
-    }
 
-    form.reset()
+      confetti({
+        particleCount: 200,
+        spread: 70,
+        origin: { y: 0.6 }
+      })
 
-    setLoading(false)
-
-    confetti({
-      particleCount: 200,
-      spread: 70,
-      origin: { y: 0.6 }
-    })
-
-    toast('🎉 Slug created successfully!', {
-      action: {
-        label: 'Open slug',
-        onClick: () => {
-          window.open(`${APP_URL}/s/${values.slug}`, '_blank')
+      toast('🎉 Slug created successfully!', {
+        action: {
+          label: 'Open slug',
+          onClick: () => {
+            window.open(`${APP_URL}/s/${values.slug}`, '_blank')
+          }
         }
-      }
-    })
+      })
+    } catch (error) {
+      setLoading(false)
+
+      showToastError()
+    }
   }
 
   return (
