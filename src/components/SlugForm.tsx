@@ -14,6 +14,7 @@ import { type UrlSlug } from '@/schemas/UrlSlug'
 import { RandomSlug } from '@/utils/slug'
 import { LoaderIcon, RocketIcon, ShuffleIcon } from 'lucide-react'
 import { UseFormReturn } from 'react-hook-form'
+import QRCode from 'react-qr-code'
 
 interface SlugFormProps {
   form: UseFormReturn<UrlSlug>
@@ -40,30 +41,46 @@ export default function SlugForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
-        <FormField
-          name='url'
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <FormItem>
-              <FormLabel>Enter the URL of your site:</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder='https://'
-                  className='bg-neutral-900 border-neutral-950'
-                  disabled={loading}
-                  {...field}
-                />
-              </FormControl>
+        <section className='flex gap-x-2'>
+          <FormField
+            name='url'
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <FormItem className='w-full'>
+                <FormLabel>Enter the URL of your site:</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='https://'
+                    className='bg-neutral-900 border-neutral-950'
+                    disabled={loading}
+                    {...field}
+                  />
+                </FormControl>
 
-              {fieldState.invalid && (
-                <AlertWithIcon
-                  text={fieldState.error?.message}
-                  type='destructive'
+                {fieldState.invalid && (
+                  <AlertWithIcon
+                    text={fieldState.error?.message}
+                    type='destructive'
+                  />
+                )}
+              </FormItem>
+            )}
+          />
+
+          {withAccount &&
+            form.watch('url') &&
+            !form.getFieldState('url').invalid && (
+              <picture title='QR Code'>
+                <QRCode
+                  size={100}
+                  bgColor='$000'
+                  fgColor='#FFF'
+                  level='H'
+                  value={form.getValues('url')}
                 />
-              )}
-            </FormItem>
-          )}
-        />
+              </picture>
+            )}
+        </section>
 
         {!isEdit && (
           <FormField
