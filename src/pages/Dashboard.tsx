@@ -1,16 +1,20 @@
 import Layout from '@/components/Layout'
 import SlugCard from '@/components/SlugCard'
+import SlugPagination from '@/components/SlugPagination'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { AuthContext } from '@/context/AuthContext'
 import { deleteSlug, getSlugs } from '@/services/Slugs'
-import { Slug } from '@/types'
+import { Data, Info, Slug } from '@/types'
 import { showToastError } from '@/utils/errors'
 import { PlusSquareIcon } from 'lucide-react'
 import { Fragment, useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
+
+export const MAX_PAGES = 5
+const MIN_PAGES = 1
 
 export default function Dashboard(): JSX.Element {
   const {
@@ -18,8 +22,14 @@ export default function Dashboard(): JSX.Element {
     auth: { isAuthenticated }
   } = useContext(AuthContext)
 
-  const [slugs, setSlugs] = useState<Slug[]>([])
+  const [{ slugs, info }, setData] = useState<Data>({
+    slugs: [],
+    info: { pages: 0 }
+  })
   const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
+  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(MAX_PAGES)
+  const [minPageNumberLimit, setMinPageNumberLimit] = useState(MIN_PAGES)
 
   const handleDelete = async (id: string) => {
     setLoading(true)
@@ -45,11 +55,38 @@ export default function Dashboard(): JSX.Element {
     }
   }
 
+  const handlePageClick = (page: number) => {
+    setData({ slugs: [], info: { pages: 0 } })
+    setCurrentPage(page)
+  }
+
+  const handleNextPage = (page: number) => {
+    handlePageClick(page)
+
+    if (page % MAX_PAGES === 0) {
+      setMinPageNumberLimit(page + 1)
+      if (info.pages - page > MAX_PAGES) {
+        setMaxPageNumberLimit(MAX_PAGES)
+      } else {
+        setMaxPageNumberLimit(info.pages - page)
+      }
+    }
+  }
+
+  const handlePrevPage = (page: number) => {
+    handlePageClick(page)
+
+    if ((page + 1) % MAX_PAGES === 0) {
+      setMaxPageNumberLimit(MAX_PAGES)
+      setMinPageNumberLimit(minPageNumberLimit - MAX_PAGES)
+    }
+  }
+
   useEffect(() => {
     const loadSlugs = async () => {
       setLoading(true)
       try {
-        const response = await getSlugs()
+        const response = await getSlugs(currentPage)
 
         if (!response.ok) {
           if (response.status === 401) logout()
@@ -57,9 +94,11 @@ export default function Dashboard(): JSX.Element {
           return
         }
 
-        const { data }: { data: Slug[] } = await response.json()
+        const data = await response.json()
 
-        setSlugs(data)
+        const { data: slugs, info }: { data: Slug[]; info: Info } = data
+
+        setData({ slugs, info })
 
         setTimeout(() => setLoading(false), 500)
       } catch (error) {
@@ -70,7 +109,7 @@ export default function Dashboard(): JSX.Element {
     }
 
     isAuthenticated && loadSlugs()
-  }, [isAuthenticated])
+  }, [isAuthenticated, currentPage])
 
   return (
     <Layout>
@@ -109,6 +148,20 @@ export default function Dashboard(): JSX.Element {
               <SlugCard key={link.id} info={link} handleDelete={handleDelete} />
             ))}
       </section>
+
+      {!loading && info.pages > 1 && (
+        <footer className='my-4'>
+          <SlugPagination
+            pages={info.pages}
+            currentPage={currentPage}
+            maxPageNumberLimit={maxPageNumberLimit}
+            minPageNumberLimit={minPageNumberLimit}
+            handlePageClick={handlePageClick}
+            handleNextPage={handleNextPage}
+            handlePrevPage={handlePrevPage}
+          />
+        </footer>
+      )}
     </Layout>
   )
 }

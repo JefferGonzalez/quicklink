@@ -1,8 +1,14 @@
 import { API_URL } from '@/Config'
 import { UrlSlug } from '@/schemas/UrlSlug'
 
-export const getSlugs = () => {
-  return fetch(`${API_URL}/api/slugs`, {
+export const getSlugs = (page = 0) => {
+  const url = new URL(`${API_URL}/api/slugs`)
+
+  if (page > 0) {
+    url.searchParams.append('page', page.toString())
+  }
+
+  return fetch(url, {
     credentials: 'include'
   })
 }

@@ -5,6 +5,10 @@ export interface Slug extends UrlSlug {
   created_at: string
 }
 
+export interface Info {
+  pages: number
+}
+
 export interface User {
   name: string
   username: string
@@ -19,4 +23,9 @@ interface Errors {
 export interface Response {
   data?: Slug
   errors: Errors[]
+}
+
+export interface Data {
+  slugs: Slug[]
+  info: Info
 }
