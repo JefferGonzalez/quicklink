@@ -11,7 +11,12 @@ import {
 } from '@/components/ui/command'
 import { AuthContext } from '@/context/AuthContext'
 import GitHubIcon from '@/icons/GitHub'
-import { CommandIcon, LayoutDashboardIcon, PlusSquareIcon } from 'lucide-react'
+import {
+  ClockIcon,
+  CommandIcon,
+  LayoutDashboardIcon,
+  PlusSquareIcon
+} from 'lucide-react'
 import {
   Fragment,
   PropsWithChildren,
@@ -51,6 +56,11 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
           e.preventDefault()
           handleNavigate('/dashboard')
         }
+      } else if (e.code === 'KeyX' && (e.metaKey || e.ctrlKey)) {
+        if (isAuthenticated) {
+          e.preventDefault()
+          handleNavigate('/getting-started')
+        }
       }
     }
 
@@ -89,18 +99,32 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
               </CommandShortcut>
             </CommandItem>
             {isAuthenticated && (
-              <CommandItem
-                title='Dashboard'
-                className='cursor-pointer'
-                onSelect={() => handleNavigate('/dashboard')}
-              >
-                <span className='sr-only'>Dashboard</span>
-                <LayoutDashboardIcon className='mr-2 h-4 w-4' />
-                Dashboard
-                <CommandShortcut className='flex items-center gap-1'>
-                  <CommandIcon /> + <kbd>M</kbd>
-                </CommandShortcut>
-              </CommandItem>
+              <Fragment>
+                <CommandItem
+                  title=' Create a temporary slug'
+                  className='cursor-pointer'
+                  onSelect={() => handleNavigate('/getting-started')}
+                >
+                  <span className='sr-only'>Create a temporary slug</span>
+                  <ClockIcon className='mr-2 h-4 w-4' />
+                  Create a temporary slug
+                  <CommandShortcut className='flex items-center gap-1'>
+                    <CommandIcon /> + <kbd>X</kbd>
+                  </CommandShortcut>
+                </CommandItem>
+                <CommandItem
+                  title='Dashboard'
+                  className='cursor-pointer'
+                  onSelect={() => handleNavigate('/dashboard')}
+                >
+                  <span className='sr-only'>Dashboard</span>
+                  <LayoutDashboardIcon className='mr-2 h-4 w-4' />
+                  Dashboard
+                  <CommandShortcut className='flex items-center gap-1'>
+                    <CommandIcon /> + <kbd>M</kbd>
+                  </CommandShortcut>
+                </CommandItem>
+              </Fragment>
             )}
             <CommandItem title='Repository' className='cursor-pointer'>
               <span className='sr-only'>Repository</span>

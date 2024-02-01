@@ -7,6 +7,7 @@ import {
 import { AuthContext } from '@/context/AuthContext'
 import LinkIcon from '@/icons/Link'
 import {
+  ClockIcon,
   CommandIcon,
   LayoutDashboardIcon,
   LoaderIcon,
@@ -101,12 +102,28 @@ export default function NavBar(): JSX.Element {
               <Link
                 to='/dashboard/create'
                 className='flex items-center gap-2'
-                title=' Create a new slug'
+                title='Create a new slug'
               >
                 <PlusSquareIcon />
                 <DropdownMenuLabel>
-                  <span className='sr-only'> Create a new slug</span>
+                  <span className='sr-only'>Create a new slug</span>
                   Create a new slug
+                </DropdownMenuLabel>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className='focus:bg-neutral-950 focus:text-neutral-100'
+              asChild
+            >
+              <Link
+                to='/getting-started'
+                className='flex items-center gap-2'
+                title='Create a temporary slug'
+              >
+                <ClockIcon />
+                <DropdownMenuLabel>
+                  <span className='sr-only'>Create a temporary slug</span>
+                  Create a temporary slug
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
