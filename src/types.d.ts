@@ -15,9 +15,9 @@ export interface User {
   photo: string
 }
 
-interface Errors {
+interface Errors<T> {
   message: string
-  path?: [keyof UrlSlug]
+  path?: [keyof T]
 }
 
 export interface Response {

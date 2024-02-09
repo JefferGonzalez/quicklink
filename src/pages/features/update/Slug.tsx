@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { AuthContext } from '@/context/AuthContext'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
 import { getSlug, updateSlug } from '@/services/Slugs'
-import { Response, Slug } from '@/types'
+import { Errors, Response, Slug } from '@/types'
 import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
@@ -50,7 +50,7 @@ export default function Slug(): JSX.Element {
     try {
       const response = await updateSlug(id, values)
 
-      const { errors }: Response = await response.json()
+      const { errors }: { errors: Errors<UrlSlug>[] } = await response.json()
 
       if (!response.ok) {
         const statusCode = response.status

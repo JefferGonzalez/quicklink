@@ -12,7 +12,8 @@ import {
   LayoutDashboardIcon,
   LoaderIcon,
   LogOutIcon,
-  PlusSquareIcon
+  PlusSquareIcon,
+  UserCogIcon
 } from 'lucide-react'
 import { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
@@ -124,6 +125,22 @@ export default function NavBar(): JSX.Element {
                 <DropdownMenuLabel>
                   <span className='sr-only'>Create a temporary slug</span>
                   Create a temporary slug
+                </DropdownMenuLabel>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className='focus:bg-neutral-950 focus:text-neutral-100'
+              asChild
+            >
+              <Link
+                to='/profile'
+                className='flex items-center gap-2'
+                title='Settings'
+              >
+                <UserCogIcon />
+                <DropdownMenuLabel>
+                  <span className='sr-only'>Settings</span>
+                  Settings
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
