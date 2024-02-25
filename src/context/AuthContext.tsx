@@ -63,16 +63,7 @@ export default function AuthProvider({
 
     setIsSessionLoading(true)
 
-    const session = window.localStorage.getItem('session')
-
-    if (session) {
-      const user = JSON.parse(session)
-
-      setSession(user)
-      setIsSessionLoading(false)
-    } else {
-      loadSession()
-    }
+    loadSession()
   }, [])
 
   useEffect(() => {
