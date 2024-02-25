@@ -39,7 +39,7 @@ export default function NavBar(): JSX.Element {
     <nav className='flex items-center justify-between sticky py-4 top-0 z-40'>
       <Link
         to='/'
-        className='flex items-center gap-2'
+        className='text-xs sm:text-base md:text-lg flex items-center gap-2'
         title='URL Shortener | Slug'
       >
         <span className='sr-only'>URL Shortener | Slug</span>
@@ -51,7 +51,7 @@ export default function NavBar(): JSX.Element {
         <Button
           title='Open command menu'
           onClick={handleOpenMenu}
-          className='flex items-center gap-1'
+          className='hidden sm:flex items-center gap-1'
         >
           <span className='sr-only'>
             Open command menu (Ctrl + Space or Cmd + Space)

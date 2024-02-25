@@ -125,7 +125,7 @@ export default function Slug(): JSX.Element {
   return (
     <Layout>
       <header className='flex justify-between items-center'>
-        <h2 className='text-4xl font-extrabold mt-2'>
+        <h2 className='text-2xl md:text-4xl font-extrabold mt-2'>
           Edit slug{' '}
           {info?.slug && <span className='text-neutral-500'>/{info.slug}</span>}
         </h2>
@@ -133,7 +133,7 @@ export default function Slug(): JSX.Element {
           <Button className='flex gap-2' title='Back to dashboard'>
             <span className='sr-only'>Back to dashboard</span>
             <UndoDotIcon />
-            Back to dashboard
+            <span className='hidden sm:inline-block'>Back to dashboard</span>
           </Button>
         </Link>
       </header>
