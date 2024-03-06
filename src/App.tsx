@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     path: '/s/:slug',
     element: <Slug />,
     loader: async ({ params: { slug } }) => {
-      const response = await fetch(`${API_URL}/api/slug/${slug}`)
+      const response = await fetch(`${API_URL}/slug/${slug}`)
 
       if (!response.ok) {
         const statusCode = response.status

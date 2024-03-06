@@ -41,7 +41,7 @@ export default function GettingStarted(): JSX.Element {
     }
 
     try {
-      const response = await fetch(`${API_URL}/api/slug`, {
+      const response = await fetch(`${API_URL}/slug`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

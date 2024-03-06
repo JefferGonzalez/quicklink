@@ -2,7 +2,7 @@ import { API_URL } from '@/Config'
 import { UrlSlug } from '@/schemas/UrlSlug'
 
 export const getSlugs = (page = 0) => {
-  const url = new URL(`${API_URL}/api/slugs`)
+  const url = new URL(`${API_URL}/slugs`)
 
   if (page > 0) {
     url.searchParams.append('page', page.toString())
@@ -14,13 +14,13 @@ export const getSlugs = (page = 0) => {
 }
 
 export const getSlug = (id: string) => {
-  return fetch(`${API_URL}/api/slugs/${id}`, {
+  return fetch(`${API_URL}/slugs/${id}`, {
     credentials: 'include'
   })
 }
 
 export const createSlug = (slug: UrlSlug) => {
-  return fetch(`${API_URL}/api/slugs`, {
+  return fetch(`${API_URL}/slugs`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ export const createSlug = (slug: UrlSlug) => {
 }
 
 export const updateSlug = (slugId: string, slug: UrlSlug) => {
-  return fetch(`${API_URL}/api/slugs/${slugId}`, {
+  return fetch(`${API_URL}/slugs/${slugId}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ export const updateSlug = (slugId: string, slug: UrlSlug) => {
 }
 
 export const deleteSlug = (id: string) => {
-  return fetch(`${API_URL}/api/slugs/${id}`, {
+  return fetch(`${API_URL}/slugs/${id}`, {
     method: 'DELETE',
     credentials: 'include'
   })
