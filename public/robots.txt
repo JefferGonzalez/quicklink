@@ -1,0 +1,10 @@
+User-agent: Googlebot
+Allow: /getting-started
+
+User-agent: Bingbot
+Allow: /getting-started
+
+User-agent: *
+Allow: /getting-started
+
+Sitemap: https://app.slug.jeffer.dev/sitemap-index.xml
