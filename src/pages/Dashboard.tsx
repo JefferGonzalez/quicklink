@@ -149,6 +149,12 @@ export default function Dashboard(): JSX.Element {
             ))}
       </section>
 
+      {!loading && slugs.length === 0 && (
+        <div className='flex justify-center items-center h-96'>
+          <p className='text-xl font-bold'>No slugs found, create one now!</p>
+        </div>
+      )}
+
       {!loading && info.pages > 1 && (
         <footer className='my-4'>
           <SlugPagination
