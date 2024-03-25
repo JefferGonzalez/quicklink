@@ -18,7 +18,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 interface ProfileFormProps {
-  user: User
+  user?: User
 }
 
 export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
@@ -31,8 +31,8 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
       username: ''
     },
     values: {
-      name: user.name,
-      username: user.username
+      name: user?.name ?? '',
+      username: user?.username ?? ''
     }
   })
 
@@ -99,10 +99,10 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
             )}
           />
 
-          <picture title={`Profile picture of ${user.username}`}>
+          <picture title={`Profile picture of ${user?.username}`}>
             <img
-              src={user.photo}
-              alt={user.name}
+              src={user?.photo}
+              alt={user?.name}
               className='w-[100px] rounded-lg object-cover'
               loading='lazy'
             />

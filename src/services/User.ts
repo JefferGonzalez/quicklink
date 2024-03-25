@@ -18,6 +18,13 @@ export const updateUserProfile = (data: Profile) => {
   })
 }
 
+export const deleteUserAccount = () => {
+  return fetch(`${API_URL}/users/profile`, {
+    method: 'DELETE',
+    credentials: 'include'
+  })
+}
+
 export const signOut = () => {
   return fetch(`${API_URL}/auth/logout`, {
     credentials: 'include'

@@ -45,7 +45,12 @@ export default function AuthProvider({
         const response = await getUser()
 
         if (!response.ok) {
-          if (response.status === 401) logout()
+          const statusCode = response.status
+
+          if (statusCode === 401) logout()
+
+          if (statusCode === 404) await signOut()
+
           setIsSessionLoading(false)
           return
         }

@@ -6,7 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { AuthContext } from '@/context/AuthContext'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
 import { getSlug, updateSlug } from '@/services/Slugs'
-import { Errors, Response, Slug } from '@/types'
+import type { Errors, Response, Slug as SlugType } from '@/types'
 import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
@@ -19,7 +19,7 @@ import { toast } from 'sonner'
 export default function Slug(): JSX.Element {
   const { logout } = useContext(AuthContext)
   const { id = '' } = useParams()
-  const [info, setInfo] = useState<Slug>()
+  const [info, setInfo] = useState<SlugType>()
   const [loading, setLoading] = useState(false)
 
   const form = useForm<UrlSlug>({
