@@ -30,7 +30,12 @@ export default function Footer(): JSX.Element {
           ></img>
         </div>
 
-        <a href='' title='GitHub'>
+        <a
+          title='GitHub'
+          href='https://github.com/JefferGonzalez/slug'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
           <GitHubIcon className='size-8' />
           <span className='sr-only'>GitHub</span>
         </a>

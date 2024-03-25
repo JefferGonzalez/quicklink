@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JefferGonzalez/url-slug/issues"
+    "url": "https://github.com/JefferGonzalez/slug/issues"
   },
   "scripts": {
     "dev": "vite",

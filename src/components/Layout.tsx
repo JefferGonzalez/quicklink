@@ -101,7 +101,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
             {isAuthenticated && (
               <Fragment>
                 <CommandItem
-                  title=' Create a temporary slug'
+                  title='Create a temporary slug'
                   className='cursor-pointer'
                   onSelect={() => handleNavigate('/getting-started')}
                 >
@@ -126,7 +126,17 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
                 </CommandItem>
               </Fragment>
             )}
-            <CommandItem title='Repository' className='cursor-pointer'>
+            <CommandItem
+              title='Repository'
+              className='cursor-pointer'
+              onSelect={() =>
+                window.open(
+                  'https://github.com/JefferGonzalez/slug',
+                  '_blank',
+                  'noopener noreferrer'
+                )
+              }
+            >
               <span className='sr-only'>Repository</span>
               <GitHubIcon className='mr-2 h-4 w-4' />
               Repository

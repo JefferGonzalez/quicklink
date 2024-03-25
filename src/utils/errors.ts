@@ -12,7 +12,11 @@ export const showToastError = (
     action: {
       label: 'Report',
       onClick: () => {
-        window.open('https://github.com', '_blank', 'noopener noreferrer')
+        window.open(
+          'https://github.com/JefferGonzalez/slug/issues/new',
+          '_blank',
+          'noopener noreferrer'
+        )
       }
     }
   })

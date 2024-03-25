@@ -26,7 +26,17 @@ export default function Landing(): JSX.Element {
               Getting Started
             </Button>
           </Link>
-          <Button title='Star on GitHub' className='flex gap-1'>
+          <Button
+            title='Star on GitHub'
+            className='flex gap-1'
+            onClick={() =>
+              window.open(
+                'https://github.com/JefferGonzalez/slug/stargazers',
+                '_blank',
+                'noopener noreferrer'
+              )
+            }
+          >
             <StarIcon />
             <span className='sr-only'>Star on GitHub</span>
             Star on GitHub
