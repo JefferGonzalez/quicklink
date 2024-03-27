@@ -31,7 +31,7 @@ export default function Landing(): JSX.Element {
             className='flex gap-1'
             onClick={() =>
               window.open(
-                'https://github.com/JefferGonzalez/slug/stargazers',
+                'https://github.com/JefferGonzalez/quicklink',
                 '_blank',
                 'noopener noreferrer'
               )

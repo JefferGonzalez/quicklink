@@ -13,7 +13,7 @@ export const showToastError = (
       label: 'Report',
       onClick: () => {
         window.open(
-          'https://github.com/JefferGonzalez/slug/issues/new',
+          'https://github.com/JefferGonzalez/quicklink/issues/new',
           '_blank',
           'noopener noreferrer'
         )

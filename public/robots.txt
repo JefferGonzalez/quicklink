@@ -7,4 +7,4 @@ Allow: /getting-started
 User-agent: *
 Allow: /getting-started
 
-Sitemap: https://app.slug.jeffer.dev/sitemap-index.xml
+Sitemap: https://quicklink.jeffer.dev/sitemap-index.xml

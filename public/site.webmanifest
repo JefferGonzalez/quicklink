@@ -1,6 +1,6 @@
 {
-  "name": "URL Shortener | Slug",
-  "short_name": "URL Slug",
+  "name": "QuickLink | URL Shortener",
+  "short_name": "QuickLink",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

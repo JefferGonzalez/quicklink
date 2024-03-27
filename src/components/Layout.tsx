@@ -131,7 +131,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
               className='cursor-pointer'
               onSelect={() =>
                 window.open(
-                  'https://github.com/JefferGonzalez/slug',
+                  'https://github.com/JefferGonzalez/quicklink',
                   '_blank',
                   'noopener noreferrer'
                 )

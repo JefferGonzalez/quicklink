@@ -32,7 +32,7 @@ export default function Footer(): JSX.Element {
 
         <a
           title='GitHub'
-          href='https://github.com/JefferGonzalez/slug'
+          href='https://github.com/JefferGonzalez/quicklink'
           target='_blank'
           rel='noopener noreferrer'
         >

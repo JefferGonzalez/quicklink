@@ -39,12 +39,12 @@ export default function NavBar(): JSX.Element {
     <nav className='flex items-center justify-between sticky py-4 top-0 z-40'>
       <Link
         to='/'
-        className='text-xs sm:text-base md:text-lg flex items-center gap-2'
-        title='URL Shortener | Slug'
+        className='text-xs sm:text-base md:text-xl flex items-center gap-2'
+        title='QuickLink | URL Shortener'
       >
-        <span className='sr-only'>URL Shortener | Slug</span>
+        <span className='sr-only'>QuickLink | URL Shortener</span>
         <LinkIcon className='size-8' />
-        URL Shortener | Slug
+        QuickLink | URL Shortener
       </Link>
 
       <section className='flex items-center gap-4'>

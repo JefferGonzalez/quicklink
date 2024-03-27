@@ -1,5 +1,5 @@
 {
-  "name": "url-slug",
+  "name": "quicklink",
   "version": "1.0.0",
   "description": "🌱 An open-source URL shortener built with PERN Stack",
   "type": "module",
@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/JefferGonzalez/slug/issues"
+    "url": "https://github.com/JefferGonzalez/quicklink/issues"
   },
   "scripts": {
     "dev": "vite",
