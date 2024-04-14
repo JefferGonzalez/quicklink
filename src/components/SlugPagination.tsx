@@ -1,3 +1,4 @@
+import { MAX_PAGES } from '@/components/SlugList'
 import {
   Pagination,
   PaginationContent,
@@ -6,7 +7,6 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@/components/ui/pagination'
-import { MAX_PAGES } from '@/pages/Dashboard'
 
 interface SlugPaginationProps {
   pages: number
