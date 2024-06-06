@@ -72,7 +72,7 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
     <Fragment>
       <main className='container max-w-[1100px]'>
         <NavBar />
-        {children}
+        <section className='min-h-[calc(100vh-9rem)]'>{children}</section>
       </main>
 
       <Footer />

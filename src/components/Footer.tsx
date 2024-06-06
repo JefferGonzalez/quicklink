@@ -2,7 +2,7 @@ import GitHubIcon from '@/icons/GitHub'
 
 export default function Footer(): JSX.Element {
   return (
-    <footer className='fixed bottom-0 w-full py-4'>
+    <footer className='sticky bottom-0 w-full py-4'>
       <div className='container max-w-[1100px] flex items-center justify-between'>
         <div className='flex items-center space-x-2'>
           <span className='text-base sm:text-lg bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500'>
