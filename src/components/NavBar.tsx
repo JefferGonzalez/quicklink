@@ -36,7 +36,7 @@ export default function NavBar(): JSX.Element {
   }
 
   return (
-    <nav className='flex items-center justify-between sticky py-4 top-0 z-40'>
+    <nav className='flex items-center justify-between backdrop-blur-sm sticky py-4 top-0 z-40'>
       <Link
         to='/'
         className='text-xs sm:text-base md:text-xl flex items-center gap-2'
