@@ -51,6 +51,7 @@ export default function SlugList() {
   }
 
   const handlePageClick = (page: number) => {
+    setLoading(true)
     setData({ slugs: [], info: { pages: 0 } })
     setCurrentPage(page)
   }
