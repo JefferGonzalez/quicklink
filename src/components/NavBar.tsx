@@ -62,7 +62,7 @@ export default function NavBar(): JSX.Element {
         {pathname !== '/auth' && !isAuthenticated && (
           <Link to='/auth' className='text-sm' title='Sign in'>
             <Button className='flex gap-x-2'>
-              {!isAuthenticated && isSessionLoading && (
+              {isSessionLoading && (
                 <LoaderIcon className='transition-all duration-300 animate-spin' />
               )}
               <span className='sr-only'>Sign in</span>

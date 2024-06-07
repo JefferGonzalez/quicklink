@@ -6,20 +6,25 @@ import { AuthContext } from '@/context/AuthContext'
 import GitHubIcon from '@/icons/GitHub'
 import GoogleIcon from '@/icons/Google'
 import { LoaderIcon } from 'lucide-react'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
 export default function Auth(): JSX.Element {
   const { auth } = useContext(AuthContext)
 
   const { isAuthenticated, isSessionLoading, setIsSessionLoading } = auth
+  const [loadingButton, setLoadingButton] = useState<
+    'github' | 'google' | null
+  >(null)
 
   if (isAuthenticated) {
     return <Navigate to='/dashboard' />
   }
 
   const handleClick = (type: 'github' | 'google') => {
-    if (type === 'github') setIsSessionLoading(true)
+    setLoadingButton(type)
+    setIsSessionLoading(true)
+
     window.location.href = `${API_URL}/auth/${type}`
   }
 
@@ -34,7 +39,8 @@ export default function Auth(): JSX.Element {
           onClick={() => handleClick('github')}
           disabled={isSessionLoading}
         >
-          {isSessionLoading ? (
+          {isSessionLoading &&
+          (loadingButton === 'github' || loadingButton === null) ? (
             <LoaderIcon className='transition-all duration-300 animate-spin' />
           ) : (
             <GitHubIcon />
@@ -49,7 +55,12 @@ export default function Auth(): JSX.Element {
           onClick={() => handleClick('google')}
           disabled={isSessionLoading}
         >
-          <GoogleIcon className='size-6' />
+          {isSessionLoading &&
+          (loadingButton === 'google' || loadingButton === null) ? (
+            <LoaderIcon className='transition-all duration-300 animate-spin' />
+          ) : (
+            <GoogleIcon className='size-6' />
+          )}
           <span className='sr-only'>Sign in with Google</span>
           Sign in with Google
         </Button>
