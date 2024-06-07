@@ -1,3 +1,4 @@
+import Waves from '@/components/Waves'
 import LinkIcon from '@/icons/Link'
 import { Fragment } from 'react'
 
@@ -13,6 +14,8 @@ export default function MainAppHeader(): JSX.Element {
       <span className='text-lg text-neutral-400 pb-4'>
         Unlimited urls, custom slugs & QR Codes
       </span>
+
+      <Waves />
     </Fragment>
   )
 }
