@@ -96,7 +96,7 @@ export default function SlugCard({
             className='bg-black border-neutral-950 text-neutral-100'
           >
             <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
+              className='focus:bg-neutral-950 focus:text-neutral-100 cursor-pointer'
               onClick={() => setShowQrCode(true)}
             >
               <QrCodeIcon />
@@ -108,7 +108,7 @@ export default function SlugCard({
 
             {ALLOW_COPY && (
               <DropdownMenuItem
-                className='focus:bg-neutral-950 focus:text-neutral-100'
+                className='focus:bg-neutral-950 focus:text-neutral-100 cursor-pointer'
                 title='Copy'
                 onClick={() => handleCopy(slug)}
               >
@@ -121,7 +121,7 @@ export default function SlugCard({
             )}
 
             <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
+              className='focus:bg-neutral-950 focus:text-neutral-100 cursor-pointer'
               asChild
             >
               <Link to={`/dashboard/edit/${id}`} title='Edit' className='flex'>
@@ -134,7 +134,7 @@ export default function SlugCard({
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
+              className='focus:bg-neutral-950 focus:text-neutral-100 cursor-pointer'
               title='Delete'
               onClick={() => handleDelete(id)}
             >

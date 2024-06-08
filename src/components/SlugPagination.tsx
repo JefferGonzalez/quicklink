@@ -39,7 +39,10 @@ export default function SlugPagination({
     <Pagination>
       <PaginationContent>
         <PaginationItem hidden={currentPage === 0}>
-          <PaginationPrevious onClick={() => handlePrevPage(currentPage - 1)} />
+          <PaginationPrevious
+            className='cursor-pointer'
+            onClick={() => handlePrevPage(currentPage - 1)}
+          />
         </PaginationItem>
         {PAGINATION_ITEMS.map((item, index) => (
           <PaginationItem key={index.toString()}>
@@ -59,7 +62,10 @@ export default function SlugPagination({
           </PaginationItem>
         ))}
         <PaginationItem hidden={currentPage === pages - 1}>
-          <PaginationNext onClick={() => handleNextPage(currentPage + 1)} />
+          <PaginationNext
+            className='cursor-pointer'
+            onClick={() => handleNextPage(currentPage + 1)}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
