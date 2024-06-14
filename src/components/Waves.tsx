@@ -104,7 +104,7 @@ export default function Waves() {
       ref={canvasRef}
       width={canvasSize.width}
       height={canvasSize.height}
-      className='absolute top-0 left-0 z-[-1]'
+      className='fixed top-0 left-0 z-[-1]'
     />
   )
 }
