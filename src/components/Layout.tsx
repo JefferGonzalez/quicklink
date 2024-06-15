@@ -1,6 +1,7 @@
 import Command from '@/components/Command'
 import Footer from '@/components/Footer'
 import NavBar from '@/components/NavBar'
+import { Analytics } from '@vercel/analytics/react'
 import { Fragment, PropsWithChildren } from 'react'
 import { Toaster } from 'sonner'
 
@@ -19,6 +20,8 @@ export default function Layout({ children }: LayoutProps): JSX.Element {
       <Command />
 
       <Toaster theme='dark' duration={2500} />
+
+      <Analytics />
     </Fragment>
   )
 }
