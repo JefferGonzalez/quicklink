@@ -27,7 +27,7 @@ export default function DropdownMenu({
     text,
     icon,
     title = text,
-    className: buttonClassName = 'text-neutral-400 hover:text-neutral-300'
+    className: buttonClassName = 'text-neutral-400 hover:text-neutral-300 p-0 size-6'
   } = button
 
   return (
