@@ -13,7 +13,7 @@ import { type UseFormReturn } from 'react-hook-form'
 
 interface SlugFormProps {
   form: UseFormReturn<DeleteAccountValidation>
-  username?: string
+  username: string
   loading: boolean
   handleSubmit: (values: DeleteAccountValidation) => void
   handleCancel: (value: boolean) => void
@@ -21,7 +21,7 @@ interface SlugFormProps {
 
 export default function DeleteAccountForm({
   form,
-  username = '',
+  username,
   loading,
   handleSubmit,
   handleCancel

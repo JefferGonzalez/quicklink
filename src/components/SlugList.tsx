@@ -1,21 +1,18 @@
 import SlugCard from '@/components/SlugCard'
 import SlugPagination from '@/components/SlugPagination'
 import { Skeleton } from '@/components/ui/skeleton'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import { deleteSlug, getSlugs } from '@/services/Slugs'
 import { Data, Info, Slug } from '@/types'
 import { showToastError } from '@/utils/errors'
-import { Fragment, useContext, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 export const MAX_PAGES = 5
 const MIN_PAGES = 1
 
 export default function SlugList() {
-  const {
-    logout,
-    auth: { isAuthenticated }
-  } = useContext(AuthContext)
+  const { isAuthenticated, logout } = useAuth()
 
   const [{ slugs, info }, setData] = useState<Data>({
     slugs: [],

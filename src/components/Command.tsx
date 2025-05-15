@@ -7,7 +7,7 @@ import {
   CommandList,
   CommandShortcut
 } from '@/components/ui/command'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import GitHubIcon from '@/icons/GitHub'
 import {
   ClockIcon,
@@ -15,20 +15,19 @@ import {
   LayoutDashboardIcon,
   PlusSquareIcon
 } from 'lucide-react'
-import { Fragment, useContext, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export default function Command() {
-  const {
-    auth: { isAuthenticated }
-  } = useContext(AuthContext)
+  const navigate = useNavigate()
+  
+  const { isAuthenticated } = useAuth()
 
   const createSlugPage = isAuthenticated
     ? '/dashboard/create'
     : '/getting-started'
 
   const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
 
   const handleNavigate = (path: string) => navigate(path)
 

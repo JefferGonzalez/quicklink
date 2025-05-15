@@ -1,27 +1,12 @@
-import { User } from '@/types'
-import { useState } from 'react'
+import { AuthContext } from '@/context/AuthContext'
+import { useContext } from 'react'
 
 export default function useAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isSessionLoading, setIsSessionLoading] = useState(false)
-  const [user, setUser] = useState<User | undefined>()
+  const context = useContext(AuthContext)
 
-  const destroySession = () => {
-    setIsAuthenticated(false)
-    setUser(undefined)
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
   }
 
-  const setSession = (user: User) => {
-    setIsAuthenticated(true)
-    setUser(user)
-  }
-
-  return {
-    user,
-    isAuthenticated,
-    isSessionLoading,
-    setSession,
-    destroySession,
-    setIsSessionLoading
-  }
+  return context
 }

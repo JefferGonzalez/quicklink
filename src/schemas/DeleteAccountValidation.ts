@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-export const createDeleteAccountValidationSchema = (username = 'username') =>
+export const createDeleteAccountValidationSchema = (username: string) =>
   z.object({
     username: z
       .string()
@@ -16,8 +16,6 @@ export const createDeleteAccountValidationSchema = (username = 'username') =>
       })
   })
 
-const DeleteAccountValidationSchema = createDeleteAccountValidationSchema()
-
 export type DeleteAccountValidation = z.infer<
-  typeof DeleteAccountValidationSchema
+  ReturnType<typeof createDeleteAccountValidationSchema>
 >

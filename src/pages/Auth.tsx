@@ -1,18 +1,16 @@
 import { API_URL } from '@/Config'
-import Layout from '@/components/Layout'
 import MainAppHeader from '@/components/MainAppHeader'
 import { Button } from '@/components/ui/button'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import GitHubIcon from '@/icons/GitHub'
 import GoogleIcon from '@/icons/Google'
 import { LoaderIcon } from 'lucide-react'
-import { useContext, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
 export default function Auth(): JSX.Element {
-  const { auth } = useContext(AuthContext)
+  const { isAuthenticated, isSessionLoading, setIsSessionLoading } = useAuth()
 
-  const { isAuthenticated, isSessionLoading, setIsSessionLoading } = auth
   const [loadingButton, setLoadingButton] = useState<
     'github' | 'google' | null
   >(null)
@@ -29,7 +27,7 @@ export default function Auth(): JSX.Element {
   }
 
   return (
-    <Layout>
+    <Fragment>
       <section className='flex flex-col items-center justify-center py-32'>
         <MainAppHeader />
 
@@ -65,6 +63,6 @@ export default function Auth(): JSX.Element {
           Sign in with Google
         </Button>
       </section>
-    </Layout>
+    </Fragment>
   )
 }

@@ -1,23 +1,27 @@
-import { Fragment, PropsWithChildren } from 'react'
+import LoadingIndicator from '@/components/LoadingIndicator'
+import useAuth from '@/hooks/useAuth'
+import { Fragment } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 
-interface ProtectedRouteProps extends PropsWithChildren {
+interface ProtectedRouteProps {
   redirectTo?: string
 }
 
 export default function ProtectedRoute({
-  children,
   redirectTo = '/'
 }: ProtectedRouteProps) {
-  const session = window.localStorage.getItem('session')
+  const { isSessionLoading, isAuthenticated } = useAuth()
 
-  if (!session) {
+  if (isSessionLoading) {
+    return <LoadingIndicator message='Loading session...' />
+  }
+
+  if (!isAuthenticated) {
     return <Navigate to={redirectTo} />
   }
 
   return (
     <Fragment>
-      {children}
       <Outlet />
     </Fragment>
   )

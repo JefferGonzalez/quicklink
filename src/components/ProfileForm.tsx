@@ -1,3 +1,4 @@
+import AlertWithIcon from '@/components/AlertWithIcon'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -7,21 +8,20 @@ import {
   FormLabel
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-
-import AlertWithIcon from '@/components/AlertWithIcon'
+import useAuth from '@/hooks/useAuth'
+import { assertAuthenticated } from '@/lib/auth/assertAuthenticated'
 import { Profile, ProfileSchema } from '@/schemas/Profile'
 import { updateUserProfile } from '@/services/User'
-import { Errors, User } from '@/types'
+import { Errors } from '@/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon, SaveIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-interface ProfileFormProps {
-  user?: User
-}
+export default function ProfileForm(): JSX.Element {
+  const { user } = useAuth()
+  assertAuthenticated(user)
 
-export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
   const [loading, setLoading] = useState(false)
 
   const form = useForm<Profile>({
@@ -31,8 +31,8 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
       username: ''
     },
     values: {
-      name: user?.name ?? '',
-      username: user?.username ?? ''
+      name: user.name,
+      username: user.username
     }
   })
 
@@ -61,10 +61,6 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
         setLoading(false)
         return
       }
-
-      const { data }: { data: User } = await response.json()
-
-      window.localStorage.setItem('session', JSON.stringify(data))
 
       window.location.reload()
     } catch (error) {
@@ -99,10 +95,10 @@ export default function ProfileForm({ user }: ProfileFormProps): JSX.Element {
             )}
           />
 
-          <picture title={`Profile picture of ${user?.username}`}>
+          <picture title={`Profile picture of ${user.username}`}>
             <img
-              src={user?.photo}
-              alt={user?.name}
+              src={user.photo}
+              alt={user.name}
               className='w-[100px] rounded-lg object-cover'
               loading='lazy'
             />

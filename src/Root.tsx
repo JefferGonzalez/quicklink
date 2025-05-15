@@ -1,3 +1,4 @@
+import Layout from '@/components/Layout'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import AuthProvider from '@/context/AuthContext'
 import Auth from '@/pages/Auth'
@@ -14,16 +15,20 @@ export default function Root() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path='/' element={<Landing />} />
-        <Route path='/getting-started' element={<GettingStarted />} />
-        <Route path='/auth' element={<Auth />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='/dashboard/create' element={<CreateSlug />} />
-          <Route path='/dashboard/edit/:id' element={<EditSlug />} />
-          <Route path='/profile' element={<Profile />} />
+        <Route element={<Layout />}>
+          <Route path='/' element={<Landing />} />
+          <Route path='/getting-started' element={<GettingStarted />} />
+          <Route path='/auth' element={<Auth />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/dashboard/create' element={<CreateSlug />} />
+            <Route path='/dashboard/edit/:id' element={<EditSlug />} />
+            <Route path='/profile' element={<Profile />} />
+          </Route>
+
+          <Route path='*' element={<NotFound />} />
         </Route>
-        <Route path='*' element={<NotFound />} />
       </Routes>
     </AuthProvider>
   )

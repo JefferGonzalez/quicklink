@@ -1,9 +1,8 @@
 import { APP_URL } from '@/Config'
-import Layout from '@/components/Layout'
 import SlugForm from '@/components/SlugForm'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
 import { getSlug, updateSlug } from '@/services/Slugs'
 import type { Errors, Response, Slug as SlugType } from '@/types'
@@ -11,13 +10,14 @@ import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
 import { UndoDotIcon } from 'lucide-react'
-import { useContext, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export default function Slug(): JSX.Element {
-  const { logout } = useContext(AuthContext)
+  const { logout } = useAuth()
+
   const { id = '' } = useParams()
   const [info, setInfo] = useState<SlugType>()
   const [loading, setLoading] = useState(false)
@@ -123,7 +123,7 @@ export default function Slug(): JSX.Element {
   }, [id])
 
   return (
-    <Layout>
+    <Fragment>
       <header className='flex justify-between items-center'>
         <h2 className='text-2xl md:text-4xl font-extrabold mt-2'>
           Edit slug{' '}
@@ -148,6 +148,6 @@ export default function Slug(): JSX.Element {
           isEdit
         />
       </section>
-    </Layout>
+    </Fragment>
   )
 }

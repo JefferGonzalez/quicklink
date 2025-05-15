@@ -4,7 +4,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel
 } from '@/components/ui/dropdown-menu'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import LinkIcon from '@/icons/Link'
 import {
   ClockIcon,
@@ -15,13 +15,10 @@ import {
   PlusSquareIcon,
   UserCogIcon
 } from 'lucide-react'
-import { useContext } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 export default function NavBar(): JSX.Element {
-  const { auth, logout } = useContext(AuthContext)
-
-  const { isAuthenticated, isSessionLoading, user } = auth
+  const { isAuthenticated, isSessionLoading, user, logout } = useAuth()
 
   const { pathname } = useLocation()
 
@@ -71,11 +68,11 @@ export default function NavBar(): JSX.Element {
           </Link>
         )}
 
-        {isAuthenticated && (
+        {isAuthenticated && user && (
           <DropdownMenu
             button={{
-              text: user?.username ?? 'Loading...',
-              title: `Profile of ${user?.username ?? 'Loading...'}`,
+              text: user.username,
+              title: `Profile of ${user.username}`,
               className: 'text-neutral-100 hover:text-neutral-300'
             }}
             className='bg-black border-neutral-700 text-neutral-100'

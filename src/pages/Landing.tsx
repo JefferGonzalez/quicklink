@@ -1,20 +1,17 @@
-import Layout from '@/components/Layout'
 import MainAppHeader from '@/components/MainAppHeader'
 import { Button } from '@/components/ui/button'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import { RocketIcon, StarIcon } from 'lucide-react'
-import { useContext } from 'react'
+import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function Landing(): JSX.Element {
-  const {
-    auth: { isAuthenticated }
-  } = useContext(AuthContext)
+  const { isAuthenticated } = useAuth()
 
   const to = isAuthenticated ? '/dashboard' : '/getting-started'
 
   return (
-    <Layout>
+    <Fragment>
       <section className='flex flex-col items-center justify-center py-32'>
         <MainAppHeader />
 
@@ -43,6 +40,6 @@ export default function Landing(): JSX.Element {
           </Button>
         </div>
       </section>
-    </Layout>
+    </Fragment>
   )
 }

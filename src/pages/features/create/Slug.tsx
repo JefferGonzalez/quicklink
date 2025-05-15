@@ -1,9 +1,8 @@
 import { APP_URL } from '@/Config'
-import Layout from '@/components/Layout'
 import SlugForm from '@/components/SlugForm'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
 import { createSlug } from '@/services/Slugs'
 import { Errors } from '@/types'
@@ -11,13 +10,14 @@ import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
 import { UndoDotIcon } from 'lucide-react'
-import { useContext, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export default function Slug(): JSX.Element {
-  const { logout } = useContext(AuthContext)
+  const { logout } = useAuth()
+
   const [loading, setLoading] = useState(false)
 
   const form = useForm<UrlSlug>({
@@ -94,7 +94,7 @@ export default function Slug(): JSX.Element {
   }
 
   return (
-    <Layout>
+    <Fragment>
       <header className='flex justify-between items-center'>
         <h2 className='text-2xl md:text-4xl font-extrabold mt-2'>
           Create a new slug
@@ -117,6 +117,6 @@ export default function Slug(): JSX.Element {
           withAccount
         />
       </section>
-    </Layout>
+    </Fragment>
   )
 }

@@ -1,22 +1,19 @@
 import { API_URL, APP_URL } from '@/Config'
-import Layout from '@/components/Layout'
 import SlugForm from '@/components/SlugForm'
 import { Button } from '@/components/ui/button'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
 import { Response } from '@/types'
 import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export default function GettingStarted(): JSX.Element {
-  const {
-    auth: { isAuthenticated }
-  } = useContext(AuthContext)
+  const { isAuthenticated } = useAuth()
 
   const [loading, setLoading] = useState(false)
 
@@ -102,7 +99,7 @@ export default function GettingStarted(): JSX.Element {
   }
 
   return (
-    <Layout>
+    <Fragment>
       <section className='py-10'>
         <SlugForm form={form} loading={loading} handleSubmit={handleSubmit} />
       </section>
@@ -134,6 +131,6 @@ export default function GettingStarted(): JSX.Element {
           </p>
         )}
       </section>
-    </Layout>
+    </Fragment>
   )
 }

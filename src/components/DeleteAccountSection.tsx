@@ -2,32 +2,28 @@ import DeleteAccountForm from '@/components/DeleteAccountForm'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
-import { AuthContext } from '@/context/AuthContext'
+import useAuth from '@/hooks/useAuth'
+import { assertAuthenticated } from '@/lib/auth/assertAuthenticated'
 import {
   createDeleteAccountValidationSchema as DeleteAccountValidationSchema,
   type DeleteAccountValidation
 } from '@/schemas/DeleteAccountValidation'
 import { deleteUserAccount, signOut } from '@/services/User'
-import type { User } from '@/types'
 import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-interface DeleteAccountSectionProps {
-  user?: User
-}
+export default function DeleteAccountSection(): JSX.Element {
+  const { logout, user } = useAuth()
+  assertAuthenticated(user)
 
-export default function DeleteAccountSection({
-  user
-}: DeleteAccountSectionProps): JSX.Element {
-  const { logout } = useContext(AuthContext)
   const [showDisclaimer, setShowDisclaimer] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const form = useForm<DeleteAccountValidation>({
-    resolver: zodResolver(DeleteAccountValidationSchema(user?.username)),
+    resolver: zodResolver(DeleteAccountValidationSchema(user.username)),
     defaultValues: {
       username: '',
       text: ''
@@ -115,7 +111,7 @@ export default function DeleteAccountSection({
             <Separator className='my-4 bg-neutral-500' />
 
             <DeleteAccountForm
-              username={user?.username}
+              username={user.username}
               form={form}
               loading={loading}
               handleSubmit={handleSubmit}

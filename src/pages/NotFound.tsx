@@ -1,9 +1,9 @@
-import Layout from '@/components/Layout'
 import { Button } from '@/components/ui/button'
+import { Fragment } from 'react'
 
 export default function NotFound() {
   return (
-    <Layout>
+    <Fragment>
       <section className='flex flex-col items-center space-y-3 py-20'>
         <p>404 | This page could not be found.</p>
         <picture>
@@ -20,6 +20,6 @@ export default function NotFound() {
           Go back
         </Button>
       </section>
-    </Layout>
+    </Fragment>
   )
 }

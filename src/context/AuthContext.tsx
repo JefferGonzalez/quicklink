@@ -1,24 +1,22 @@
-import useAuth from '@/hooks/useAuth'
 import { getUser, signOut } from '@/services/User'
 import { User } from '@/types'
 import { showToastError } from '@/utils/errors'
-import { PropsWithChildren, createContext, useEffect } from 'react'
+import { PropsWithChildren, createContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 interface AuthContextProps {
-  auth: ReturnType<typeof useAuth>
+  user: User | undefined
+  isSessionLoading: boolean
+  isAuthenticated: boolean
+  setIsSessionLoading: (value: boolean) => void
   logout: () => void
 }
 
 export const AuthContext = createContext<AuthContextProps>({
-  auth: {
-    user: undefined,
-    isSessionLoading: false,
-    isAuthenticated: false,
-    setSession: () => {},
-    destroySession: () => {},
-    setIsSessionLoading: () => {}
-  },
+  user: undefined,
+  isSessionLoading: false,
+  isAuthenticated: false,
+  setIsSessionLoading: () => {},
   logout: () => {}
 })
 
@@ -29,15 +27,19 @@ export default function AuthProvider({
 }: AuthProviderProps): JSX.Element {
   const navigate = useNavigate()
 
-  const auth = useAuth()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isSessionLoading, setIsSessionLoading] = useState(true)
+  const [user, setUser] = useState<User | undefined>()
 
-  const {
-    setSession,
-    destroySession,
-    isAuthenticated,
-    setIsSessionLoading,
-    user
-  } = auth
+  const destroySession = () => {
+    setIsAuthenticated(false)
+    setUser(undefined)
+  }
+
+  const setSession = (user: User) => {
+    setIsAuthenticated(true)
+    setUser(user)
+  }
 
   useEffect(() => {
     const loadSession = async () => {
@@ -57,8 +59,6 @@ export default function AuthProvider({
 
         const { data }: { data: User } = await response.json()
 
-        window.localStorage.setItem('session', JSON.stringify(data))
-
         setSession(data)
         setIsSessionLoading(false)
       } catch (error) {
@@ -66,34 +66,12 @@ export default function AuthProvider({
       }
     }
 
-    setIsSessionLoading(true)
-
     loadSession()
   }, [])
-
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'session') {
-        const { newValue } = e
-
-        if (newValue === null && isAuthenticated) {
-          window.localStorage.setItem('session', JSON.stringify(user))
-        }
-      }
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-    }
-  }, [isAuthenticated, user])
 
   const logout = async () => {
     try {
       isAuthenticated && (await signOut())
-
-      window.localStorage.removeItem('session')
 
       destroySession()
 
@@ -106,7 +84,10 @@ export default function AuthProvider({
   return (
     <AuthContext.Provider
       value={{
-        auth,
+        user,
+        isAuthenticated,
+        isSessionLoading,
+        setIsSessionLoading,
         logout
       }}
     >
