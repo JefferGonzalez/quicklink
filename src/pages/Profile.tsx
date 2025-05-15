@@ -5,6 +5,7 @@ import useAuth from '@/hooks/useAuth'
 import { assertAuthenticated } from '@/lib/auth/assertAuthenticated'
 import { LogOutIcon, SettingsIcon, UserIcon } from 'lucide-react'
 import { Fragment, useCallback, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 const ITEM_CLASSES =
   'cursor-pointer flex items-center gap-2 px-5 py-2 rounded-md'
@@ -13,28 +14,39 @@ export default function Profile(): JSX.Element {
   const { user, logout } = useAuth()
   assertAuthenticated(user)
 
+  const [searchParams, setSearchParams] = useSearchParams()
+
   const tabs = [
     {
+      id: 'user-info',
       title: 'User information',
       icon: UserIcon,
       component: <UserInfoTab />
     },
     {
+      id: 'account',
       title: 'Account',
       component: <AccountTab />,
       icon: SettingsIcon
     }
   ]
 
-  const [activeTab, setActiveTab] = useState(tabs[0].title)
+  const [activeTabId, setActiveTabId] = useState(() => {
+    const tabId = searchParams.get('tab')
+
+    const validTab = tabs.find(({ id }) => id === tabId)
+
+    return validTab?.id ?? tabs[0].id
+  })
 
   const activeTabComponent = useMemo(
-    () => tabs.find(({ title }) => title === activeTab)?.component,
-    [activeTab]
+    () => tabs.find(({ id }) => id === activeTabId)?.component,
+    [activeTabId]
   )
 
-  const handleTabClick = useCallback((title: string) => {
-    setActiveTab(title)
+  const handleTabClick = useCallback((id: string) => {
+    setSearchParams({ tab: id })
+    setActiveTabId(id)
   }, [])
 
   return (
@@ -52,14 +64,14 @@ export default function Profile(): JSX.Element {
         <aside className='rounded-md shadow-md col-span-2'>
           <ul className='text-lg font-semibold space-y-2'>
             {tabs.map((tab) => (
-              <li key={tab.title}>
+              <li key={tab.id}>
                 <button
                   className={`${ITEM_CLASSES} ${
-                    activeTab === tab.title
+                    activeTabId === tab.id
                       ? 'bg-neutral-900 border-l-4 border-blue-500 pointer-events-none'
                       : 'hover:underline'
                   } w-full text-left`}
-                  onClick={() => handleTabClick(tab.title)}
+                  onClick={() => handleTabClick(tab.id)}
                   type='button'
                 >
                   <span className='sr-only'>{tab.title}</span>
