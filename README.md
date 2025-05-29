@@ -8,18 +8,17 @@ The UI is modern and responsive, styled with **Tailwind CSS**.
 
 ## Table of Contents
 
-- [Overview 📋](#quicklink--url-shortener)
+- [📄 Overview](#quicklink--url-shortener)
 
-  - [Table of Contents](#table-of-contents)
-  - [Getting Started 🚀](#getting-started-🚀)
+  - [🚀 Getting Started](#getting-started)
 
-    - [Prerequisites 📋](#prerequisites)
-    - [Installation 🔧](#installation-🔧)
+    - [⚙️ Prerequisites](#prerequisites)
+    - [📦 Installation](#installation)
 
-  - [Built With 🛠️](#built-with-🛠️)
-  - [License 📜](#license-📜)
+  - [🛠️ Built With](#built-with)
+  - [🪪 License](#license)
 
-## Getting Started 🚀
+## Getting Started
 
 ### Prerequisites
 
@@ -27,7 +26,7 @@ The UI is modern and responsive, styled with **Tailwind CSS**.
 - [x] [pnpm](https://pnpm.io) (v10 or above) installed
 - [x] [Visual Studio Code](https://code.visualstudio.com) set up with recommended extensions: ESLint, Prettier, and Tailwind CSS IntelliSense
 
-### Installation 🔧
+### Installation
 
 1. **Clone this repository**:
 
@@ -62,7 +61,7 @@ The UI is modern and responsive, styled with **Tailwind CSS**.
 7. **Access the application**:
    Open your web browser and navigate to `http://localhost:5173` to view the application.
 
-## Built with 🛠️
+## Built with
 
 - [React](https://react.dev/) - A JavaScript library for building user interfaces
 - [Vite](https://vite.dev/) – A fast build tool and development server
@@ -70,6 +69,6 @@ The UI is modern and responsive, styled with **Tailwind CSS**.
 - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapid UI development
 - [pnpm](https://pnpm.io/) - A fast, disk space-efficient package manager
 
-## License 📜
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
