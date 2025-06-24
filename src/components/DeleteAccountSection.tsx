@@ -1,6 +1,11 @@
 import DeleteAccountForm from '@/components/DeleteAccountForm'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle
+} from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
 import useAuth from '@/hooks/useAuth'
 import { assertAuthenticated } from '@/lib/auth/assertAuthenticated'
@@ -102,11 +107,13 @@ export default function DeleteAccountSection() {
           onInteractOutside={(e) => e.preventDefault()}
         >
           <section className='bg-black p-8'>
-            <h4 className='text-2xl font-bold mb-6'>Delete Account</h4>
+            <DialogTitle className='text-2xl font-bold mb-6'>
+              Delete Account
+            </DialogTitle>
 
-            <p className='text-pretty p-1 rounded-md bg-red-800'>
+            <DialogDescription className='text-white text-pretty p-2 rounded-md bg-destructive'>
               This action is not reversible. Please be sure.
-            </p>
+            </DialogDescription>
 
             <Separator className='my-4 bg-neutral-500' />
 
