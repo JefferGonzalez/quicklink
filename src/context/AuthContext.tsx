@@ -20,11 +20,9 @@ export const AuthContext = createContext<AuthContextProps>({
   logout: () => {}
 })
 
-interface AuthProviderProps extends PropsWithChildren {}
+type AuthProviderProps = PropsWithChildren
 
-export default function AuthProvider({
-  children
-}: AuthProviderProps): JSX.Element {
+export default function AuthProvider({ children }: AuthProviderProps) {
   const navigate = useNavigate()
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -61,7 +59,7 @@ export default function AuthProvider({
 
         setSession(data)
         setIsSessionLoading(false)
-      } catch (error) {
+      } catch {
         setIsSessionLoading(false)
       }
     }
@@ -71,12 +69,16 @@ export default function AuthProvider({
 
   const logout = async () => {
     try {
-      isAuthenticated && (await signOut())
+      if (isAuthenticated) {
+        await signOut()
+      }
 
       destroySession()
 
-      isAuthenticated && navigate('/')
-    } catch (error) {
+      if (isAuthenticated) {
+        navigate('/')
+      }
+    } catch {
       showToastError()
     }
   }

@@ -8,7 +8,7 @@ import { PropsWithChildren } from 'react'
 
 interface ButtonProps {
   text: string
-  icon?: JSX.Element
+  icon?: React.ReactNode
   title?: string
   className?: string
 }
@@ -22,12 +22,13 @@ export default function DropdownMenu({
   button,
   className,
   children: items
-}: DropdownMenuProps): JSX.Element {
+}: DropdownMenuProps) {
   const {
     text,
     icon,
     title = text,
-    className: buttonClassName = 'text-neutral-400 hover:text-neutral-300 p-0 size-6'
+    className:
+      buttonClassName = 'text-neutral-400 hover:text-neutral-300 p-0'
   } = button
 
   return (

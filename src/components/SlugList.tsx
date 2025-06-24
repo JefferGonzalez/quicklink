@@ -40,7 +40,7 @@ export default function SlugList() {
       }
 
       window.location.reload()
-    } catch (error) {
+    } catch {
       setLoading(false)
 
       showToastError()
@@ -92,14 +92,16 @@ export default function SlugList() {
         setData({ slugs, info })
 
         setLoading(false)
-      } catch (error) {
+      } catch {
         setLoading(false)
 
         showToastError()
       }
     }
 
-    isAuthenticated && loadSlugs()
+    if (isAuthenticated) {
+      loadSlugs()
+    }
   }, [isAuthenticated, currentPage])
 
   return (

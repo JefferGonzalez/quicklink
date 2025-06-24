@@ -2,7 +2,7 @@ interface LinkProps {
   className: string
 }
 
-export default function Link({ className }: LinkProps): JSX.Element {
+export default function Link({ className }: LinkProps) {
   return (
     <svg
       className={className}

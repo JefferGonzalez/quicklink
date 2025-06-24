@@ -2,7 +2,7 @@ import Waves from '@/components/Waves'
 import LinkIcon from '@/icons/Link'
 import { Fragment } from 'react'
 
-export default function MainAppHeader(): JSX.Element {
+export default function MainAppHeader() {
   return (
     <Fragment>
       <header className='flex items-center gap-x-2'>

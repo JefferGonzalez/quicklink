@@ -18,7 +18,7 @@ export default function SignInMethodsSection() {
           title='Connect GitHub'
           disabled
         >
-          <GitHubIcon />
+          <GitHubIcon className='size-6' />
           <span>Connect GitHub</span>
         </Button>
 

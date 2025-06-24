@@ -17,7 +17,7 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['**/dist', '**/src/components/ui']
+    ignores: ['**/dist']
   },
   ...fixupConfigRules(
     compat.extends(

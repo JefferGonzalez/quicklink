@@ -5,7 +5,7 @@ import { PlusSquareIcon } from 'lucide-react'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Dashboard(): JSX.Element {
+export default function Dashboard() {
   return (
     <Fragment>
       <header className='flex justify-between items-center'>

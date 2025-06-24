@@ -26,7 +26,7 @@ export default function SlugPagination({
   handlePageClick,
   handleNextPage,
   handlePrevPage
-}: SlugPaginationProps): JSX.Element {
+}: SlugPaginationProps) {
   const PAGINATION_ITEMS =
     pages > MAX_PAGES
       ? Array.from(

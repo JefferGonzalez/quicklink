@@ -30,7 +30,7 @@ export default function SlugForm({
   withAccount = false,
   isEdit = false,
   handleSubmit
-}: SlugFormProps): JSX.Element {
+}: SlugFormProps) {
   const handleRandomSlug = () => {
     form.clearErrors('slug')
     form.setValue('slug', RandomSlug())
@@ -128,7 +128,7 @@ export default function SlugForm({
           <FormField
             name='description'
             control={form.control}
-            render={({ field }) => (
+            render={({ field, fieldState }) => (
               <FormItem>
                 <FormLabel>Enter a description (optional):</FormLabel>
                 <FormControl>
@@ -138,6 +138,13 @@ export default function SlugForm({
                     {...field}
                   />
                 </FormControl>
+
+                {fieldState.invalid && (
+                  <AlertWithIcon
+                    text={fieldState.error?.message}
+                    type='destructive'
+                  />
+                )}
               </FormItem>
             )}
           />

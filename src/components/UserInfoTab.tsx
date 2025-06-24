@@ -2,7 +2,7 @@ import ProfileForm from '@/components/ProfileForm'
 import { Separator } from '@/components/ui/separator'
 import { Fragment } from 'react'
 
-export default function UserInfoTab(): JSX.Element {
+export default function UserInfoTab() {
   return (
     <Fragment>
       <h3 className='text-2xl font-bold'>User information</h3>

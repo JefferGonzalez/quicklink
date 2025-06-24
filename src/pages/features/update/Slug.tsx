@@ -15,7 +15,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
-export default function Slug(): JSX.Element {
+export default function Slug() {
   const { logout } = useAuth()
 
   const { id = '' } = useParams()
@@ -57,7 +57,7 @@ export default function Slug(): JSX.Element {
         if (statusCode === 401) logout()
         if (statusCode === 400) {
           for (const { message, path } of errors) {
-            const name = path?.at(0) ?? 'root'
+            const name = path?.[0] ?? 'root'
 
             form.setError(name, {
               type: 'pattern',
@@ -65,12 +65,7 @@ export default function Slug(): JSX.Element {
             })
           }
         }
-        if (statusCode === 409) {
-          form.setError('slug', {
-            type: 'pattern',
-            message: errors.at(0)?.message || 'The slug is already taken.'
-          })
-        }
+
         setLoading(false)
         return
       }
@@ -91,7 +86,7 @@ export default function Slug(): JSX.Element {
           }
         }
       })
-    } catch (error) {
+    } catch {
       setLoading(false)
 
       showToastError()
@@ -114,7 +109,7 @@ export default function Slug(): JSX.Element {
         const { data }: Response = await response.json()
 
         setInfo(data)
-      } catch (error) {
+      } catch {
         showToastError()
       }
     }

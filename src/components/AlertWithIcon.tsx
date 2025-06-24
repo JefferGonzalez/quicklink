@@ -1,22 +1,21 @@
-import { Alert } from '@/components/ui/alert'
+import { Alert, AlertTitle } from '@/components/ui/alert'
 import { AlertTriangleIcon, CheckIcon } from 'lucide-react'
 
-interface AlertIconProps {
-  type: 'destructive' | 'success'
+interface AlertWithIconProps {
+  type: 'destructive' | 'default'
   text?: string
 }
 
-export default function AlertWithIcon({ type, text }: AlertIconProps) {
-  const variant = type === 'destructive' ? 'destructive' : 'default'
+const icons = {
+  destructive: <AlertTriangleIcon />,
+  default: <CheckIcon />
+}
 
-  const className = 'bg-transparent border-green-800 text-green-800'
-
+export default function AlertWithIcon({ type, text }: AlertWithIconProps) {
   return (
-    <Alert variant={variant} className={variant === 'default' ? className : ''}>
-      <span className='flex gap-2'>
-        {type === 'destructive' ? <AlertTriangleIcon /> : <CheckIcon />}
-        {text}
-      </span>
+    <Alert variant={type}>
+      {icons[type]}
+      <AlertTitle>{text}</AlertTitle>
     </Alert>
   )
 }

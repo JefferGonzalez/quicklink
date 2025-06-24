@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
-export default function NavBar(): JSX.Element {
+export default function NavBar() {
   const { isAuthenticated, isSessionLoading, user, logout } = useAuth()
 
   const { pathname } = useLocation()

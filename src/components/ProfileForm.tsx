@@ -18,7 +18,7 @@ import { LoaderIcon, SaveIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
-export default function ProfileForm(): JSX.Element {
+export default function ProfileForm() {
   const { user } = useAuth()
   assertAuthenticated(user)
 
@@ -46,11 +46,10 @@ export default function ProfileForm(): JSX.Element {
         const statusCode = response.status
 
         if (statusCode === 400) {
-          const { errors }: { errors: Errors<Profile>[] } =
-            await response.json()
+          const { errors }: { errors: Errors<Profile>[] } = await response.json()
 
           for (const { message, path } of errors) {
-            const name = path?.at(0) ?? 'root'
+            const name = path?.[0] ?? 'root'
 
             form.setError(name, {
               type: 'pattern',
@@ -63,7 +62,7 @@ export default function ProfileForm(): JSX.Element {
       }
 
       window.location.reload()
-    } catch (error) {
+    } catch {
       setLoading(false)
     }
   }

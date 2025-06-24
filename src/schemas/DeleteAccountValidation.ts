@@ -16,6 +16,7 @@ export const createDeleteAccountValidationSchema = (username: string) =>
       })
   })
 
-export type DeleteAccountValidation = z.infer<
-  ReturnType<typeof createDeleteAccountValidationSchema>
->
+export type DeleteAccountValidation = {
+  username: string
+  text: string
+}

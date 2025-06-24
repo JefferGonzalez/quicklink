@@ -10,7 +10,7 @@ import { useSearchParams } from 'react-router-dom'
 const ITEM_CLASSES =
   'cursor-pointer flex items-center gap-2 px-5 py-2 rounded-md'
 
-export default function Profile(): JSX.Element {
+export default function Profile() {
   const { user, logout } = useAuth()
   assertAuthenticated(user)
 

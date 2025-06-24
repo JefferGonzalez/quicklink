@@ -8,7 +8,7 @@ import { LoaderIcon } from 'lucide-react'
 import { Fragment, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
-export default function Auth(): JSX.Element {
+export default function Auth() {
   const { isAuthenticated, isSessionLoading, setIsSessionLoading } = useAuth()
 
   const [loadingButton, setLoadingButton] = useState<
@@ -41,7 +41,7 @@ export default function Auth(): JSX.Element {
           (loadingButton === 'github' || loadingButton === null) ? (
             <LoaderIcon className='transition-all duration-300 animate-spin' />
           ) : (
-            <GitHubIcon />
+            <GitHubIcon className='size-6' />
           )}
           <span className='sr-only'>Sign in with GitHub</span>
           Sign in with GitHub

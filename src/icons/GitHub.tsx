@@ -2,7 +2,7 @@ interface GitHubProps {
   className?: string
 }
 
-export default function GitHub({ className }: GitHubProps): JSX.Element {
+export default function GitHub({ className }: GitHubProps) {
   return (
     <svg
       width='24'

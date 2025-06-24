@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom'
 
 export default function Command() {
   const navigate = useNavigate()
-  
+
   const { isAuthenticated } = useAuth()
 
   const createSlugPage = isAuthenticated
@@ -29,7 +29,10 @@ export default function Command() {
 
   const [open, setOpen] = useState(false)
 
-  const handleNavigate = (path: string) => navigate(path)
+  const handleNavigate = (path: string) => {
+    setOpen(false)
+    navigate(path)
+  }
 
   const handleGoToRepository = () => {
     window.open(

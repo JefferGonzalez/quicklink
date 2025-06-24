@@ -5,7 +5,7 @@ import { RocketIcon, StarIcon } from 'lucide-react'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Landing(): JSX.Element {
+export default function Landing() {
   const { isAuthenticated } = useAuth()
 
   const to = isAuthenticated ? '/dashboard' : '/getting-started'

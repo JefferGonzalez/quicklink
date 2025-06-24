@@ -2,7 +2,7 @@ interface GoogleProps {
   className?: string
 }
 
-export default function Google({ className }: GoogleProps): JSX.Element {
+export default function Google({ className }: GoogleProps) {
   return (
     <svg
       className={className}

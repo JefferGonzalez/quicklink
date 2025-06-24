@@ -15,7 +15,7 @@ import { Fragment, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
-export default function DeleteAccountSection(): JSX.Element {
+export default function DeleteAccountSection() {
   const { logout, user } = useAuth()
   assertAuthenticated(user)
 
@@ -52,7 +52,7 @@ export default function DeleteAccountSection(): JSX.Element {
       }
 
       setLoading(false)
-    } catch (error) {
+    } catch {
       setLoading(false)
 
       showToastError()

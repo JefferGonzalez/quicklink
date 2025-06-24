@@ -3,7 +3,7 @@ import SignInMethodsSection from '@/components/SignInMethodsSection'
 import { Separator } from '@/components/ui/separator'
 import { Fragment } from 'react'
 
-export default function AccountTab(): JSX.Element {
+export default function AccountTab() {
   return (
     <Fragment>
       <h3 className='text-2xl font-bold'>Account</h3>

@@ -3,7 +3,7 @@ import SlugForm from '@/components/SlugForm'
 import { Button } from '@/components/ui/button'
 import useAuth from '@/hooks/useAuth'
 import { UrlSlug, UrlSlugSchema } from '@/schemas/UrlSlug'
-import { Response } from '@/types'
+import { Errors } from '@/types'
 import { showToastError } from '@/utils/errors'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
-export default function GettingStarted(): JSX.Element {
+export default function GettingStarted() {
   const { isAuthenticated } = useAuth()
 
   const [loading, setLoading] = useState(false)
@@ -46,13 +46,13 @@ export default function GettingStarted(): JSX.Element {
         body: JSON.stringify(values)
       })
 
-      const { errors }: Response = await response.json()
+      const { errors }: { errors: Errors<UrlSlug>[] } = await response.json()
 
       if (!response.ok) {
         const statusCode = response.status
         if (statusCode === 400) {
           for (const { message, path } of errors) {
-            const name = path?.at(0) ?? 'root'
+            const name = path?.[0] ?? 'root'
 
             form.setError(name, {
               type: 'pattern',
@@ -64,7 +64,7 @@ export default function GettingStarted(): JSX.Element {
         if (statusCode === 409) {
           form.setError('slug', {
             type: 'pattern',
-            message: errors.at(0)?.message || 'The slug is already taken.'
+            message: errors?.[0]?.message || 'The slug is already taken.'
           })
         }
 
@@ -91,7 +91,7 @@ export default function GettingStarted(): JSX.Element {
           }
         }
       })
-    } catch (error) {
+    } catch {
       setLoading(false)
 
       showToastError()

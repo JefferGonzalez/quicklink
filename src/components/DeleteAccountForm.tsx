@@ -25,7 +25,7 @@ export default function DeleteAccountForm({
   loading,
   handleSubmit,
   handleCancel
-}: SlugFormProps): JSX.Element {
+}: SlugFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
