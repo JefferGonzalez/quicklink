@@ -1,19 +1,21 @@
-import { API_URL, APP_URL } from '@/Config'
+import { APP_URL } from '@/Config'
 import useAuth from '@/hooks/useAuth'
 import SlugForm from '@/modules/slug/components/SlugForm'
 import { Slug, SlugSchema } from '@/modules/slug/schemas/Slug'
+import { createSlug } from '@/modules/slug/services/Slug'
 import { Errors } from '@/shared/types/errors'
-import { Button } from '@/shared/ui'
+import { Button, Separator } from '@/shared/ui'
 import { showToastError } from '@/shared/utils/showToastError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
+import { UndoDotIcon } from 'lucide-react'
 import { Fragment, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
-export default function GettingStarted() {
-  const { isAuthenticated } = useAuth()
+export default function Create() {
+  const { logout } = useAuth()
 
   const [loading, setLoading] = useState(false)
 
@@ -38,18 +40,13 @@ export default function GettingStarted() {
     }
 
     try {
-      const response = await fetch(`${API_URL}/slug`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(values)
-      })
+      const response = await createSlug(values)
 
-      const { errors }: { errors: Errors<Slug>[] } = await response.json()
+      const { errors = [] }: { errors?: Errors<Slug>[] } = await response.json()
 
       if (!response.ok) {
         const statusCode = response.status
+        if (statusCode === 401) logout()
         if (statusCode === 400) {
           for (const { message, path } of errors) {
             const name = path?.[0] ?? 'root'
@@ -60,14 +57,12 @@ export default function GettingStarted() {
             })
           }
         }
-
         if (statusCode === 409) {
           form.setError('slug', {
             type: 'pattern',
             message: errors?.[0]?.message || 'The slug is already taken.'
           })
         }
-
         setLoading(false)
         return
       }
@@ -83,7 +78,6 @@ export default function GettingStarted() {
       })
 
       toast('🎉 Slug created successfully!', {
-        duration: 10000,
         action: {
           label: 'Open slug',
           onClick: () => {
@@ -100,36 +94,27 @@ export default function GettingStarted() {
 
   return (
     <Fragment>
-      <section className='py-10'>
-        <SlugForm form={form} loading={loading} handleSubmit={handleSubmit} />
-      </section>
+      <header className='flex justify-between items-center'>
+        <h2 className='text-2xl md:text-4xl font-extrabold mt-2'>
+          Create a new slug
+        </h2>
+        <Link to='/dashboard'>
+          <Button className='flex gap-2' title='Back to dashboard'>
+            <span className='sr-only'>Back to dashboard</span>
+            <UndoDotIcon />
+            <span className='hidden sm:inline-block'>Back to dashboard</span>
+          </Button>
+        </Link>
+      </header>
+      <Separator className='my-4' />
 
-      <section className='flex flex-col items-center text-neutral-400 text-pretty space-y-3'>
-        {!isAuthenticated ? (
-          <Fragment>
-            <p>
-              You can create a short URL without an account, but it will be
-              deleted after 1 hour.
-            </p>
-
-            <p>
-              If you want keep your links, create a free account and discover
-              more of our features!
-            </p>
-
-            <Link to='/auth' className='text-sm' title='Sign in for free'>
-              <Button>
-                <span className='sr-only'>Sign in for free</span>
-                Sign in for free
-              </Button>
-            </Link>
-          </Fragment>
-        ) : (
-          <p>
-            Remember that you can create a temporary slug and it will be deleted
-            after 1 hour.
-          </p>
-        )}
+      <section>
+        <SlugForm
+          form={form}
+          handleSubmit={handleSubmit}
+          loading={loading}
+          withAccount
+        />
       </section>
     </Fragment>
   )

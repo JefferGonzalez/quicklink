@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/ui'
 import { Fragment } from 'react'
 
 export default function NotFound() {

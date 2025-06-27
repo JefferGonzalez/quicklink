@@ -1,11 +1,11 @@
 import { API_URL } from '@/Config'
-import Root from '@/Root'
-import Layout from '@/components/Layout'
-import AuthProvider from '@/context/AuthContext'
 import NotFound from '@/pages/NotFound'
 import Slug from '@/pages/Slug'
-import { Response } from '@/types'
+import AuthProvider from '@/providers/AuthProvider'
+import Root from '@/Root'
+import Layout from '@/shared/components/Layout'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { SlugEntity } from './modules/slug/entities/Slug'
 
 const router = createBrowserRouter([
   {
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
 
           if (!response.ok) throw new Error('No data found.')
 
-          const { data }: Response = await response.json()
+          const { data }: { data?: SlugEntity } = await response.json()
 
           if (!data) throw new Error('No data found.')
 

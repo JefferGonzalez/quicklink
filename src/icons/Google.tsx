@@ -1,8 +1,8 @@
-interface GoogleProps {
+interface Props {
   className?: string
 }
 
-export default function Google({ className }: GoogleProps) {
+export default function Google({ className }: Props) {
   return (
     <svg
       className={className}

@@ -1,8 +1,8 @@
-interface GitHubProps {
+interface Props {
   className?: string
 }
 
-export default function GitHub({ className }: GitHubProps) {
+export default function GitHub({ className }: Props) {
   return (
     <svg
       width='24'

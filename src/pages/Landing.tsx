@@ -1,6 +1,6 @@
-import MainAppHeader from '@/components/MainAppHeader'
-import { Button } from '@/components/ui/button'
 import useAuth from '@/hooks/useAuth'
+import MainAppHeader from '@/shared/components/MainAppHeader'
+import { Button } from '@/shared/ui'
 import { RocketIcon, StarIcon } from 'lucide-react'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'

@@ -1,5 +1,5 @@
-import LoadingIndicator from '@/components/LoadingIndicator'
-import AuthProvider from '@/context/AuthContext'
+import AuthProvider from '@/providers/AuthProvider'
+import LoadingIndicator from '@/shared/components/LoadingIndicator'
 
 export default function Slug() {
   return (
