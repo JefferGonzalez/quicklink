@@ -3,9 +3,10 @@ import useAuth from '@/hooks/useAuth'
 import SlugForm from '@/modules/slug/components/SlugForm'
 import { SlugEntity } from '@/modules/slug/entities/Slug'
 import { Slug, SlugSchema } from '@/modules/slug/schemas/Slug'
-import { getSlug, updateSlug } from '@/modules/slug/services/Slug'
-import { Errors } from '@/shared/types/errors'
+import { getSlugById, updateSlug } from '@/modules/slug/use-cases'
+import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Button, Separator } from '@/shared/ui'
+import { setFormErrors } from '@/shared/utils/setFormErrors'
 import { showToastError } from '@/shared/utils/showToastError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
@@ -38,6 +39,7 @@ export default function Update() {
 
   const handleSubmit = async (values: Slug) => {
     setLoading(true)
+
     if (values.url === values.slug) {
       form.setError('slug', {
         type: 'pattern',
@@ -50,27 +52,16 @@ export default function Update() {
     try {
       const response = await updateSlug(id, values)
 
-      const { errors = [] }: { errors?: Errors<Slug>[] } = await response.json()
-
       if (!response.ok) {
-        const statusCode = response.status
-        if (statusCode === 401) logout()
-        if (statusCode === 400) {
-          for (const { message, path } of errors) {
-            const name = path?.[0] ?? 'root'
+        const { errors, status } = response
 
-            form.setError(name, {
-              type: 'pattern',
-              message
-            })
-          }
-        }
+        if (status === HttpStatus.Unauthorized) return logout()
+        if (status === HttpStatus.BadRequest) return setFormErrors(form, errors)
 
-        setLoading(false)
         return
       }
 
-      setLoading(false)
+      form.reset()
 
       confetti({
         particleCount: 200,
@@ -82,33 +73,35 @@ export default function Update() {
         action: {
           label: 'Open slug',
           onClick: () => {
-            window.open(`${APP_URL}/s/${values.slug}`, '_blank')
+            window.open(`${APP_URL}/s/${response.slug}`, '_blank')
           }
         }
       })
     } catch {
-      setLoading(false)
-
       showToastError()
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
     const loadSlug = async () => {
       try {
-        const response = await getSlug(id)
+        const response = await getSlugById(id)
 
         if (!response.ok) {
           const statusCode = response.status
 
-          if (statusCode === 404 || statusCode === 400) {
+          if (
+            [HttpStatus.NotFound, HttpStatus.BadRequest].includes(statusCode)
+          ) {
             window.location.href = '/dashboard'
           }
+
+          return
         }
 
-        const { data }: { data: SlugEntity } = await response.json()
-
-        setInfo(data)
+        setInfo(response.data)
       } catch {
         showToastError()
       }

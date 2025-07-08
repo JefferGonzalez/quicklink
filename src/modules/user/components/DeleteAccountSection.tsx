@@ -4,8 +4,9 @@ import {
   getDeleteAccountSchema,
   type DeleteAccount
 } from '@/modules/user/schemas/DeleteAccount'
-import { deleteUserAccount, signOut } from '@/modules/user/services/User'
+import { deleteAccount, signOut } from '@/modules/user/use-cases'
 import { assertAuthenticated } from '@/modules/user/utils/assertAuthenticated'
+import { HttpStatus } from '@/shared/constants/httpStatus'
 import {
   Button,
   Dialog,
@@ -39,28 +40,28 @@ export default function DeleteAccountSection() {
     setLoading(true)
 
     try {
-      const response = await deleteUserAccount()
+      const { ok, status } = await deleteAccount()
 
-      const statusCode = response.status
-      if (!response.ok) {
-        if (statusCode === 401) logout()
+      if (!ok) {
+        if (status === HttpStatus.Unauthorized) return logout()
+        if (status === HttpStatus.NotFound) {
+          await signOut()
+        }
 
-        if (statusCode === 404) await signOut()
+        return
       }
 
-      if (statusCode === 204) {
+      if (status === HttpStatus.NoContent) {
         setShowDisclaimer(false)
 
         toast('🥲 Account deleted successfully. Redirecting...')
 
-        setTimeout(() => logout(), 3000)
+        setTimeout(logout, 3000)
       }
-
-      setLoading(false)
     } catch {
-      setLoading(false)
-
       showToastError()
+    } finally {
+      setLoading(false)
     }
   }
 

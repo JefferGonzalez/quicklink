@@ -18,8 +18,8 @@ export const getSlug = (id: string) => {
     credentials: 'include'
   })
 }
-
-export const createSlug = (slug: Slug) => {
+  
+export const postSlug = (slug: Slug) => {
   return fetch(`${API_URL}/slugs`, {
     method: 'POST',
     headers: {
@@ -30,7 +30,17 @@ export const createSlug = (slug: Slug) => {
   })
 }
 
-export const updateSlug = (slugId: string, slug: Slug) => {
+export const postFreeSlug = (slug: Slug) => {
+  return fetch(`${API_URL}/slug`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(slug)
+  })
+}
+
+export const patchSlug = (slugId: string, slug: Slug) => {
   return fetch(`${API_URL}/slugs/${slugId}`, {
     method: 'PATCH',
     headers: {

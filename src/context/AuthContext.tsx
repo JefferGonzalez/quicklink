@@ -1,8 +1,8 @@
-import { User } from '@/modules/user/entities/User'
+import { UserEntity } from '@/modules/user/entities/User'
 import { createContext } from 'react'
 
 interface AuthContextProps {
-  user: User | undefined
+  user: UserEntity | undefined
   isSessionLoading: boolean
   isAuthenticated: boolean
   setIsSessionLoading: (value: boolean) => void

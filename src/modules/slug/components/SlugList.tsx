@@ -1,8 +1,9 @@
 import useAuth from '@/hooks/useAuth'
-import { SlugsResponse } from '@/modules/slug/adapters/response'
 import SlugCard from '@/modules/slug/components/SlugCard'
 import SlugPagination from '@/modules/slug/components/SlugPagination'
-import { deleteSlug, getSlugs } from '@/modules/slug/services/Slug'
+import { SlugsResponse } from '@/modules/slug/types/response'
+import { getAllSlugs, removeSlug } from '@/modules/slug/use-cases'
+import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Skeleton } from '@/shared/ui'
 import { showToastError } from '@/shared/utils/showToastError'
 import { Fragment, useEffect, useState } from 'react'
@@ -25,25 +26,27 @@ export default function SlugList() {
 
   const handleDelete = async (id: string) => {
     setLoading(true)
+
     try {
-      const response = await deleteSlug(id)
+      const response = await removeSlug(id)
 
       if (!response.ok) {
         const statusCode = response.status
 
-        if (statusCode === 401) logout()
-        if (statusCode === 404) {
+        if (statusCode === HttpStatus.Unauthorized) return logout()
+
+        if (statusCode === HttpStatus.NotFound) {
           toast('🙃 Slug not found, please refresh the page')
+          return
         }
-        setLoading(false)
+
         return
       }
 
-      window.location.reload()
     } catch {
-      setLoading(false)
-
       showToastError()
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -78,22 +81,18 @@ export default function SlugList() {
   useEffect(() => {
     const loadSlugs = async () => {
       try {
-        const response = await getSlugs(currentPage)
+        const response = await getAllSlugs(currentPage)
 
         if (!response.ok) {
-          if (response.status === 401) logout()
+          if (response.status === HttpStatus.Unauthorized) logout()
           return
         }
 
-        const slugs: SlugsResponse = await response.json()
-
-        setSlugs(slugs)
-
-        setLoading(false)
+        setSlugs(response.data)
       } catch {
-        setLoading(false)
-
         showToastError()
+      } finally {
+        setLoading(false)
       }
     }
 

@@ -1,13 +1,13 @@
 import { API_URL } from '@/Config'
-import { Profile } from '@/modules/user/schemas/Profile'
+import { User } from '@/modules/user/schemas/User'
 
-export const getUser = () => {
+export const getUserProfile = () => {
   return fetch(`${API_URL}/users/profile`, {
     credentials: 'include'
   })
 }
 
-export const updateUserProfile = (data: Profile) => {
+export const patchUserProfile = (data: User) => {
   return fetch(`${API_URL}/users/profile`, {
     method: 'PATCH',
     headers: {
@@ -18,14 +18,14 @@ export const updateUserProfile = (data: Profile) => {
   })
 }
 
-export const deleteUserAccount = () => {
+export const deleteUserProfile = () => {
   return fetch(`${API_URL}/users/profile`, {
     method: 'DELETE',
     credentials: 'include'
   })
 }
 
-export const signOut = () => {
+export const getLogout = () => {
   return fetch(`${API_URL}/auth/logout`, {
     credentials: 'include'
   })

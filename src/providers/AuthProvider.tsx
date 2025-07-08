@@ -1,6 +1,7 @@
 import { AuthContext } from '@/context/AuthContext'
-import { User } from '@/modules/user/entities/User'
-import { getUser, signOut } from '@/modules/user/services/User'
+import { UserEntity } from '@/modules/user/entities/User'
+import { loadUserProfile, signOut } from '@/modules/user/use-cases'
+import { HttpStatus } from '@/shared/constants/httpStatus'
 import { showToastError } from '@/shared/utils/showToastError'
 import { PropsWithChildren, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -10,14 +11,14 @@ export default function AuthProvider({ children }: PropsWithChildren) {
 
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
-  const [user, setUser] = useState<User | undefined>()
+  const [user, setUser] = useState<UserEntity | undefined>()
 
   const destroySession = () => {
     setIsAuthenticated(false)
     setUser(undefined)
   }
 
-  const setSession = (user: User) => {
+  const setSession = (user: UserEntity) => {
     setIsAuthenticated(true)
     setUser(user)
   }
@@ -25,24 +26,23 @@ export default function AuthProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     const loadSession = async () => {
       try {
-        const response = await getUser()
+        const response = await loadUserProfile()
 
         if (!response.ok) {
-          const statusCode = response.status
+          const { status } = response
 
-          if (statusCode === 401) logout()
+          if (status === HttpStatus.Unauthorized) return logout()
+          if (status === HttpStatus.NotFound) {
+            await signOut()
+          }
 
-          if (statusCode === 404) await signOut()
-
-          setIsSessionLoading(false)
           return
         }
 
-        const { data }: { data: User } = await response.json()
-
-        setSession(data)
-        setIsSessionLoading(false)
+        setSession(response.data)
       } catch {
+        showToastError()
+      } finally {
         setIsSessionLoading(false)
       }
     }

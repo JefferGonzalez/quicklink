@@ -2,9 +2,10 @@ import { APP_URL } from '@/Config'
 import useAuth from '@/hooks/useAuth'
 import SlugForm from '@/modules/slug/components/SlugForm'
 import { Slug, SlugSchema } from '@/modules/slug/schemas/Slug'
-import { createSlug } from '@/modules/slug/services/Slug'
-import { Errors } from '@/shared/types/errors'
+import { createSlug } from '@/modules/slug/use-cases'
+import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Button, Separator } from '@/shared/ui'
+import { setFormErrors } from '@/shared/utils/setFormErrors'
 import { showToastError } from '@/shared/utils/showToastError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import confetti from 'canvas-confetti'
@@ -30,6 +31,7 @@ export default function Create() {
 
   const handleSubmit = async (values: Slug) => {
     setLoading(true)
+
     if (values.url === values.slug) {
       form.setError('slug', {
         type: 'pattern',
@@ -42,34 +44,18 @@ export default function Create() {
     try {
       const response = await createSlug(values)
 
-      const { errors = [] }: { errors?: Errors<Slug>[] } = await response.json()
-
       if (!response.ok) {
-        const statusCode = response.status
-        if (statusCode === 401) logout()
-        if (statusCode === 400) {
-          for (const { message, path } of errors) {
-            const name = path?.[0] ?? 'root'
+        const { errors, status } = response
 
-            form.setError(name, {
-              type: 'pattern',
-              message
-            })
-          }
-        }
-        if (statusCode === 409) {
-          form.setError('slug', {
-            type: 'pattern',
-            message: errors?.[0]?.message || 'The slug is already taken.'
-          })
-        }
-        setLoading(false)
+        if (status === HttpStatus.Unauthorized) return logout()
+        if (status === HttpStatus.BadRequest) return setFormErrors(form, errors)
+        if (status === HttpStatus.Conflict)
+          return setFormErrors(form, errors, 'slug')
+
         return
       }
 
       form.reset()
-
-      setLoading(false)
 
       confetti({
         particleCount: 200,
@@ -81,14 +67,14 @@ export default function Create() {
         action: {
           label: 'Open slug',
           onClick: () => {
-            window.open(`${APP_URL}/s/${values.slug}`, '_blank')
+            window.open(`${APP_URL}/s/${response.slug}`, '_blank')
           }
         }
       })
     } catch {
-      setLoading(false)
-
       showToastError()
+    } finally {
+      setLoading(false)
     }
   }
 

@@ -1,9 +1,9 @@
 import useAuth from '@/hooks/useAuth'
-import { Profile, ProfileSchema } from '@/modules/user/schemas/Profile'
-import { updateUserProfile } from '@/modules/user/services/User'
+import { User, UserSchema } from '@/modules/user/schemas/User'
+import { updateUser } from '@/modules/user/use-cases'
 import { assertAuthenticated } from '@/modules/user/utils/assertAuthenticated'
 import AlertWithIcon from '@/shared/components/AlertWithIcon'
-import { Errors } from '@/shared/types/errors'
+import { HttpStatus } from '@/shared/constants/httpStatus'
 import {
   Button,
   Form,
@@ -13,6 +13,8 @@ import {
   FormLabel,
   Input
 } from '@/shared/ui'
+import { setFormErrors } from '@/shared/utils/setFormErrors'
+import { showToastError } from '@/shared/utils/showToastError'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { LoaderIcon, SaveIcon } from 'lucide-react'
 import { useState } from 'react'
@@ -24,8 +26,8 @@ export default function ProfileForm() {
 
   const [loading, setLoading] = useState(false)
 
-  const form = useForm<Profile>({
-    resolver: zodResolver(ProfileSchema),
+  const form = useForm<User>({
+    resolver: zodResolver(UserSchema),
     defaultValues: {
       name: '',
       username: ''
@@ -36,34 +38,26 @@ export default function ProfileForm() {
     }
   })
 
-  const handleSubmit = async (values: Profile) => {
+  const handleSubmit = async (values: User) => {
     setLoading(true)
 
     try {
-      const response = await updateUserProfile(values)
+      const response = await updateUser(values)
 
       if (!response.ok) {
-        const statusCode = response.status
+        const { status, errors } = response
 
-        if (statusCode === 400) {
-          const { errors }: { errors: Errors<Profile>[] } =
-            await response.json()
-
-          for (const { message, path } of errors) {
-            const name = path?.[0] ?? 'root'
-
-            form.setError(name, {
-              type: 'pattern',
-              message
-            })
-          }
+        if (status === HttpStatus.BadRequest) {
+          setFormErrors(form, errors)
         }
-        setLoading(false)
+
         return
       }
 
       window.location.reload()
     } catch {
+      showToastError()
+    } finally {
       setLoading(false)
     }
   }
