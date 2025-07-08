@@ -13,12 +13,16 @@ export const getSlugs = (page = 0) => {
   })
 }
 
-export const getSlug = (id: string) => {
+export const getSlugWithAuth = (id: string) => {
   return fetch(`${API_URL}/slugs/${id}`, {
     credentials: 'include'
   })
 }
-  
+
+export const getSlug = (id: string) => {
+  return fetch(`${API_URL}/slug/${id}`)
+}
+
 export const postSlug = (slug: Slug) => {
   return fetch(`${API_URL}/slugs`, {
     method: 'POST',

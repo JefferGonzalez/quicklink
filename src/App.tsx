@@ -1,5 +1,4 @@
-import { API_URL } from '@/Config'
-import { SlugEntity } from '@/modules/slug/entities/Slug'
+import { getURLBySlug } from '@/modules/slug/use-cases'
 import NotFound from '@/pages/NotFound'
 import Slug from '@/pages/Slug'
 import AuthProvider from '@/providers/AuthProvider'
@@ -24,13 +23,13 @@ const router = createBrowserRouter([
         path: '',
         element: <Slug />,
         loader: async ({ params: { slug } }) => {
-          const response = await fetch(`${API_URL}/slug/${slug}`)
+          if (!slug) throw new Error('Slug is required.')
+
+          const response = await getURLBySlug(slug)
 
           if (!response.ok) throw new Error('No data found.')
 
-          const { data }: { data?: SlugEntity } = await response.json()
-
-          if (!data) throw new Error('No data found.')
+          const { data } = response
 
           window.location.href = data.url
           return null

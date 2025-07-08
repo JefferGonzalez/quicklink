@@ -42,7 +42,7 @@ export default function Update() {
 
     if (values.url === values.slug) {
       form.setError('slug', {
-        type: 'pattern',
+        type: 'manual',
         message: 'The slug cannot be the same as the URL.'
       })
       setLoading(false)
