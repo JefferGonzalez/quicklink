@@ -42,7 +42,6 @@ export default function SlugList() {
 
         return
       }
-
     } catch {
       showToastError()
     } finally {

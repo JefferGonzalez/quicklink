@@ -12,9 +12,10 @@ import {
   FormLabel,
   Input
 } from '@/shared/ui'
+import { QRCode } from '@/shared/utils/QRCode'
 import { LoaderIcon, RocketIcon, ShuffleIcon } from 'lucide-react'
+import { Suspense } from 'react'
 import { UseFormReturn } from 'react-hook-form'
-import QRCode from 'react-qr-code'
 
 interface Props {
   form: UseFormReturn<Slug>
@@ -41,7 +42,7 @@ export default function SlugForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
-        <section className='flex gap-x-2'>
+        <section className='flex items-center justify-center gap-x-2'>
           <FormField
             name='url'
             control={form.control}
@@ -71,13 +72,19 @@ export default function SlugForm({
             form.watch('url') &&
             !form.getFieldState('url').invalid && (
               <picture title='QR Code'>
-                <QRCode
-                  size={100}
-                  bgColor='$000'
-                  fgColor='#FFF'
-                  level='H'
-                  value={form.getValues('url')}
-                />
+                <Suspense
+                  fallback={
+                    <div className='animate-spin rounded-full border-4 border-primary border-t-transparent h-12 w-12' />
+                  }
+                >
+                  <QRCode
+                    size={100}
+                    bgColor='$000'
+                    fgColor='#FFF'
+                    level='H'
+                    value={form.getValues('url')}
+                  />
+                </Suspense>
               </picture>
             )}
         </section>

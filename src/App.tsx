@@ -1,11 +1,11 @@
 import { API_URL } from '@/Config'
+import { SlugEntity } from '@/modules/slug/entities/Slug'
 import NotFound from '@/pages/NotFound'
 import Slug from '@/pages/Slug'
 import AuthProvider from '@/providers/AuthProvider'
 import Root from '@/Root'
 import Layout from '@/shared/components/Layout'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-import { SlugEntity } from './modules/slug/entities/Slug'
 
 const router = createBrowserRouter([
   {

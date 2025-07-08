@@ -6,9 +6,9 @@ import { createFreeSlug } from '@/modules/slug/use-cases'
 import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Button } from '@/shared/ui'
 import { setFormErrors } from '@/shared/utils/setFormErrors'
+import { showConfetti } from '@/shared/utils/showConfetti'
 import { showToastError } from '@/shared/utils/showToastError'
 import { zodResolver } from '@hookform/resolvers/zod'
-import confetti from 'canvas-confetti'
 import { Fragment, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -55,11 +55,7 @@ export default function GettingStarted() {
 
       form.reset()
 
-      confetti({
-        particleCount: 200,
-        spread: 70,
-        origin: { y: 0.6 }
-      })
+      await showConfetti()
 
       toast('🎉 Slug created successfully!', {
         duration: 10000,

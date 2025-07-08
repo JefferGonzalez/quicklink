@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel
 } from '@/shared/ui'
+import { QRCode } from '@/shared/utils/QRCode'
 import {
   CopyIcon,
   PencilLineIcon,
@@ -17,8 +18,7 @@ import {
   SettingsIcon,
   TrashIcon
 } from 'lucide-react'
-import { Fragment, useState } from 'react'
-import QRCode from 'react-qr-code'
+import { Fragment, Suspense, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
@@ -171,13 +171,19 @@ export default function SlugCard({
             </DialogDescription>
 
             <picture title='QR Code'>
-              <QRCode
-                id={`qr-code-${slug}`}
-                bgColor='$000'
-                fgColor='#FFF'
-                level='H'
-                value={url}
-              />
+              <Suspense
+                fallback={
+                  <div className='animate-spin rounded-full border-4 border-primary border-t-transparent h-12 w-12' />
+                }
+              >
+                <QRCode
+                  id={`qr-code-${slug}`}
+                  bgColor='$000'
+                  fgColor='#FFF'
+                  level='H'
+                  value={url}
+                />
+              </Suspense>
             </picture>
 
             <Button

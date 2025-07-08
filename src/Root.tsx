@@ -1,15 +1,17 @@
-import CreateSlug from '@/modules/slug/pages/Create'
-import Dashboard from '@/modules/slug/pages/Dashboard'
-import EditSlug from '@/modules/slug/pages/Update'
-import Profile from '@/modules/user/pages/Profile'
 import Auth from '@/pages/Auth'
-import GettingStarted from '@/pages/GettingStarted'
 import Landing from '@/pages/Landing'
 import NotFound from '@/pages/NotFound'
 import AuthProvider from '@/providers/AuthProvider'
 import Layout from '@/shared/components/Layout'
 import ProtectedRoute from '@/shared/components/ProtectedRoute'
+import { lazy } from 'react'
 import { Route, Routes } from 'react-router-dom'
+
+const CreateSlug = lazy(() => import('@/modules/slug/pages/Create'))
+const Dashboard = lazy(() => import('@/modules/slug/pages/Dashboard'))
+const EditSlug = lazy(() => import('@/modules/slug/pages/Update'))
+const GettingStarted = lazy(() => import('@/pages/GettingStarted'))
+const Profile = lazy(() => import('@/modules/user/pages/Profile'))
 
 export default function Root() {
   return (
