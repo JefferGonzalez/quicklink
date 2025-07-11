@@ -1,3 +1,4 @@
+import useTheme from '@/hooks/useTheme'
 import Command from '@/shared/components/Command'
 import Footer from '@/shared/components/Footer'
 import NavBar from '@/shared/components/NavBar'
@@ -7,6 +8,8 @@ import { Outlet } from 'react-router-dom'
 import { Toaster } from 'sonner'
 
 export default function Layout() {
+  const { theme } = useTheme()
+
   return (
     <Fragment>
       <main className='container m-auto px-4 max-w-[1100px]'>
@@ -24,7 +27,7 @@ export default function Layout() {
 
       <Command />
 
-      <Toaster theme='dark' duration={2500} />
+      <Toaster theme={theme} duration={2500} />
 
       <Analytics />
     </Fragment>

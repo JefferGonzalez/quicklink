@@ -68,7 +68,7 @@ export default function SlugCard({
 
   return (
     <Fragment>
-      <article className='bg-neutral-900 border-neutral-950 rounded-lg p-4'>
+      <article className='bg-neutral-100 border border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800 rounded-lg p-4'>
         <header className='flex justify-between items-center'>
           <div className='flex items-center gap-x-2'>
             <a
@@ -80,11 +80,11 @@ export default function SlugCard({
             >
               {`/s/${slug}`}
             </a>
+
             {ALLOW_COPY && (
               <Button
                 title='Copy to clipboard'
                 onClick={() => handleCopy(slug)}
-                className='hover:bg-neutral-800 focus:bg-neutral-800'
                 size='icon'
               >
                 <span className='sr-only'>Copy to clipboard</span>
@@ -98,12 +98,8 @@ export default function SlugCard({
               text: 'Settings',
               icon: <SettingsIcon />
             }}
-            className='bg-black text-neutral-100'
           >
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
-              onClick={() => setShowQrCode(true)}
-            >
+            <DropdownMenuItem onClick={() => setShowQrCode(true)}>
               <QrCodeIcon />
               <DropdownMenuLabel>
                 <span className='sr-only'>QR Code</span>
@@ -112,11 +108,7 @@ export default function SlugCard({
             </DropdownMenuItem>
 
             {ALLOW_COPY && (
-              <DropdownMenuItem
-                className='focus:bg-neutral-950 focus:text-neutral-100'
-                title='Copy'
-                onClick={() => handleCopy(slug)}
-              >
+              <DropdownMenuItem title='Copy' onClick={() => handleCopy(slug)}>
                 <CopyIcon />
                 <DropdownMenuLabel>
                   <span className='sr-only'>Copy</span>
@@ -125,10 +117,7 @@ export default function SlugCard({
               </DropdownMenuItem>
             )}
 
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
-              asChild
-            >
+            <DropdownMenuItem asChild>
               <Link to={`/dashboard/edit/${id}`} title='Edit' className='flex'>
                 <PencilLineIcon />
                 <DropdownMenuLabel>
@@ -138,11 +127,7 @@ export default function SlugCard({
               </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
-              title='Delete'
-              onClick={() => handleDelete(id)}
-            >
+            <DropdownMenuItem title='Delete' onClick={() => handleDelete(id)}>
               <TrashIcon />
               <DropdownMenuLabel>
                 <span className='sr-only'>Delete</span>
@@ -152,7 +137,7 @@ export default function SlugCard({
           </DropdownMenu>
         </header>
 
-        <p className='text-neutral-400 text-sm text-pretty break-all mb-2'>
+        <p className='text-neutral-500 text-sm text-pretty break-all mb-2 dark:text-neutral-400'>
           {url}
         </p>
 
@@ -161,19 +146,22 @@ export default function SlugCard({
 
       <Dialog open={showQrCode} onOpenChange={setShowQrCode}>
         <DialogContent className='overflow-hidden p-0 shadow-lg'>
-          <section className='bg-black p-8 flex flex-col items-center gap-y-4'>
+          <section className='p-8 flex flex-col items-center gap-y-4'>
             <DialogTitle className='text-2xl font-bold'>
               QR Code for <span className='text-pretty'>/s/{slug}</span>
             </DialogTitle>
 
-            <DialogDescription className='text-white text-pretty p-2 rounded-md bg-neutral-800'>
+            <DialogDescription className='text-pretty p-2 rounded-md bg-neutral-800'>
               Scan the QR code or download it for later use.
             </DialogDescription>
 
-            <picture title='QR Code'>
+            <picture
+              className='border rounded-md p-2 bg-neutral-100 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800'
+              title='QR Code'
+            >
               <Suspense
                 fallback={
-                  <div className='animate-spin rounded-full border-4 border-primary border-t-transparent h-12 w-12' />
+                  <div className='animate-spin rounded-full border-4 border-t-transparent h-12 w-12' />
                 }
               >
                 <QRCode
@@ -188,6 +176,7 @@ export default function SlugCard({
 
             <Button
               type='button'
+              variant='secondary'
               title='Download QR Code'
               onClick={() => handleDownload(slug)}
             >

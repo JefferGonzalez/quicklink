@@ -1,5 +1,6 @@
 export * from './Alert'
 export * from './button/Button'
+export * from './button/buttonVariants'
 export * from './Command'
 export * from './Dialog'
 export * from './DropdownMenu'

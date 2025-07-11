@@ -39,20 +39,14 @@ export default function SlugPagination({
     <Pagination>
       <PaginationContent>
         <PaginationItem hidden={currentPage === 0}>
-          <PaginationPrevious
-            className='cursor-pointer'
-            onClick={() => handlePrevPage(currentPage - 1)}
-          />
+          <PaginationPrevious onClick={() => handlePrevPage(currentPage - 1)} />
         </PaginationItem>
+
         {PAGINATION_ITEMS.map((item, index) => (
           <PaginationItem key={index.toString()}>
             <PaginationLink
               isActive={item - 1 === currentPage}
-              className={
-                item - 1 === currentPage
-                  ? 'text-neutral-900'
-                  : 'text-neutral-500 cursor-pointer'
-              }
+              className={item - 1 === currentPage ? 'cursor-not-allowed' : ''}
               onClick={() =>
                 item - 1 !== currentPage && handlePageClick(item - 1)
               }
@@ -61,11 +55,9 @@ export default function SlugPagination({
             </PaginationLink>
           </PaginationItem>
         ))}
+
         <PaginationItem hidden={currentPage === pages - 1}>
-          <PaginationNext
-            className='cursor-pointer'
-            onClick={() => handleNextPage(currentPage + 1)}
-          />
+          <PaginationNext onClick={() => handleNextPage(currentPage + 1)} />
         </PaginationItem>
       </PaginationContent>
     </Pagination>

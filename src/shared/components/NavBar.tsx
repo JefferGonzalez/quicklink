@@ -1,6 +1,7 @@
 import useAuth from '@/hooks/useAuth'
 import LinkIcon from '@/icons/Link'
 import DropdownMenu from '@/shared/components/DropdownMenu'
+import ThemeToggle from '@/shared/components/ThemeToggle'
 import { Button, DropdownMenuItem, DropdownMenuLabel } from '@/shared/ui'
 import {
   ClockIcon,
@@ -41,6 +42,8 @@ export default function NavBar() {
       </Link>
 
       <section className='flex items-center gap-4'>
+        <ThemeToggle />
+
         <Button
           title='Open command menu'
           onClick={handleOpenMenu}
@@ -68,15 +71,10 @@ export default function NavBar() {
           <DropdownMenu
             button={{
               text: user.username,
-              title: `Profile of ${user.username}`,
-              className: 'text-neutral-100 hover:text-neutral-300'
+              title: `Profile of ${user.username}`
             }}
-            className='bg-black text-neutral-100'
           >
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
-              asChild
-            >
+            <DropdownMenuItem asChild>
               <Link
                 to='/dashboard'
                 className='flex items-center gap-2'
@@ -89,10 +87,8 @@ export default function NavBar() {
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
-              asChild
-            >
+
+            <DropdownMenuItem asChild>
               <Link
                 to='/dashboard/create'
                 className='flex items-center gap-2'
@@ -105,10 +101,8 @@ export default function NavBar() {
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
-              asChild
-            >
+
+            <DropdownMenuItem asChild>
               <Link
                 to='/getting-started'
                 className='flex items-center gap-2'
@@ -121,10 +115,8 @@ export default function NavBar() {
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100'
-              asChild
-            >
+
+            <DropdownMenuItem asChild>
               <Link
                 to='/profile'
                 className='flex items-center gap-2'
@@ -137,10 +129,8 @@ export default function NavBar() {
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className='focus:bg-neutral-950 focus:text-neutral-100 flex items-center gap-2'
-              onClick={logout}
-            >
+
+            <DropdownMenuItem onClick={logout}>
               <LogOutIcon />
               <DropdownMenuLabel>
                 <span className='sr-only'>Sign out</span>

@@ -39,11 +39,7 @@ export default function DeleteAccountForm({
                 <span className='font-bold'>{username}</span> to continue:
               </FormLabel>
               <FormControl>
-                <Input
-                  className='bg-neutral-900 border-neutral-950'
-                  disabled={loading}
-                  {...field}
-                />
+                <Input disabled={loading} {...field} />
               </FormControl>
 
               {fieldState.invalid && (
@@ -67,11 +63,7 @@ export default function DeleteAccountForm({
                 below:
               </FormLabel>
               <FormControl>
-                <Input
-                  className='bg-neutral-900 border-neutral-950'
-                  disabled={loading}
-                  {...field}
-                />
+                <Input disabled={loading} {...field} />
               </FormControl>
 
               {fieldState.invalid && (

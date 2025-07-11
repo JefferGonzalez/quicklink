@@ -80,17 +80,17 @@ export default function DeleteAccountSection() {
 
   return (
     <Fragment>
-      <section className='rounded-md border border-red-600 shadow-md bg-neutral-900 text-neutral-100'>
+      <section className='rounded-md border shadow-md border-red-600 bg-neutral-100 dark:bg-neutral-900'>
         <div className='p-4 flex flex-col gap-y-4'>
           <h4 className='text-xl font-semibold'>Delete Account</h4>
 
-          <p className='text-pretty'>
+          <p className='text-pretty text-neutral-500 dark:text-neutral-400'>
             Permanently delete your account. This action is not reversible, so
             proceed with caution. All your data will be lost.
           </p>
         </div>
 
-        <footer className='bg-neutral-950 rounded-b-md p-4 flex justify-end gap-x-4'>
+        <footer className='bg-neutral-200 dark:bg-neutral-800 rounded-b-md p-2 flex justify-end gap-x-4'>
           <Button
             title='Delete Account'
             variant='destructive'
@@ -107,16 +107,16 @@ export default function DeleteAccountSection() {
           className='overflow-hidden p-0 shadow-lg'
           onInteractOutside={(e) => e.preventDefault()}
         >
-          <section className='bg-black p-8'>
+          <section className='p-8'>
             <DialogTitle className='text-2xl font-bold mb-6'>
               Delete Account
             </DialogTitle>
 
-            <DialogDescription className='text-white text-pretty p-2 rounded-md bg-destructive'>
+            <DialogDescription className='text-white dark:text-white text-pretty p-2 rounded-md bg-red-600'>
               This action is not reversible. Please be sure.
             </DialogDescription>
 
-            <Separator className='my-4 bg-neutral-500' />
+            <Separator className='my-4' />
 
             <DeleteAccountForm
               username={user.username}

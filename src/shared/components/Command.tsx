@@ -71,18 +71,13 @@ export default function Command() {
   }, [isAuthenticated])
 
   return (
-    <CommandDialog
-      open={open}
-      onOpenChange={setOpen}
-      className='bg-black text-neutral-100'
-    >
+    <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder='Select a command or search...' />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading='Suggestions' className='text-neutral-100'>
+        <CommandGroup heading='Suggestions'>
           <CommandItem
             title='Create a new slug'
-            className='cursor-pointer'
             onSelect={() => handleNavigate(createSlugPage)}
           >
             <span className='sr-only'>Create a new slug</span>
@@ -92,11 +87,11 @@ export default function Command() {
               <CommandIcon /> + <kbd>S</kbd>
             </CommandShortcut>
           </CommandItem>
+
           {isAuthenticated && (
             <Fragment>
               <CommandItem
                 title='Create a temporary slug'
-                className='cursor-pointer'
                 onSelect={() => handleNavigate('/getting-started')}
               >
                 <span className='sr-only'>Create a temporary slug</span>
@@ -106,9 +101,9 @@ export default function Command() {
                   <CommandIcon /> + <kbd>Q</kbd>
                 </CommandShortcut>
               </CommandItem>
+
               <CommandItem
                 title='Dashboard'
-                className='cursor-pointer'
                 onSelect={() => handleNavigate('/dashboard')}
               >
                 <span className='sr-only'>Dashboard</span>
@@ -120,11 +115,8 @@ export default function Command() {
               </CommandItem>
             </Fragment>
           )}
-          <CommandItem
-            title='Repository'
-            className='cursor-pointer'
-            onSelect={handleGoToRepository}
-          >
+
+          <CommandItem title='Repository' onSelect={handleGoToRepository}>
             <span className='sr-only'>Repository</span>
             <GitHubIcon className='mr-2 h-4 w-4' />
             Repository

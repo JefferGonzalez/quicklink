@@ -2,6 +2,7 @@ import { getURLBySlug } from '@/modules/slug/use-cases'
 import NotFound from '@/pages/NotFound'
 import Slug from '@/pages/Slug'
 import AuthProvider from '@/providers/AuthProvider'
+import ThemeProvider from '@/providers/ThemeProvider'
 import Root from '@/Root'
 import Layout from '@/shared/components/Layout'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
@@ -41,7 +42,11 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  return <RouterProvider router={router} />
+  return (
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
+  )
 }
 
 export default App

@@ -6,12 +6,12 @@ import { Fragment } from 'react'
 export default function AccountTab() {
   return (
     <Fragment>
-      <h3 className='text-2xl font-bold'>Account</h3>
+      <h3 className='text-2xl font-bold ml-2'>Account</h3>
 
-      <Separator className='my-4 bg-neutral-800' />
+      <Separator className='my-4' />
       <SignInMethodsSection />
 
-      <Separator className='my-4 bg-neutral-800' />
+      <Separator className='my-4' />
       <DeleteAccountSection />
     </Fragment>
   )

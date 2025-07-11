@@ -3,12 +3,13 @@ import AccountTab from '@/modules/user/components/AccountTab'
 import UserInfoTab from '@/modules/user/components/UserInfoTab'
 import { assertAuthenticated } from '@/modules/user/utils/assertAuthenticated'
 import { Separator } from '@/shared/ui'
+import { cn } from '@/shared/utils/cn'
 import { LogOutIcon, SettingsIcon, UserIcon } from 'lucide-react'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 const ITEM_CLASSES =
-  'cursor-pointer flex items-center gap-2 px-5 py-2 rounded-md'
+  'text-base text-left w-full flex items-center gap-2 px-3 py-2 cursor-pointer'
 
 export default function Profile() {
   const { user, logout } = useAuth()
@@ -58,34 +59,44 @@ export default function Profile() {
         <p className='text-neutral-500'>Manage your user information</p>
       </header>
 
-      <Separator className='my-4 bg-neutral-800' />
+      <Separator className='my-4' />
 
       <section className='grid grid-cols-8 gap-4'>
-        <aside className='rounded-md shadow-md col-span-2'>
+        <aside className='col-span-2'>
           <ul className='text-lg font-semibold space-y-2'>
-            {tabs.map((tab) => (
-              <li key={tab.id}>
-                <button
-                  className={`${ITEM_CLASSES} ${
-                    activeTabId === tab.id
-                      ? 'bg-neutral-900 border-l-4 border-blue-500 pointer-events-none'
-                      : 'hover:underline'
-                  } w-full text-left`}
-                  onClick={() => handleTabClick(tab.id)}
-                  type='button'
-                >
-                  <span className='sr-only'>{tab.title}</span>
-                  <tab.icon />
-                  <span className='hidden sm:inline-block'>{tab.title}</span>
-                </button>
-              </li>
-            ))}
+            {tabs.map((tab) => {
+              const isActive = activeTabId === tab.id
 
-            <Separator className='my-4 bg-neutral-800' />
+              return (
+                <li
+                  key={tab.id}
+                  className={cn(
+                    isActive && 'rounded-md border-l-5 border-blue-500'
+                  )}
+                >
+                  <button
+                    type='button'
+                    onClick={() => handleTabClick(tab.id)}
+                    className={cn(
+                      ITEM_CLASSES,
+                      isActive
+                        ? 'bg-neutral-100 border border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800 rounded-e-md pointer-events-none'
+                        : 'hover:underline'
+                    )}
+                  >
+                    <span className='sr-only'>{tab.title}</span>
+                    <tab.icon />
+                    <span className='hidden sm:inline-block'>{tab.title}</span>
+                  </button>
+                </li>
+              )
+            })}
+
+            <Separator className='my-4' />
 
             <li>
               <button
-                className={`${ITEM_CLASSES} hover:underline`}
+                className={cn(ITEM_CLASSES, 'hover:underline')}
                 onClick={logout}
                 type='button'
               >
@@ -97,9 +108,7 @@ export default function Profile() {
           </ul>
         </aside>
 
-        <article className='rounded-md shadow-md col-span-6'>
-          {activeTabComponent}
-        </article>
+        <article className='col-span-6'>{activeTabComponent}</article>
       </section>
     </Fragment>
   )

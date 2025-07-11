@@ -23,12 +23,7 @@ export default function DropdownMenu({
   className,
   children: items
 }: Props) {
-  const {
-    text,
-    icon,
-    title = text,
-    className: buttonClassName = 'hover:bg-neutral-800 focus:bg-neutral-800'
-  } = button
+  const { text, icon, title = text, className: buttonClassName = '' } = button
 
   return (
     <Dropdown>

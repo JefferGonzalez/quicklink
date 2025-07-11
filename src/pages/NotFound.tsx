@@ -6,7 +6,7 @@ export default function NotFound() {
     <Fragment>
       <section className='flex flex-col items-center space-y-3 py-20'>
         <p>404 | This page could not be found.</p>
-        <picture>
+        <picture className='border rounded-md p-2 bg-neutral-100 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800'>
           <img
             src='/this-is-fine-404.gif'
             alt='This is fine.'

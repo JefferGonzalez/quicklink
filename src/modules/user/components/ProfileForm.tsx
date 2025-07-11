@@ -73,10 +73,7 @@ export default function ProfileForm() {
               <FormItem className='w-full'>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input
-                    className='bg-neutral-900 border-neutral-950'
-                    {...field}
-                  />
+                  <Input {...field} />
                 </FormControl>
 
                 {fieldState.invalid && (
@@ -89,11 +86,14 @@ export default function ProfileForm() {
             )}
           />
 
-          <picture title={`Profile picture of ${user.username}`}>
+          <picture
+            className='border rounded-md p-2 bg-neutral-100 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800'
+            title={`Profile picture of ${user.username}`}
+          >
             <img
               src={user.photo}
               alt={user.name}
-              className='w-[100px] rounded-lg object-cover'
+              className='w-[100px] object-cover'
               loading='lazy'
             />
           </picture>
@@ -106,10 +106,7 @@ export default function ProfileForm() {
             <FormItem>
               <FormLabel>Username</FormLabel>
               <FormControl>
-                <Input
-                  className='bg-neutral-900 border-neutral-950'
-                  {...field}
-                />
+                <Input {...field} />
               </FormControl>
 
               {fieldState.invalid && (

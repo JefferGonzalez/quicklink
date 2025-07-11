@@ -110,7 +110,7 @@ export default function SlugList() {
               .map((_, index) => (
                 <Skeleton
                   key={index.toString()}
-                  className='h-32 bg-neutral-900 border-neutral-950 rounded-lg'
+                  className='h-32 rounded-lg'
                 />
               ))}
           </Fragment>

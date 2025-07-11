@@ -50,12 +50,7 @@ export default function SlugForm({
               <FormItem className='w-full'>
                 <FormLabel>Enter the URL of your site:</FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder='https://'
-                    className='bg-neutral-900 border-neutral-950'
-                    disabled={loading}
-                    {...field}
-                  />
+                  <Input placeholder='https://' disabled={loading} {...field} />
                 </FormControl>
 
                 {fieldState.invalid && (
@@ -71,10 +66,13 @@ export default function SlugForm({
           {withAccount &&
             form.watch('url') &&
             !form.getFieldState('url').invalid && (
-              <picture title='QR Code'>
+              <picture
+                className='border rounded-md p-2 bg-neutral-100 border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800'
+                title='QR Code'
+              >
                 <Suspense
                   fallback={
-                    <div className='animate-spin rounded-full border-4 border-primary border-t-transparent h-12 w-12' />
+                    <div className='animate-spin rounded-full border-4 border-t-transparent h-12 w-12' />
                   }
                 >
                   <QRCode
@@ -98,11 +96,7 @@ export default function SlugForm({
                 <FormLabel>Enter a custom slug:</FormLabel>
                 <FormControl>
                   <div className='flex space-x-2'>
-                    <Input
-                      className='bg-neutral-900 border-neutral-950'
-                      disabled={loading}
-                      {...field}
-                    />
+                    <Input disabled={loading} {...field} />
                     <Button
                       type='button'
                       title='Generate a random slug'
@@ -116,9 +110,7 @@ export default function SlugForm({
                     </Button>
                   </div>
                 </FormControl>
-                <FormDescription className='text-neutral-400'>
-                  {`${APP_URL}/s/<slug>/`}
-                </FormDescription>
+                <FormDescription>{`${APP_URL}/s/<slug>/`}</FormDescription>
 
                 {fieldState.invalid && (
                   <AlertWithIcon
@@ -139,11 +131,7 @@ export default function SlugForm({
               <FormItem>
                 <FormLabel>Enter a description (optional):</FormLabel>
                 <FormControl>
-                  <Input
-                    className='bg-neutral-900 border-neutral-950'
-                    disabled={loading}
-                    {...field}
-                  />
+                  <Input disabled={loading} {...field} />
                 </FormControl>
 
                 {fieldState.invalid && (
