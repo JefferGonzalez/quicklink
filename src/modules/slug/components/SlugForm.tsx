@@ -94,22 +94,25 @@ export default function SlugForm({
             render={({ field, fieldState }) => (
               <FormItem>
                 <FormLabel>Enter a custom slug:</FormLabel>
-                <FormControl>
-                  <div className='flex space-x-2'>
+
+                <div className='flex gap-2'>
+                  <FormControl>
                     <Input disabled={loading} {...field} />
-                    <Button
-                      type='button'
-                      title='Generate a random slug'
-                      className='flex gap-2'
-                      onClick={handleRandomSlug}
-                      disabled={loading}
-                    >
-                      <span className='sr-only'>Generate a random slug</span>
-                      <ShuffleIcon />
-                      Random
-                    </Button>
-                  </div>
-                </FormControl>
+                  </FormControl>
+
+                  <Button
+                    type='button'
+                    title='Generate a random slug'
+                    className='flex gap-2'
+                    onClick={handleRandomSlug}
+                    disabled={loading}
+                  >
+                    <span className='sr-only'>Generate a random slug</span>
+                    <ShuffleIcon />
+                    Random
+                  </Button>
+                </div>
+
                 <FormDescription>{`${APP_URL}/s/<slug>/`}</FormDescription>
 
                 {fieldState.invalid && (
