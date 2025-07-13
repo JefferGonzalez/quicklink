@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@/shared/ui'
+import { cn } from '@/shared/utils/cn'
 
 interface Props {
   pages: number
@@ -27,7 +28,7 @@ export default function SlugPagination({
   handleNextPage,
   handlePrevPage
 }: Props) {
-  const PAGINATION_ITEMS =
+  const visiblePageNumbers =
     pages > MAX_PAGES
       ? Array.from(
           { length: maxPageNumberLimit },
@@ -38,27 +39,36 @@ export default function SlugPagination({
   return (
     <Pagination>
       <PaginationContent>
-        <PaginationItem hidden={currentPage === 0}>
-          <PaginationPrevious onClick={() => handlePrevPage(currentPage - 1)} />
-        </PaginationItem>
-
-        {PAGINATION_ITEMS.map((item, index) => (
-          <PaginationItem key={index.toString()}>
-            <PaginationLink
-              isActive={item - 1 === currentPage}
-              className={item - 1 === currentPage ? 'cursor-not-allowed' : ''}
-              onClick={() =>
-                item - 1 !== currentPage && handlePageClick(item - 1)
-              }
-            >
-              {item}
-            </PaginationLink>
+        {currentPage > 0 && (
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => handlePrevPage(currentPage - 1)}
+            />
           </PaginationItem>
-        ))}
+        )}
 
-        <PaginationItem hidden={currentPage === pages - 1}>
-          <PaginationNext onClick={() => handleNextPage(currentPage + 1)} />
-        </PaginationItem>
+        {visiblePageNumbers.map((number) => {
+          const page = number - 1
+          const isActive = page === currentPage
+
+          return (
+            <PaginationItem key={number}>
+              <PaginationLink
+                isActive={isActive}
+                className={cn(isActive && 'cursor-not-allowed')}
+                onClick={!isActive ? () => handlePageClick(page) : undefined}
+              >
+                {number}
+              </PaginationLink>
+            </PaginationItem>
+          )
+        })}
+
+        {currentPage < pages - 1 && (
+          <PaginationItem>
+            <PaginationNext onClick={() => handleNextPage(currentPage + 1)} />
+          </PaginationItem>
+        )}
       </PaginationContent>
     </Pagination>
   )

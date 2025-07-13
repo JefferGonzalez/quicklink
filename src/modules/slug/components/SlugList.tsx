@@ -60,10 +60,13 @@ export default function SlugList() {
 
     if (page % MAX_PAGES === 0) {
       setMinPageNumberLimit(page + 1)
-      if (slugs.info.pages - page > MAX_PAGES) {
+
+      const remainingPages = slugs.info.pages - page
+
+      if (remainingPages > MAX_PAGES) {
         setMaxPageNumberLimit(MAX_PAGES)
       } else {
-        setMaxPageNumberLimit(slugs.info.pages - page)
+        setMaxPageNumberLimit(remainingPages)
       }
     }
   }
@@ -108,10 +111,7 @@ export default function SlugList() {
             {Array(6)
               .fill(null)
               .map((_, index) => (
-                <Skeleton
-                  key={index.toString()}
-                  className='h-32 rounded-lg'
-                />
+                <Skeleton key={index.toString()} className='h-32 rounded-lg' />
               ))}
           </Fragment>
         )}
