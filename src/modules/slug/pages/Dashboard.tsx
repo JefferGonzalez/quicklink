@@ -17,6 +17,7 @@ export default function Dashboard() {
           </Button>
         </Link>
       </header>
+      
       <Separator className='my-4' />
 
       <SlugList />

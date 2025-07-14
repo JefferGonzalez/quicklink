@@ -7,6 +7,7 @@ import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Skeleton } from '@/shared/ui'
 import { showToastError } from '@/shared/utils/showToastError'
 import { Fragment, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export const MAX_PAGES = 5
@@ -14,6 +15,8 @@ const MIN_PAGES = 1
 
 export default function SlugList() {
   const { isAuthenticated, logout } = useAuth()
+
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const [slugs, setSlugs] = useState<SlugsResponse>({
     data: [],
@@ -52,7 +55,7 @@ export default function SlugList() {
   const handlePageClick = (page: number) => {
     setLoading(true)
     setSlugs({ data: [], info: { pages: 0 } })
-    setCurrentPage(page)
+    setSearchParams({ page: String(page) })
   }
 
   const handleNextPage = (nextPage: number) => {
@@ -87,18 +90,51 @@ export default function SlugList() {
 
   useEffect(() => {
     const loadSlugs = async () => {
-      try {
-        const response = await getAllSlugs(currentPage)
+      const rawPage = searchParams.get('page')
+      const parsedPage = Number(rawPage)
+      const isValid = rawPage && Number.isInteger(parsedPage) && parsedPage >= 1
+      const page = isValid ? parsedPage : 1
 
+      if (!isValid) {
+        const newParams = new URLSearchParams(searchParams)
+        newParams.set('page', String(page))
+        setSearchParams(newParams, { replace: true })
+
+        return
+      }
+
+      setCurrentPage(page)
+
+      try {
+        const response = await getAllSlugs(page)
         if (!response.ok) {
           if (response.status === HttpStatus.Unauthorized) logout()
           return
         }
 
-        setSlugs(response.data)
+        const data = response.data
+        const totalPages = data.info.pages
+
+        if (page > totalPages && totalPages > 0) {
+          const newParams = new URLSearchParams(searchParams)
+          newParams.set('page', String(totalPages))
+          setSearchParams(newParams, { replace: true })
+
+          return
+        }
+
+        const visibleStart = Math.floor((page - 1) / MAX_PAGES) * MAX_PAGES + 1
+        const quantityVisiblePages = Math.min(
+          MAX_PAGES,
+          totalPages - visibleStart + 1
+        )
+        setMinPageNumberLimit(visibleStart)
+        setMaxPageNumberLimit(quantityVisiblePages)
+
+        setSlugs(data)
+        setLoading(false)
       } catch {
         showToastError()
-      } finally {
         setLoading(false)
       }
     }
@@ -106,7 +142,7 @@ export default function SlugList() {
     if (isAuthenticated) {
       loadSlugs()
     }
-  }, [isAuthenticated, currentPage])
+  }, [isAuthenticated, searchParams])
 
   return (
     <Fragment>
@@ -116,7 +152,7 @@ export default function SlugList() {
             {Array(6)
               .fill(null)
               .map((_, index) => (
-                <Skeleton key={index.toString()} className='h-32 rounded-lg' />
+                <Skeleton key={index} className='h-32 rounded-lg' />
               ))}
           </Fragment>
         )}
@@ -131,13 +167,13 @@ export default function SlugList() {
             ))}
       </section>
 
-      {!loading && slugs.data.length === 0 && (
+      {!loading && slugs.info.pages === 0 && (
         <div className='flex justify-center items-center h-96'>
           <p className='text-xl font-bold'>No slugs found, create one now!</p>
         </div>
       )}
 
-      {slugs.info.pages > MIN_PAGES && (
+      {slugs.info.pages > 1 && (
         <footer className='my-4'>
           <SlugPagination
             pages={slugs.info.pages}
