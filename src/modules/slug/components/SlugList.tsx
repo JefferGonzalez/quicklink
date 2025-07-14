@@ -20,7 +20,7 @@ export default function SlugList() {
     info: { pages: 0 }
   })
   const [loading, setLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(MIN_PAGES)
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(MAX_PAGES)
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(MIN_PAGES)
 
@@ -55,13 +55,16 @@ export default function SlugList() {
     setCurrentPage(page)
   }
 
-  const handleNextPage = (page: number) => {
-    handlePageClick(page)
+  const handleNextPage = (nextPage: number) => {
+    handlePageClick(nextPage)
 
-    if (page % MAX_PAGES === 0) {
-      setMinPageNumberLimit(page + 1)
+    const prevPage = nextPage - 1
+    const isLimitReached = prevPage % MAX_PAGES === 0
 
-      const remainingPages = slugs.info.pages - page
+    if (isLimitReached) {
+      setMinPageNumberLimit(nextPage)
+
+      const remainingPages = slugs.info.pages - prevPage
 
       if (remainingPages > MAX_PAGES) {
         setMaxPageNumberLimit(MAX_PAGES)
@@ -71,10 +74,12 @@ export default function SlugList() {
     }
   }
 
-  const handlePrevPage = (page: number) => {
-    handlePageClick(page)
+  const handlePrevPage = (prevPage: number) => {
+    handlePageClick(prevPage)
 
-    if ((page + 1) % MAX_PAGES === 0) {
+    const isLimitReached = prevPage % MAX_PAGES === 0
+
+    if (isLimitReached) {
       setMaxPageNumberLimit(MAX_PAGES)
       setMinPageNumberLimit(minPageNumberLimit - MAX_PAGES)
     }
@@ -132,7 +137,7 @@ export default function SlugList() {
         </div>
       )}
 
-      {slugs.info.pages > 1 && (
+      {slugs.info.pages > MIN_PAGES && (
         <footer className='my-4'>
           <SlugPagination
             pages={slugs.info.pages}

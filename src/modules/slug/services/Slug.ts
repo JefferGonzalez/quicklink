@@ -1,7 +1,7 @@
 import { API_URL } from '@/Config'
 import { Slug } from '@/modules/slug/schemas/Slug'
 
-export const getSlugs = (page = 0) => {
+export const getSlugs = (page = 1) => {
   const url = new URL(`${API_URL}/slugs`)
 
   if (page > 0) {

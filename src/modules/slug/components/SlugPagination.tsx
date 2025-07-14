@@ -39,7 +39,7 @@ export default function SlugPagination({
   return (
     <Pagination>
       <PaginationContent>
-        {currentPage > 0 && (
+        {currentPage > 1 && (
           <PaginationItem>
             <PaginationPrevious
               onClick={() => handlePrevPage(currentPage - 1)}
@@ -47,24 +47,23 @@ export default function SlugPagination({
           </PaginationItem>
         )}
 
-        {visiblePageNumbers.map((number) => {
-          const page = number - 1
+        {visiblePageNumbers.map((page) => {
           const isActive = page === currentPage
 
           return (
-            <PaginationItem key={number}>
+            <PaginationItem key={page}>
               <PaginationLink
                 isActive={isActive}
                 className={cn(isActive && 'cursor-not-allowed')}
                 onClick={!isActive ? () => handlePageClick(page) : undefined}
               >
-                {number}
+                {page}
               </PaginationLink>
             </PaginationItem>
           )
         })}
 
-        {currentPage < pages - 1 && (
+        {currentPage < pages && (
           <PaginationItem>
             <PaginationNext onClick={() => handleNextPage(currentPage + 1)} />
           </PaginationItem>
