@@ -45,6 +45,8 @@ export default function SlugList() {
 
         return
       }
+
+      window.location.reload()
     } catch {
       showToastError()
     } finally {
