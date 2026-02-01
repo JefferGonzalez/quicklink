@@ -1,8 +1,8 @@
-import { UserEntity } from '@/modules/user/entities/User'
+import { AuthUser } from '@/shared/types/auth'
 
 export function assertAuthenticated(
-  user: UserEntity | undefined
-): asserts user is UserEntity {
+  user: AuthUser | undefined
+): asserts user is AuthUser {
   if (!user) {
     throw new Error('Security error: user is unexpectedly unauthenticated')
   }

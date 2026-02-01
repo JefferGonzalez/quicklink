@@ -12,7 +12,7 @@ const ITEM_CLASSES =
   'text-base text-left w-full flex items-center gap-2 px-3 py-2 cursor-pointer'
 
 export default function Profile() {
-  const { user, logout } = useAuth()
+  const { user, signOut } = useAuth()
   assertAuthenticated(user)
 
   const [searchParams, setSearchParams] = useSearchParams()
@@ -45,10 +45,13 @@ export default function Profile() {
     [activeTabId]
   )
 
-  const handleTabClick = useCallback((id: string) => {
-    setSearchParams({ tab: id })
-    setActiveTabId(id)
-  }, [])
+  const handleTabClick = useCallback(
+    (id: string) => {
+      setSearchParams({ tab: id })
+      setActiveTabId(id)
+    },
+    [setSearchParams]
+  )
 
   return (
     <Fragment>
@@ -97,7 +100,7 @@ export default function Profile() {
             <li>
               <button
                 className={cn(ITEM_CLASSES, 'hover:underline')}
-                onClick={logout}
+                onClick={signOut}
                 type='button'
               >
                 <span className='sr-only'>Sign out</span>

@@ -1,9 +1,9 @@
-import { deleteSlug } from '@/modules/slug/services/Slug'
+import { deleteShortLink } from '@/modules/short-link/services/ShortLink'
 
-export const removeSlug = async (
+export const removeShortLink = async (
   id: string
 ): Promise<{ ok: true } | { ok: false; status: number }> => {
-  const response = await deleteSlug(id)
+  const response = await deleteShortLink(id)
 
   if (!response.ok) {
     return {

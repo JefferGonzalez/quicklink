@@ -1,6 +1,6 @@
 import { APP_URL } from '@/Config'
-import { type Slug } from '@/modules/slug/schemas/Slug'
-import { RandomSlug } from '@/modules/slug/utils/randomSlug'
+import { type ShortLink } from '@/modules/short-link/schemas/ShortLink'
+import { RandomSlug } from '@/modules/short-link/utils/randomSlug'
 import AlertWithIcon from '@/shared/components/AlertWithIcon'
 import {
   Button,
@@ -18,14 +18,14 @@ import { Suspense } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
 interface Props {
-  form: UseFormReturn<Slug>
+  form: UseFormReturn<ShortLink>
   loading: boolean
   withAccount?: boolean
   isEdit?: boolean
-  handleSubmit: (values: Slug) => void
+  handleSubmit: (values: ShortLink) => void
 }
 
-export default function SlugForm({
+export default function ShortLinkForm({
   form,
   loading,
   withAccount = false,

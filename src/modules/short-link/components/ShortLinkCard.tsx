@@ -1,5 +1,5 @@
 import { APP_URL } from '@/Config'
-import { SlugEntity } from '@/modules/slug/entities/Slug'
+import { ShortLinkEntity } from '@/modules/short-link/entities/ShortLink'
 import DropdownMenu from '@/shared/components/DropdownMenu'
 import {
   Button,
@@ -25,11 +25,11 @@ import { toast } from 'sonner'
 const ALLOW_COPY = !!window.navigator.clipboard
 
 interface Props {
-  info: SlugEntity
+  info: ShortLinkEntity
   handleDelete: (id: string) => void
 }
 
-export default function SlugCard({
+export default function ShortLinkCard({
   info: { id, slug, url, description = 'No description' },
   handleDelete
 }: Props) {

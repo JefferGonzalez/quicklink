@@ -3,12 +3,14 @@ import MainAppHeader from '@/shared/components/MainAppHeader'
 import { Button } from '@/shared/ui'
 import { RocketIcon, StarIcon } from 'lucide-react'
 import { Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 export default function Landing() {
   const { isAuthenticated } = useAuth()
 
-  const to = isAuthenticated ? '/dashboard' : '/getting-started'
+  if (isAuthenticated) {
+    return <Navigate to='/dashboard' />
+  }
 
   return (
     <Fragment>
@@ -16,7 +18,7 @@ export default function Landing() {
         <MainAppHeader />
 
         <div className='flex gap-2'>
-          <Link to={to} title='Getting Started'>
+          <Link to='/getting-started' title='Getting Started'>
             <Button className='flex gap-1'>
               <RocketIcon />
               <span className='sr-only'>Getting Started</span>

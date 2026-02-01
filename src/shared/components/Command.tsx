@@ -23,7 +23,7 @@ export default function Command() {
 
   const { isAuthenticated } = useAuth()
 
-  const createSlugPage = isAuthenticated
+  const createShortLinkPage = isAuthenticated
     ? '/dashboard/create'
     : '/getting-started'
 
@@ -49,7 +49,7 @@ export default function Command() {
         setOpen((open) => !open)
       } else if (e.code === 'KeyS' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
-        handleNavigate(createSlugPage)
+        handleNavigate(createShortLinkPage)
       } else if (e.code === 'KeyM' && (e.metaKey || e.ctrlKey)) {
         if (isAuthenticated) {
           e.preventDefault()
@@ -77,12 +77,12 @@ export default function Command() {
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading='Suggestions'>
           <CommandItem
-            title='Create a new slug'
-            onSelect={() => handleNavigate(createSlugPage)}
+            title='Create a new short link'
+            onSelect={() => handleNavigate(createShortLinkPage)}
           >
-            <span className='sr-only'>Create a new slug</span>
+            <span className='sr-only'>Create a new short link</span>
             <PlusSquareIcon className='mr-2 h-4 w-4' />
-            Create a new slug
+            Create a new short link
             <CommandShortcut className='flex items-center gap-1'>
               <CommandIcon /> + <kbd>S</kbd>
             </CommandShortcut>
@@ -91,12 +91,12 @@ export default function Command() {
           {isAuthenticated && (
             <Fragment>
               <CommandItem
-                title='Create a temporary slug'
+                title='Create a temporary short link'
                 onSelect={() => handleNavigate('/getting-started')}
               >
-                <span className='sr-only'>Create a temporary slug</span>
+                <span className='sr-only'>Create a temporary short link</span>
                 <ClockIcon className='mr-2 h-4 w-4' />
-                Create a temporary slug
+                Create a temporary short link
                 <CommandShortcut className='flex items-center gap-1'>
                   <CommandIcon /> + <kbd>Q</kbd>
                 </CommandShortcut>

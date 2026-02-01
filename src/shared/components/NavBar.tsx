@@ -15,7 +15,7 @@ import {
 import { Link, useLocation } from 'react-router-dom'
 
 export default function NavBar() {
-  const { isAuthenticated, isSessionLoading, user, logout } = useAuth()
+  const { isAuthenticated, isSessionLoading, user, signOut } = useAuth()
 
   const { pathname } = useLocation()
 
@@ -70,8 +70,8 @@ export default function NavBar() {
         {isAuthenticated && user && (
           <DropdownMenu
             button={{
-              text: user.username,
-              title: `Profile of ${user.username}`
+              text: user.name,
+              title: `Profile of ${user.name}`
             }}
           >
             <DropdownMenuItem asChild>
@@ -92,12 +92,12 @@ export default function NavBar() {
               <Link
                 to='/dashboard/create'
                 className='flex items-center gap-2'
-                title='Create a new slug'
+                title='Create a new short link'
               >
                 <PlusSquareIcon />
                 <DropdownMenuLabel>
-                  <span className='sr-only'>Create a new slug</span>
-                  Create a new slug
+                  <span className='sr-only'>Create a new short link</span>
+                  Create a new short link
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
@@ -106,12 +106,12 @@ export default function NavBar() {
               <Link
                 to='/getting-started'
                 className='flex items-center gap-2'
-                title='Create a temporary slug'
+                title='Create a temporary short link'
               >
                 <ClockIcon />
                 <DropdownMenuLabel>
-                  <span className='sr-only'>Create a temporary slug</span>
-                  Create a temporary slug
+                  <span className='sr-only'>Create a temporary short link</span>
+                  Create a temporary short link
                 </DropdownMenuLabel>
               </Link>
             </DropdownMenuItem>
@@ -130,7 +130,7 @@ export default function NavBar() {
               </Link>
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={logout}>
+            <DropdownMenuItem onClick={signOut}>
               <LogOutIcon />
               <DropdownMenuLabel>
                 <span className='sr-only'>Sign out</span>

@@ -4,9 +4,8 @@ import {
   getDeleteAccountSchema,
   type DeleteAccount
 } from '@/modules/user/schemas/DeleteAccount'
-import { deleteAccount, signOut } from '@/modules/user/use-cases'
+import { deleteAccount } from '@/modules/user/services/User'
 import { assertAuthenticated } from '@/modules/user/utils/assertAuthenticated'
-import { HttpStatus } from '@/shared/constants/httpStatus'
 import {
   Button,
   Dialog,
@@ -22,16 +21,16 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 
 export default function DeleteAccountSection() {
-  const { logout, user } = useAuth()
+  const { signOut, user } = useAuth()
   assertAuthenticated(user)
 
   const [showDisclaimer, setShowDisclaimer] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const form = useForm<DeleteAccount>({
-    resolver: zodResolver(getDeleteAccountSchema(user.username)),
+    resolver: zodResolver(getDeleteAccountSchema(user.name)),
     defaultValues: {
-      username: '',
+      name: '',
       text: ''
     }
   })
@@ -40,24 +39,19 @@ export default function DeleteAccountSection() {
     setLoading(true)
 
     try {
-      const { ok, status } = await deleteAccount()
+      const response = await deleteAccount()
 
-      if (!ok) {
-        if (status === HttpStatus.Unauthorized) return logout()
-        if (status === HttpStatus.NotFound) {
-          await signOut()
-        }
+      if (!response.ok) {
+        showToastError(response.error ?? 'Failed to delete account.')
 
         return
       }
 
-      if (status === HttpStatus.NoContent) {
-        setShowDisclaimer(false)
+      setShowDisclaimer(false)
 
-        toast('🥲 Account deleted successfully. Redirecting...')
+      toast('🥲 Account deleted successfully. Redirecting...')
 
-        setTimeout(logout, 3000)
-      }
+      setTimeout(signOut, 3000)
     } catch {
       showToastError()
     } finally {
@@ -119,7 +113,7 @@ export default function DeleteAccountSection() {
             <Separator className='my-4' />
 
             <DeleteAccountForm
-              username={user.username}
+              name={user.name}
               form={form}
               loading={loading}
               handleSubmit={handleSubmit}

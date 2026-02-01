@@ -1,32 +1,18 @@
-import { API_URL } from '@/Config'
 import { User } from '@/modules/user/schemas/User'
+import { authClient } from '@/shared/lib/authClient'
 
-export const getUserProfile = () => {
-  return fetch(`${API_URL}/users/profile`, {
-    credentials: 'include'
-  })
+export const updateUser = async (values: User) => {
+  const { error } = await authClient.updateUser(values)
+
+  if (error) return { ok: false, error: error.message }
+
+  return { ok: true }
 }
 
-export const patchUserProfile = (data: User) => {
-  return fetch(`${API_URL}/users/profile`, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data),
-    credentials: 'include'
-  })
-}
+export const deleteAccount = async () => {
+  const { error } = await authClient.deleteUser()
 
-export const deleteUserProfile = () => {
-  return fetch(`${API_URL}/users/profile`, {
-    method: 'DELETE',
-    credentials: 'include'
-  })
-}
+  if (error) return { ok: false, error: error.message }
 
-export const getLogout = () => {
-  return fetch(`${API_URL}/auth/logout`, {
-    credentials: 'include'
-  })
+  return { ok: true }
 }

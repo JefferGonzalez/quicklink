@@ -1,8 +1,11 @@
 import useAuth from '@/hooks/useAuth'
-import SlugCard from '@/modules/slug/components/SlugCard'
-import SlugPagination from '@/modules/slug/components/SlugPagination'
-import { SlugsResponse } from '@/modules/slug/types/response'
-import { getAllSlugs, removeSlug } from '@/modules/slug/use-cases'
+import ShortLinkCard from '@/modules/short-link/components/ShortLinkCard'
+import ShortLinkPagination from '@/modules/short-link/components/ShortLinkPagination'
+import { ShortLinksResponse } from '@/modules/short-link/types/response'
+import {
+  getAllShortLinks,
+  removeShortLink
+} from '@/modules/short-link/use-cases'
 import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Skeleton } from '@/shared/ui'
 import { showToastError } from '@/shared/utils/showToastError'
@@ -13,12 +16,12 @@ import { toast } from 'sonner'
 export const MAX_PAGES = 5
 const MIN_PAGES = 1
 
-export default function SlugList() {
-  const { isAuthenticated, logout } = useAuth()
+export default function ShortLinkList() {
+  const { isAuthenticated, signOut } = useAuth()
 
   const [searchParams, setSearchParams] = useSearchParams()
 
-  const [slugs, setSlugs] = useState<SlugsResponse>({
+  const [shortLinks, setShortLinks] = useState<ShortLinksResponse>({
     data: [],
     info: { pages: 0 }
   })
@@ -31,15 +34,17 @@ export default function SlugList() {
     setLoading(true)
 
     try {
-      const response = await removeSlug(id)
+      const response = await removeShortLink(id)
 
       if (!response.ok) {
         const statusCode = response.status
 
-        if (statusCode === HttpStatus.Unauthorized) return logout()
+        if (statusCode === HttpStatus.Unauthorized) {
+          return signOut()
+        }
 
         if (statusCode === HttpStatus.NotFound) {
-          toast('🙃 Slug not found, please refresh the page')
+          toast('🙃 Short link not found, please refresh the page')
           return
         }
 
@@ -56,7 +61,7 @@ export default function SlugList() {
 
   const handlePageClick = (page: number) => {
     setLoading(true)
-    setSlugs({ data: [], info: { pages: 0 } })
+    setShortLinks({ data: [], info: { pages: 0 } })
     setSearchParams({ page: String(page) })
   }
 
@@ -69,7 +74,7 @@ export default function SlugList() {
     if (isLimitReached) {
       setMinPageNumberLimit(nextPage)
 
-      const remainingPages = slugs.info.pages - prevPage
+      const remainingPages = shortLinks.info.pages - prevPage
 
       if (remainingPages > MAX_PAGES) {
         setMaxPageNumberLimit(MAX_PAGES)
@@ -91,7 +96,7 @@ export default function SlugList() {
   }
 
   useEffect(() => {
-    const loadSlugs = async () => {
+    const loadShortLinks = async () => {
       const rawPage = searchParams.get('page')
       const parsedPage = Number(rawPage)
       const isValid = rawPage && Number.isInteger(parsedPage) && parsedPage >= 1
@@ -108,9 +113,12 @@ export default function SlugList() {
       setCurrentPage(page)
 
       try {
-        const response = await getAllSlugs(page)
+        const response = await getAllShortLinks(page)
         if (!response.ok) {
-          if (response.status === HttpStatus.Unauthorized) logout()
+          if (response.status === HttpStatus.Unauthorized) {
+            signOut()
+          }
+
           return
         }
 
@@ -133,7 +141,7 @@ export default function SlugList() {
         setMinPageNumberLimit(visibleStart)
         setMaxPageNumberLimit(quantityVisiblePages)
 
-        setSlugs(data)
+        setShortLinks(data)
         setLoading(false)
       } catch {
         showToastError()
@@ -142,7 +150,7 @@ export default function SlugList() {
     }
 
     if (isAuthenticated) {
-      loadSlugs()
+      loadShortLinks()
     }
   }, [isAuthenticated, searchParams])
 
@@ -160,25 +168,31 @@ export default function SlugList() {
         )}
 
         {!loading &&
-          slugs.data
+          shortLinks.data
             .sort(({ created_at: a }, { created_at: b }) => {
               return Date.parse(b) - Date.parse(a)
             })
             .map((link) => (
-              <SlugCard key={link.id} info={link} handleDelete={handleDelete} />
+              <ShortLinkCard
+                key={link.id}
+                info={link}
+                handleDelete={handleDelete}
+              />
             ))}
       </section>
 
-      {!loading && slugs.info.pages === 0 && (
+      {!loading && shortLinks.info.pages === 0 && (
         <div className='flex justify-center items-center h-96'>
-          <p className='text-xl font-bold'>No slugs found, create one now!</p>
+          <p className='text-xl font-bold'>
+            No short links found, create one now!
+          </p>
         </div>
       )}
 
-      {slugs.info.pages > 1 && (
+      {shortLinks.info.pages > 1 && (
         <footer className='my-4'>
-          <SlugPagination
-            pages={slugs.info.pages}
+          <ShortLinkPagination
+            pages={shortLinks.info.pages}
             currentPage={currentPage}
             maxPageNumberLimit={maxPageNumberLimit}
             minPageNumberLimit={minPageNumberLimit}

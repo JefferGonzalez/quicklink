@@ -1,10 +1,8 @@
 # QuickLink | URL Shortener
 
-**QuickLink** is an open-source URL shortener built with the **PERN stack** (PostgreSQL, Express, React, Node.js).
+**QuickLink** is an open-source URL shortener built with the **PERN stack**. It lets users create short links, manage them from their account, and generate QR codes, while also supporting anonymous expiring links.
 
-It supports JWT-based authentication, cookie management, and generates both short URLs and QR codes.
-
-The UI is modern and responsive, styled with **Tailwind CSS**.
+Authentication is session-based using secure cookies, and the interface is modern and responsive, built with **React** and styled using **Tailwind CSS**.
 
 ## Table of Contents
 
@@ -67,6 +65,7 @@ The UI is modern and responsive, styled with **Tailwind CSS**.
 - [Vite](https://vite.dev/) – A fast build tool and development server
 - [TypeScript](https://www.typescriptlang.org/) – Superset of JavaScript for type safety
 - [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapid UI development
+- [Better Auth](https://www.better-auth.com/) - Authentication and user management
 - [pnpm](https://pnpm.io/) - A fast, disk space-efficient package manager
 
 ## License

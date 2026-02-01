@@ -1,29 +1,38 @@
-import { API_URL } from '@/Config'
 import useAuth from '@/hooks/useAuth'
 import GitHubIcon from '@/icons/GitHub'
 import GoogleIcon from '@/icons/Google'
 import MainAppHeader from '@/shared/components/MainAppHeader'
+import { SocialProviders } from '@/shared/types/auth'
 import { Button } from '@/shared/ui'
+import { showToastError } from '@/shared/utils/showToastError'
 import { LoaderIcon } from 'lucide-react'
 import { Fragment, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 
 export default function Auth() {
-  const { isAuthenticated, isSessionLoading, setIsSessionLoading } = useAuth()
+  const { isAuthenticated, socialSignIn } = useAuth()
 
-  const [loadingButton, setLoadingButton] = useState<
-    'github' | 'google' | null
-  >(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [loadingButton, setLoadingButton] = useState<SocialProviders | null>(
+    null
+  )
 
   if (isAuthenticated) {
     return <Navigate to='/dashboard' />
   }
 
-  const handleClick = (type: 'github' | 'google') => {
+  const handleClick = async (type: SocialProviders) => {
     setLoadingButton(type)
-    setIsSessionLoading(true)
+    setIsLoading(true)
 
-    window.location.href = `${API_URL}/auth/${type}`
+    try {
+      await socialSignIn(type)
+    } catch {
+      setIsLoading(false)
+      setLoadingButton(null)
+
+      showToastError()
+    }
   }
 
   return (
@@ -35,10 +44,9 @@ export default function Auth() {
           className='flex gap-2 my-1'
           title='Sign in with GitHub'
           onClick={() => handleClick('github')}
-          disabled={isSessionLoading}
+          disabled={isLoading}
         >
-          {isSessionLoading &&
-          (loadingButton === 'github' || loadingButton === null) ? (
+          {isLoading && loadingButton === 'github' ? (
             <LoaderIcon className='transition-all duration-300 animate-spin' />
           ) : (
             <GitHubIcon className='size-6' />
@@ -51,10 +59,9 @@ export default function Auth() {
           className='flex gap-2 my-1'
           title='Sign in with Google'
           onClick={() => handleClick('google')}
-          disabled={isSessionLoading}
+          disabled={isLoading}
         >
-          {isSessionLoading &&
-          (loadingButton === 'google' || loadingButton === null) ? (
+          {isLoading && loadingButton === 'google' ? (
             <LoaderIcon className='transition-all duration-300 animate-spin' />
           ) : (
             <GoogleIcon className='size-6' />

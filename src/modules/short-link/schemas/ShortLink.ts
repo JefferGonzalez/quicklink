@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-export const SlugSchema = z.object({
+export const ShortLinkSchema = z.object({
   url: z.string().min(1, { message: 'Please enter a URL.' }).url({
     message: 'Invalid URL'
   }),
@@ -10,4 +10,4 @@ export const SlugSchema = z.object({
   description: z.string().optional()
 })
 
-export type Slug = z.infer<typeof SlugSchema>
+export type ShortLink = z.infer<typeof ShortLinkSchema>

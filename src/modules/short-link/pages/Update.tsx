@@ -1,9 +1,15 @@
 import { APP_URL } from '@/Config'
 import useAuth from '@/hooks/useAuth'
-import SlugForm from '@/modules/slug/components/SlugForm'
-import { SlugEntity } from '@/modules/slug/entities/Slug'
-import { Slug, SlugSchema } from '@/modules/slug/schemas/Slug'
-import { getSlugById, updateSlug } from '@/modules/slug/use-cases'
+import ShortLinkForm from '@/modules/short-link/components/ShortLinkForm'
+import { ShortLinkEntity } from '@/modules/short-link/entities/ShortLink'
+import {
+  ShortLink,
+  ShortLinkSchema
+} from '@/modules/short-link/schemas/ShortLink'
+import {
+  getShortLinkById,
+  updateShortLink
+} from '@/modules/short-link/use-cases'
 import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Button, Separator } from '@/shared/ui'
 import { setFormErrors } from '@/shared/utils/setFormErrors'
@@ -13,18 +19,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { UndoDotIcon } from 'lucide-react'
 import { Fragment, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export default function Update() {
-  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  const { signOut } = useAuth()
 
   const { id = '' } = useParams()
-  const [info, setInfo] = useState<SlugEntity>()
+  const [info, setInfo] = useState<ShortLinkEntity>()
   const [loading, setLoading] = useState(false)
 
-  const form = useForm<Slug>({
-    resolver: zodResolver(SlugSchema),
+  const form = useForm<ShortLink>({
+    resolver: zodResolver(ShortLinkSchema),
     defaultValues: {
       description: '',
       slug: '',
@@ -37,7 +45,7 @@ export default function Update() {
     }
   })
 
-  const handleSubmit = async (values: Slug) => {
+  const handleSubmit = async (values: ShortLink) => {
     setLoading(true)
 
     if (values.url === values.slug) {
@@ -50,24 +58,26 @@ export default function Update() {
     }
 
     try {
-      const response = await updateSlug(id, values)
+      const response = await updateShortLink(id, values)
 
       if (!response.ok) {
         const { errors, status } = response
 
-        if (status === HttpStatus.Unauthorized) return logout()
-        if (status === HttpStatus.BadRequest) return setFormErrors(form, errors)
+        if (status === HttpStatus.Unauthorized) {
+          return signOut()
+        }
+        if (status === HttpStatus.BadRequest) {
+          return setFormErrors(form, errors)
+        }
 
         return
       }
 
-      form.reset()
-
       await showConfetti()
 
-      toast('🎉 Slug updated successfully!', {
+      toast('🎉 Short link updated successfully!', {
         action: {
-          label: 'Open slug',
+          label: 'Open short link',
           onClick: () => {
             window.open(`${APP_URL}/s/${response.slug}`, '_blank')
           }
@@ -81,9 +91,9 @@ export default function Update() {
   }
 
   useEffect(() => {
-    const loadSlug = async () => {
+    const loadShortLink = async () => {
       try {
-        const response = await getSlugById(id)
+        const response = await getShortLinkById(id)
 
         if (!response.ok) {
           const statusCode = response.status
@@ -91,7 +101,9 @@ export default function Update() {
           if (
             [HttpStatus.NotFound, HttpStatus.BadRequest].includes(statusCode)
           ) {
-            window.location.href = '/dashboard'
+            showToastError('Short link not found. Please try again.')
+
+            navigate('/dashboard')
           }
 
           return
@@ -103,14 +115,14 @@ export default function Update() {
       }
     }
 
-    loadSlug()
+    loadShortLink()
   }, [id])
 
   return (
     <Fragment>
       <header className='flex justify-between items-center'>
         <h2 className='text-2xl md:text-4xl font-extrabold mt-2'>
-          Edit slug{' '}
+          Edit short link{' '}
           {info?.slug && <span className='text-neutral-500'>/{info.slug}</span>}
         </h2>
         <Link to='/dashboard'>
@@ -124,7 +136,7 @@ export default function Update() {
       <Separator className='my-4' />
 
       <section>
-        <SlugForm
+        <ShortLinkForm
           form={form}
           handleSubmit={handleSubmit}
           loading={loading}

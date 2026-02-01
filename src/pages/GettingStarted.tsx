@@ -1,8 +1,11 @@
 import { APP_URL } from '@/Config'
 import useAuth from '@/hooks/useAuth'
-import SlugForm from '@/modules/slug/components/SlugForm'
-import { Slug, SlugSchema } from '@/modules/slug/schemas/Slug'
-import { createFreeSlug } from '@/modules/slug/use-cases'
+import ShortLinkForm from '@/modules/short-link/components/ShortLinkForm'
+import {
+  ShortLink,
+  ShortLinkSchema
+} from '@/modules/short-link/schemas/ShortLink'
+import { createShortLink } from '@/modules/short-link/use-cases'
 import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Button } from '@/shared/ui'
 import { setFormErrors } from '@/shared/utils/setFormErrors'
@@ -19,8 +22,8 @@ export default function GettingStarted() {
 
   const [loading, setLoading] = useState(false)
 
-  const form = useForm<Slug>({
-    resolver: zodResolver(SlugSchema),
+  const form = useForm<ShortLink>({
+    resolver: zodResolver(ShortLinkSchema),
     defaultValues: {
       description: '',
       slug: '',
@@ -28,7 +31,7 @@ export default function GettingStarted() {
     }
   })
 
-  const handleSubmit = async (values: Slug) => {
+  const handleSubmit = async (values: ShortLink) => {
     setLoading(true)
 
     if (values.url === values.slug) {
@@ -41,7 +44,7 @@ export default function GettingStarted() {
     }
 
     try {
-      const response = await createFreeSlug(values)
+      const response = await createShortLink(values)
 
       if (!response.ok) {
         const { errors, status } = response
@@ -57,10 +60,10 @@ export default function GettingStarted() {
 
       await showConfetti()
 
-      toast('🎉 Slug created successfully!', {
+      toast('🎉 Short link created successfully!', {
         duration: 10000,
         action: {
-          label: 'Open slug',
+          label: 'Open short link',
           onClick: () => {
             window.open(`${APP_URL}/s/${response.slug}`, '_blank')
           }
@@ -76,14 +79,18 @@ export default function GettingStarted() {
   return (
     <Fragment>
       <section className='py-10'>
-        <SlugForm form={form} loading={loading} handleSubmit={handleSubmit} />
+        <ShortLinkForm
+          form={form}
+          loading={loading}
+          handleSubmit={handleSubmit}
+        />
       </section>
 
       <section className='flex flex-col items-center text-neutral-400 text-pretty space-y-3'>
         {!isAuthenticated ? (
           <Fragment>
             <p>
-              You can create a short URL without an account, but it will be
+              You can create a short link without an account, but it will be
               deleted after 1 hour.
             </p>
 

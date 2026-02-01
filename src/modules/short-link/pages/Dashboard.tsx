@@ -1,4 +1,4 @@
-import SlugList from '@/modules/slug/components/SlugList'
+import ShortLinkList from '@/modules/short-link/components/ShortLinkList'
 import { Button, Separator } from '@/shared/ui'
 import { PlusSquareIcon } from 'lucide-react'
 import { Fragment } from 'react'
@@ -10,17 +10,19 @@ export default function Dashboard() {
       <header className='flex justify-between items-center'>
         <h2 className='text-2xl md:text-4xl font-extrabold mt-2'>Dashboard</h2>
         <Link to='/dashboard/create'>
-          <Button className='flex gap-2' title='Create a new slug'>
-            <span className='sr-only'>Create a new slug</span>
+          <Button className='flex gap-2' title='Create a new short link'>
+            <span className='sr-only'>Create a new short link</span>
             <PlusSquareIcon />
-            <span className='hidden sm:inline-block'>Create a new slug</span>
+            <span className='hidden sm:inline-block'>
+              Create a new short link
+            </span>
           </Button>
         </Link>
       </header>
-      
+
       <Separator className='my-4' />
 
-      <SlugList />
+      <ShortLinkList />
     </Fragment>
   )
 }

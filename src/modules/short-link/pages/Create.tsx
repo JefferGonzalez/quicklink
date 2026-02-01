@@ -1,8 +1,11 @@
 import { APP_URL } from '@/Config'
 import useAuth from '@/hooks/useAuth'
-import SlugForm from '@/modules/slug/components/SlugForm'
-import { Slug, SlugSchema } from '@/modules/slug/schemas/Slug'
-import { createSlug } from '@/modules/slug/use-cases'
+import ShortLinkForm from '@/modules/short-link/components/ShortLinkForm'
+import {
+  ShortLink,
+  ShortLinkSchema
+} from '@/modules/short-link/schemas/ShortLink'
+import { createShortLink } from '@/modules/short-link/use-cases'
 import { HttpStatus } from '@/shared/constants/httpStatus'
 import { Button, Separator } from '@/shared/ui'
 import { setFormErrors } from '@/shared/utils/setFormErrors'
@@ -16,12 +19,12 @@ import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export default function Create() {
-  const { logout } = useAuth()
+  const { signOut } = useAuth()
 
   const [loading, setLoading] = useState(false)
 
-  const form = useForm<Slug>({
-    resolver: zodResolver(SlugSchema),
+  const form = useForm<ShortLink>({
+    resolver: zodResolver(ShortLinkSchema),
     defaultValues: {
       description: '',
       slug: '',
@@ -29,7 +32,7 @@ export default function Create() {
     }
   })
 
-  const handleSubmit = async (values: Slug) => {
+  const handleSubmit = async (values: ShortLink) => {
     setLoading(true)
 
     if (values.url === values.slug) {
@@ -42,15 +45,20 @@ export default function Create() {
     }
 
     try {
-      const response = await createSlug(values)
+      const response = await createShortLink(values)
 
       if (!response.ok) {
         const { errors, status } = response
 
-        if (status === HttpStatus.Unauthorized) return logout()
-        if (status === HttpStatus.BadRequest) return setFormErrors(form, errors)
-        if (status === HttpStatus.Conflict)
+        if (status === HttpStatus.Unauthorized) {
+          return signOut()
+        }
+        if (status === HttpStatus.BadRequest) {
+          return setFormErrors(form, errors)
+        }
+        if (status === HttpStatus.Conflict) {
           return setFormErrors(form, errors, 'slug')
+        }
 
         return
       }
@@ -59,9 +67,9 @@ export default function Create() {
 
       await showConfetti()
 
-      toast('🎉 Slug created successfully!', {
+      toast('🎉 Short link created successfully!', {
         action: {
-          label: 'Open slug',
+          label: 'Open short link',
           onClick: () => {
             window.open(`${APP_URL}/s/${response.slug}`, '_blank')
           }
@@ -78,7 +86,7 @@ export default function Create() {
     <Fragment>
       <header className='flex justify-between items-center'>
         <h2 className='text-2xl md:text-4xl font-extrabold mt-2'>
-          Create a new slug
+          Create a new short link
         </h2>
         <Link to='/dashboard'>
           <Button className='flex gap-2' title='Back to dashboard'>
@@ -91,7 +99,7 @@ export default function Create() {
       <Separator className='my-4' />
 
       <section>
-        <SlugForm
+        <ShortLinkForm
           form={form}
           handleSubmit={handleSubmit}
           loading={loading}

@@ -1,4 +1,4 @@
-import { MAX_PAGES } from '@/modules/slug/components/SlugList'
+import { MAX_PAGES } from '@/modules/short-link/components/ShortLinkList'
 import {
   Pagination,
   PaginationContent,
@@ -19,7 +19,7 @@ interface Props {
   handlePrevPage: (page: number) => void
 }
 
-export default function SlugPagination({
+export default function ShortLinkPagination({
   pages,
   currentPage,
   minPageNumberLimit,

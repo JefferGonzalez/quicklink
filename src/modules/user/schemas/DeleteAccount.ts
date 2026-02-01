@@ -1,12 +1,12 @@
 import * as z from 'zod'
 
-export const getDeleteAccountSchema = (username: string) =>
+export const getDeleteAccountSchema = (name: string) =>
   z.object({
-    username: z
+    name: z
       .string()
-      .min(1, { message: 'Please enter your username.' })
-      .refine((v) => v === username, {
-        message: 'Please enter the correct username.'
+      .min(1, { message: 'Please enter your name.' })
+      .refine((v) => v === name, {
+        message: 'Please enter the correct name.'
       }),
     text: z
       .string()
@@ -17,6 +17,6 @@ export const getDeleteAccountSchema = (username: string) =>
   })
 
 export type DeleteAccount = {
-  username: string
+  name: string
   text: string
 }

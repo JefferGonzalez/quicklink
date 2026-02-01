@@ -1,4 +1,4 @@
-import { getURLBySlug } from '@/modules/slug/use-cases'
+import { getURLBySlug } from '@/modules/short-link/use-cases'
 import NotFound from '@/pages/NotFound'
 import Slug from '@/pages/Slug'
 import AuthProvider from '@/providers/AuthProvider'

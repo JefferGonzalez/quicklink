@@ -13,7 +13,7 @@ import { type UseFormReturn } from 'react-hook-form'
 
 interface Props {
   form: UseFormReturn<DeleteAccount>
-  username: string
+  name: string
   loading: boolean
   handleSubmit: (values: DeleteAccount) => void
   handleCancel: (value: boolean) => void
@@ -21,7 +21,7 @@ interface Props {
 
 export default function DeleteAccountForm({
   form,
-  username,
+  name,
   loading,
   handleSubmit,
   handleCancel
@@ -30,13 +30,13 @@ export default function DeleteAccountForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
         <FormField
-          name='username'
+          name='name'
           control={form.control}
           render={({ field, fieldState }) => (
             <FormItem className='w-full'>
               <FormLabel className='font-normal'>
-                Enter your username{' '}
-                <span className='font-bold'>{username}</span> to continue:
+                Enter your name{' '}
+                <span className='font-bold'>{name.trim()}</span> to continue:
               </FormLabel>
               <FormControl>
                 <Input disabled={loading} {...field} />

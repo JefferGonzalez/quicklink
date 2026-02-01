@@ -1,18 +1,18 @@
-import { UserEntity } from '@/modules/user/entities/User'
+import { AuthUser, SocialProviders } from '@/shared/types/auth'
 import { createContext } from 'react'
 
 interface AuthContextProps {
-  user: UserEntity | undefined
+  user: AuthUser | undefined
   isSessionLoading: boolean
   isAuthenticated: boolean
-  setIsSessionLoading: (value: boolean) => void
-  logout: () => void
+  socialSignIn: (type: SocialProviders) => Promise<void>
+  signOut: () => void
 }
 
 export const AuthContext = createContext<AuthContextProps>({
   user: undefined,
   isSessionLoading: false,
   isAuthenticated: false,
-  setIsSessionLoading: () => {},
-  logout: () => {}
+  socialSignIn: async () => {},
+  signOut: async () => {}
 })
