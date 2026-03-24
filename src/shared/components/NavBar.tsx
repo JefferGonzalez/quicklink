@@ -2,7 +2,13 @@ import useAuth from '@/hooks/useAuth'
 import LinkIcon from '@/icons/Link'
 import DropdownMenu from '@/shared/components/DropdownMenu'
 import ThemeToggle from '@/shared/components/ThemeToggle'
-import { Button, DropdownMenuItem, DropdownMenuLabel } from '@/shared/ui'
+import {
+  Button,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+} from '@/shared/ui'
 import {
   ClockIcon,
   CommandIcon,
@@ -74,61 +80,67 @@ export default function NavBar() {
               title: `Profile of ${user.name}`
             }}
           >
-            <DropdownMenuItem asChild>
-              <Link
-                to='/dashboard'
-                className='flex items-center gap-2'
-                title='Dashboard'
-              >
-                <LayoutDashboardIcon />
-                <DropdownMenuLabel>
-                  <span className='sr-only'>Dashboard</span>
-                  Dashboard
-                </DropdownMenuLabel>
-              </Link>
-            </DropdownMenuItem>
+            <DropdownMenuGroup>
+              <DropdownMenuItem asChild>
+                <Link
+                  to='/dashboard'
+                  className='flex items-center gap-2'
+                  title='Dashboard'
+                >
+                  <LayoutDashboardIcon />
+                  <DropdownMenuLabel>
+                    <span className='sr-only'>Dashboard</span>
+                    Dashboard
+                  </DropdownMenuLabel>
+                </Link>
+              </DropdownMenuItem>
 
-            <DropdownMenuItem asChild>
-              <Link
-                to='/dashboard/create'
-                className='flex items-center gap-2'
-                title='Create a new short link'
-              >
-                <PlusSquareIcon />
-                <DropdownMenuLabel>
-                  <span className='sr-only'>Create a new short link</span>
-                  Create a new short link
-                </DropdownMenuLabel>
-              </Link>
-            </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  to='/dashboard/create'
+                  className='flex items-center gap-2'
+                  title='Create a new short link'
+                >
+                  <PlusSquareIcon />
+                  <DropdownMenuLabel>
+                    <span className='sr-only'>Create a new short link</span>
+                    Create a new short link
+                  </DropdownMenuLabel>
+                </Link>
+              </DropdownMenuItem>
 
-            <DropdownMenuItem asChild>
-              <Link
-                to='/getting-started'
-                className='flex items-center gap-2'
-                title='Create a temporary short link'
-              >
-                <ClockIcon />
-                <DropdownMenuLabel>
-                  <span className='sr-only'>Create a temporary short link</span>
-                  Create a temporary short link
-                </DropdownMenuLabel>
-              </Link>
-            </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  to='/getting-started'
+                  className='flex items-center gap-2'
+                  title='Create a temporary short link'
+                >
+                  <ClockIcon />
+                  <DropdownMenuLabel>
+                    <span className='sr-only'>
+                      Create a temporary short link
+                    </span>
+                    Create a temporary short link
+                  </DropdownMenuLabel>
+                </Link>
+              </DropdownMenuItem>
 
-            <DropdownMenuItem asChild>
-              <Link
-                to='/profile'
-                className='flex items-center gap-2'
-                title='Settings'
-              >
-                <UserCogIcon />
-                <DropdownMenuLabel>
-                  <span className='sr-only'>Settings</span>
-                  Settings
-                </DropdownMenuLabel>
-              </Link>
-            </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  to='/profile'
+                  className='flex items-center gap-2'
+                  title='Settings'
+                >
+                  <UserCogIcon />
+                  <DropdownMenuLabel>
+                    <span className='sr-only'>Settings</span>
+                    Settings
+                  </DropdownMenuLabel>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+
+            <DropdownMenuSeparator />
 
             <DropdownMenuItem onClick={signOut}>
               <LogOutIcon />

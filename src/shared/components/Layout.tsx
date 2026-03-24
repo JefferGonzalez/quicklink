@@ -12,7 +12,7 @@ export default function Layout() {
 
   return (
     <Fragment>
-      <main className='container m-auto px-4 max-w-[1100px]'>
+      <main className='container m-auto px-4 max-w-275'>
         <NavBar />
         <section className='min-h-[calc(100vh-9rem)]'>
           {

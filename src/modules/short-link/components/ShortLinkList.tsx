@@ -18,7 +18,6 @@ const MIN_PAGES = 1
 
 export default function ShortLinkList() {
   const { isAuthenticated, signOut } = useAuth()
-
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [shortLinks, setShortLinks] = useState<ShortLinksResponse>({
@@ -26,9 +25,21 @@ export default function ShortLinkList() {
     info: { pages: 0 }
   })
   const [loading, setLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(MIN_PAGES)
-  const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(MAX_PAGES)
-  const [minPageNumberLimit, setMinPageNumberLimit] = useState(MIN_PAGES)
+
+  const rawPage = searchParams.get('page')
+  const parsedPage = Number(rawPage)
+  const isValid = rawPage && Number.isInteger(parsedPage) && parsedPage >= 1
+  const currentPage = isValid ? parsedPage : MIN_PAGES
+
+  const totalPages = shortLinks.info.pages
+
+  const minPageNumberLimit =
+    Math.floor((currentPage - 1) / MAX_PAGES) * MAX_PAGES + 1
+
+  const maxPageNumberLimit = Math.min(
+    MAX_PAGES,
+    totalPages - minPageNumberLimit + 1
+  )
 
   const handleDelete = async (id: string) => {
     setLoading(true)
@@ -65,55 +76,17 @@ export default function ShortLinkList() {
     setSearchParams({ page: String(page) })
   }
 
-  const handleNextPage = (nextPage: number) => {
-    handlePageClick(nextPage)
-
-    const prevPage = nextPage - 1
-    const isLimitReached = prevPage % MAX_PAGES === 0
-
-    if (isLimitReached) {
-      setMinPageNumberLimit(nextPage)
-
-      const remainingPages = shortLinks.info.pages - prevPage
-
-      if (remainingPages > MAX_PAGES) {
-        setMaxPageNumberLimit(MAX_PAGES)
-      } else {
-        setMaxPageNumberLimit(remainingPages)
-      }
-    }
-  }
-
-  const handlePrevPage = (prevPage: number) => {
-    handlePageClick(prevPage)
-
-    const isLimitReached = prevPage % MAX_PAGES === 0
-
-    if (isLimitReached) {
-      setMaxPageNumberLimit(MAX_PAGES)
-      setMinPageNumberLimit(minPageNumberLimit - MAX_PAGES)
-    }
-  }
-
   useEffect(() => {
     const loadShortLinks = async () => {
-      const rawPage = searchParams.get('page')
-      const parsedPage = Number(rawPage)
-      const isValid = rawPage && Number.isInteger(parsedPage) && parsedPage >= 1
-      const page = isValid ? parsedPage : 1
-
       if (!isValid) {
         const newParams = new URLSearchParams(searchParams)
-        newParams.set('page', String(page))
+        newParams.set('page', String(MIN_PAGES))
         setSearchParams(newParams, { replace: true })
-
         return
       }
 
-      setCurrentPage(page)
-
       try {
-        const response = await getAllShortLinks(page)
+        const response = await getAllShortLinks(currentPage)
         if (!response.ok) {
           if (response.status === HttpStatus.Unauthorized) {
             signOut()
@@ -125,26 +98,17 @@ export default function ShortLinkList() {
         const data = response.data
         const totalPages = data.info.pages
 
-        if (page > totalPages && totalPages > 0) {
+        if (currentPage > totalPages && totalPages > 0) {
           const newParams = new URLSearchParams(searchParams)
           newParams.set('page', String(totalPages))
           setSearchParams(newParams, { replace: true })
-
           return
         }
 
-        const visibleStart = Math.floor((page - 1) / MAX_PAGES) * MAX_PAGES + 1
-        const quantityVisiblePages = Math.min(
-          MAX_PAGES,
-          totalPages - visibleStart + 1
-        )
-        setMinPageNumberLimit(visibleStart)
-        setMaxPageNumberLimit(quantityVisiblePages)
-
         setShortLinks(data)
-        setLoading(false)
       } catch {
         showToastError()
+      } finally {
         setLoading(false)
       }
     }
@@ -159,11 +123,9 @@ export default function ShortLinkList() {
       <section className='grid sm:grid-cols-1 md:grid-cols-2 gap-2'>
         {loading && (
           <Fragment>
-            {Array(6)
-              .fill(null)
-              .map((_, index) => (
-                <Skeleton key={index} className='h-32 rounded-lg' />
-              ))}
+            {Array.from({ length: 6 }, (_, i) => (
+              <Skeleton key={i} className='h-28 rounded-lg' />
+            ))}
           </Fragment>
         )}
 
@@ -196,9 +158,7 @@ export default function ShortLinkList() {
             currentPage={currentPage}
             maxPageNumberLimit={maxPageNumberLimit}
             minPageNumberLimit={minPageNumberLimit}
-            handlePageClick={handlePageClick}
-            handleNextPage={handleNextPage}
-            handlePrevPage={handlePrevPage}
+            onPageChange={handlePageClick}
           />
         </footer>
       )}

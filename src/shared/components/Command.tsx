@@ -1,13 +1,15 @@
 import useAuth from '@/hooks/useAuth'
 import GitHubIcon from '@/icons/GitHub'
 import {
+  Command as CommandPrimitive,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
-  CommandShortcut
+  CommandShortcut,
+  CommandSeparator
 } from '@/shared/ui'
 import {
   ClockIcon,
@@ -72,60 +74,66 @@ export default function Command() {
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
-      <CommandInput placeholder='Select a command or search...' />
-      <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading='Suggestions'>
-          <CommandItem
-            title='Create a new short link'
-            onSelect={() => handleNavigate(createShortLinkPage)}
-          >
-            <span className='sr-only'>Create a new short link</span>
-            <PlusSquareIcon className='mr-2 h-4 w-4' />
-            Create a new short link
-            <CommandShortcut className='flex items-center gap-1'>
-              <CommandIcon /> + <kbd>S</kbd>
-            </CommandShortcut>
-          </CommandItem>
+      <CommandPrimitive>
+        <CommandInput placeholder='Select a command or search...' />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading='Suggestions'>
+            <CommandItem
+              title='Create a new short link'
+              onSelect={() => handleNavigate(createShortLinkPage)}
+            >
+              <span className='sr-only'>Create a new short link</span>
+              <PlusSquareIcon className='mr-2 h-4 w-4' />
+              Create a new short link
+              <CommandShortcut className='flex items-center gap-1'>
+                <CommandIcon /> + <kbd>S</kbd>
+              </CommandShortcut>
+            </CommandItem>
 
-          {isAuthenticated && (
-            <Fragment>
-              <CommandItem
-                title='Create a temporary short link'
-                onSelect={() => handleNavigate('/getting-started')}
-              >
-                <span className='sr-only'>Create a temporary short link</span>
-                <ClockIcon className='mr-2 h-4 w-4' />
-                Create a temporary short link
-                <CommandShortcut className='flex items-center gap-1'>
-                  <CommandIcon /> + <kbd>Q</kbd>
-                </CommandShortcut>
-              </CommandItem>
+            {isAuthenticated && (
+              <Fragment>
+                <CommandItem
+                  title='Create a temporary short link'
+                  onSelect={() => handleNavigate('/getting-started')}
+                >
+                  <span className='sr-only'>Create a temporary short link</span>
+                  <ClockIcon className='mr-2 h-4 w-4' />
+                  Create a temporary short link
+                  <CommandShortcut className='flex items-center gap-1'>
+                    <CommandIcon /> + <kbd>Q</kbd>
+                  </CommandShortcut>
+                </CommandItem>
 
-              <CommandItem
-                title='Dashboard'
-                onSelect={() => handleNavigate('/dashboard')}
-              >
-                <span className='sr-only'>Dashboard</span>
-                <LayoutDashboardIcon className='mr-2 h-4 w-4' />
-                Dashboard
-                <CommandShortcut className='flex items-center gap-1'>
-                  <CommandIcon /> + <kbd>M</kbd>
-                </CommandShortcut>
-              </CommandItem>
-            </Fragment>
-          )}
+                <CommandItem
+                  title='Dashboard'
+                  onSelect={() => handleNavigate('/dashboard')}
+                >
+                  <span className='sr-only'>Dashboard</span>
+                  <LayoutDashboardIcon className='mr-2 h-4 w-4' />
+                  Dashboard
+                  <CommandShortcut className='flex items-center gap-1'>
+                    <CommandIcon /> + <kbd>M</kbd>
+                  </CommandShortcut>
+                </CommandItem>
+              </Fragment>
+            )}
+          </CommandGroup>
 
-          <CommandItem title='Repository' onSelect={handleGoToRepository}>
-            <span className='sr-only'>Repository</span>
-            <GitHubIcon className='mr-2 h-4 w-4' />
-            Repository
-            <CommandShortcut className='flex items-center gap-1'>
-              <CommandIcon /> + <kbd>B</kbd>
-            </CommandShortcut>
-          </CommandItem>
-        </CommandGroup>
-      </CommandList>
+          <CommandSeparator className='my-1' />
+
+          <CommandGroup>
+            <CommandItem title='Repository' onSelect={handleGoToRepository}>
+              <span className='sr-only'>Repository</span>
+              <GitHubIcon className='mr-2 h-4 w-4' />
+              Repository
+              <CommandShortcut className='flex items-center gap-1'>
+                <CommandIcon /> + <kbd>B</kbd>
+              </CommandShortcut>
+            </CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandPrimitive>
     </CommandDialog>
   )
 }

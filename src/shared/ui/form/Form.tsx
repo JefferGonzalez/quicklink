@@ -95,32 +95,11 @@ function FormDescription({ className, ...props }: React.ComponentProps<'p'>) {
   )
 }
 
-function FormMessage({ className, ...props }: React.ComponentProps<'p'>) {
-  const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message ?? '') : props.children
-
-  if (!body) {
-    return null
-  }
-
-  return (
-    <p
-      data-slot='form-message'
-      id={formMessageId}
-      className={cn('text-red-500 text-sm dark:text-red-900', className)}
-      {...props}
-    >
-      {body}
-    </p>
-  )
-}
-
 export {
   Form,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage
+  FormLabel
 }

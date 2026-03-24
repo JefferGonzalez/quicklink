@@ -14,9 +14,7 @@ interface Props {
   currentPage: number
   minPageNumberLimit: number
   maxPageNumberLimit: number
-  handlePageClick: (page: number) => void
-  handleNextPage: (page: number) => void
-  handlePrevPage: (page: number) => void
+  onPageChange: (page: number) => void
 }
 
 export default function ShortLinkPagination({
@@ -24,9 +22,7 @@ export default function ShortLinkPagination({
   currentPage,
   minPageNumberLimit,
   maxPageNumberLimit,
-  handlePageClick,
-  handleNextPage,
-  handlePrevPage
+  onPageChange
 }: Props) {
   const visiblePageNumbers =
     pages > MAX_PAGES
@@ -41,9 +37,7 @@ export default function ShortLinkPagination({
       <PaginationContent>
         {currentPage > 1 && (
           <PaginationItem>
-            <PaginationPrevious
-              onClick={() => handlePrevPage(currentPage - 1)}
-            />
+            <PaginationPrevious onClick={() => onPageChange(currentPage - 1)} />
           </PaginationItem>
         )}
 
@@ -55,7 +49,7 @@ export default function ShortLinkPagination({
               <PaginationLink
                 isActive={isActive}
                 className={cn(isActive && 'cursor-not-allowed')}
-                onClick={!isActive ? () => handlePageClick(page) : undefined}
+                onClick={!isActive ? () => onPageChange(page) : undefined}
               >
                 {page}
               </PaginationLink>
@@ -65,7 +59,7 @@ export default function ShortLinkPagination({
 
         {currentPage < pages && (
           <PaginationItem>
-            <PaginationNext onClick={() => handleNextPage(currentPage + 1)} />
+            <PaginationNext onClick={() => onPageChange(currentPage + 1)} />
           </PaginationItem>
         )}
       </PaginationContent>

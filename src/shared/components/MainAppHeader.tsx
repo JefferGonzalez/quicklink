@@ -7,7 +7,7 @@ export default function MainAppHeader() {
     <Fragment>
       <header className='flex items-center gap-x-2'>
         <LinkIcon className='size-16' />
-        <h1 className='text-3xl sm:text-4xl md:text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500'>
+        <h1 className='text-3xl sm:text-4xl md:text-5xl font-bold text-center text-transparent bg-clip-text bg-linear-to-r from-green-400 to-blue-500'>
           Open Source URL Shortener
         </h1>
       </header>

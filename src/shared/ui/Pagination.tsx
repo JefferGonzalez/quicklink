@@ -1,16 +1,11 @@
 import { Button, buttonVariants } from '@/shared/ui'
 import { cn } from '@/shared/utils/cn'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  MoreHorizontalIcon
-} from 'lucide-react'
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 import * as React from 'react'
 
 function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
     <nav
-      role='navigation'
       aria-label='pagination'
       data-slot='pagination'
       className={cn('mx-auto flex w-full justify-center', className)}
@@ -98,27 +93,9 @@ function PaginationNext({
   )
 }
 
-function PaginationEllipsis({
-  className,
-  ...props
-}: React.ComponentProps<'span'>) {
-  return (
-    <span
-      aria-hidden
-      data-slot='pagination-ellipsis'
-      className={cn('flex size-9 items-center justify-center', className)}
-      {...props}
-    >
-      <MoreHorizontalIcon className='size-4' />
-      <span className='sr-only'>More pages</span>
-    </span>
-  )
-}
-
 export {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,

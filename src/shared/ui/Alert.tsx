@@ -47,20 +47,4 @@ function AlertTitle({ className, ...props }: React.ComponentProps<'div'>) {
   )
 }
 
-function AlertDescription({
-  className,
-  ...props
-}: React.ComponentProps<'div'>) {
-  return (
-    <div
-      data-slot='alert-description'
-      className={cn(
-        'text-neutral-500 col-start-2 grid justify-items-start gap-1 text-sm [&_p]:leading-relaxed dark:text-neutral-400',
-        className
-      )}
-      {...props}
-    />
-  )
-}
-
-export { Alert, AlertDescription, AlertTitle }
+export { Alert, AlertTitle }
