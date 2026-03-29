@@ -1,10 +1,10 @@
 import { getURLBySlug } from '@/modules/short-link/use-cases'
 import NotFound from '@/pages/NotFound'
-import Slug from '@/pages/Slug'
 import AuthProvider from '@/providers/AuthProvider'
 import ThemeProvider from '@/providers/ThemeProvider'
 import Root from '@/Root'
 import Layout from '@/shared/components/Layout'
+import LoadingIndicator from '@/shared/components/LoadingIndicator'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Slug />,
+        element: <LoadingIndicator />,
         loader: async ({ params: { slug } }) => {
           if (!slug) throw new Error('Slug is required.')
 
